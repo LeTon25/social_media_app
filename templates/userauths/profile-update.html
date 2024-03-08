@@ -1,0 +1,194 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load widget_tweaks  %}
+{% block content %}
+
+        <style>
+            
+            #id_image{
+                background-color: #270041;
+                border-radius: 4px;
+                height: 50px;
+                width: 100%;
+                color: #ffffff;
+            }
+            #id_image::file-selector-button{
+                border: none;
+                border-radius: 7px;
+                color: 432f9f;
+                background-color: #ffffff;
+                height: 30px;
+                cursor: pointer;
+                transition: all .25s ease-in;
+                margin-top: 1px;
+                margin-left: 10px;
+            }
+        </style>
+
+
+        <!-- Main Contents -->
+        <div class="main_content">
+            <div class="mcontainer">
+
+                <div class="bg-white lg:divide-x lg:flex lg:shadow-md rounded-md shadow lg:rounded-xl overflow-hidden lg:m-0 -mx-4">
+                    
+                    {% include 'partials/settings_sidebar.html' %}
+                    <div class="lg:w-2/3">
+
+                        
+
+                        <form method="POST" class="lg:flex lg:flex-col justify-between lg:h-full" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- form header -->
+                            <div class="lg:px-10 lg:py-8 p-6">
+                                <h3 class="font-bold mb-2 text-xl">Profile</h3>
+                                <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
+                            </div>
+
+                            <!-- form body -->
+                            <div class="lg:py-8 lg:px-20 flex-1 space-y-4 p-6">
+
+                                
+
+                                <h4><b>Personal</b></h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- Column 1: Profile Image -->
+                                    <div class="bg-gray-100 p-4  flex items-center" style="border-radius: 10px;">
+                                        <div class="relative">
+                                            <img src="{{request.user.profile.image.url}}" id="preview_avatar" alt="Profile Picture" class="w-24 h-24 rounded-full">
+                                            <label for="id_image" class="absolute bottom-0 right-0 p-2 bg-white rounded-full cursor-pointer">
+                                                <i class="fas fa-pen text-blue-500"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Column 2: Cover Image -->
+                                    <div class="bg-blue-100 p-4" style="border-radius: 10px;">
+                                        <div class="relative">
+                                        <img src="{{request.user.profile.cover_image.url}}" id="preview_cover" alt="Cover Image" class="w-full h-32 object-cover rounded-lg">
+                                        <label for="id_cover_image" class="absolute bottom-0 right-0 p-2 bg-white rounded-full cursor-pointer">
+                                            <i class="fas fa-pen text-blue-500"></i>
+                                        </label>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        var loadFile = function (event) {
+                                          var output2 = document.getElementById("preview_avatar");
+                                          output2.src = URL.createObjectURL(event.target.files[0]);
+                                          output2.onload = function () {
+                                            URL.revokeObjectURL(output2.src); // free memory
+                                          };
+                                        };
+
+                                        var loadFile2 = function (event) {
+                                          var output2 = document.getElementById("preview_cover");
+                                          output2.src = URL.createObjectURL(event.target.files[0]);
+                                          output2.onload = function () {
+                                            URL.revokeObjectURL(output2.src); // free memory
+                                          };
+                                        };
+                                      </script>
+
+                                </div>
+                                <div class="d-none">
+                                    <div class="line">
+                                        {% render_field p_form.image onchange="loadFile(event)" class="hidden"  %}
+                                    </div>
+                                    <div class="line">
+                                        {% render_field p_form.cover_image onchange="loadFile2(event)" class="hidden"  %}
+                                    </div>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.full_name class="line__input" %}
+                                    <span for="username" class="line__placeholder"> First Name   </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.bio class="line__input"  %}
+                                    <span for="username" class="line__placeholder"> Bio  </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.about_me class="line__input" %}
+                                    <span for="username" class="line__placeholder"> About Me   </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.relationship class="line__input" %}
+                                    <span for="username" class="line__placeholder"> Relationship Status   </span>
+                                </div>
+                            </div>
+
+                            <div class="lg:py-4 lg:px-20 flex-1 space-y-4 p-6">
+                                <h4><b>Contact</b></h4>
+                                <div class="line">
+                                    {% render_field p_form.phone class="line__input" %}
+                                    <span for="username" class="line__placeholder"> Mobile Number   </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field u_form.email class="line__input" %}
+                                    <span for="username" class="line__placeholder"> Email  </span>
+                                </div>
+                            </div>
+
+                            <div class="lg:py-4 lg:px-20 flex-1 space-y-4 p-6">
+                                <h4><b>Address</b></h4>
+                                <div class="line">
+                                    {% render_field p_form.address class="line__input" %}
+                                    <span for="username" class="line__placeholder"> Address   </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.city class="line__input" %}
+                                    <span for="username" class="line__placeholder"> City  </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.state class="line__input" %}
+                                    <span for="username" class="line__placeholder"> State  </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.country class="line__input" %}
+                                    <span for="username" class="line__placeholder"> State  </span>
+                                </div>
+                            </div>
+
+                            <div class="lg:py-4 lg:px-20 flex-1 space-y-4 p-6">
+                                <h4><b>Address</b></h4>
+                                <div class="line">
+                                    {% render_field p_form.address class="line__input" %}
+                                    <span for="username" class="line__placeholder"> Address   </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.city class="line__input" %}
+                                    <span for="username" class="line__placeholder"> City  </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.state class="line__input" %}
+                                    <span for="username" class="line__placeholder"> State  </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.country class="line__input" %}
+                                    <span for="username" class="line__placeholder"> State  </span>
+                                </div>
+                            </div>
+
+                            <div class="lg:py-4 lg:px-20 flex-1 space-y-4 p-6">
+                                <h4><b>Socila URLs</b></h4>
+                                <div class="line">
+                                    {% render_field p_form.instagram class="line__input" %}
+                                    <span for="username" class="line__placeholder"> Instagram   </span>
+                                </div>
+                                <div class="line">
+                                    {% render_field p_form.whatsApp class="line__input" %}
+                                    <span for="username" class="line__placeholder"> WhatsApp  </span>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+                                <button type="submit" class="button bg-blue-700"> Save Changes </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}

@@ -1,0 +1,68 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="main_content">
+        <div class="mcontainer">
+
+            <!--  breadcrumb -->
+            <div class="breadcrumb-area py-0">
+                <div class="breadcrumb">
+                    <ul class="m-0">
+                        <li>
+                            <a href="index.html">Group Chat</a>
+                        </li>
+                        <li class="active">
+                            <a href="#">{{groupchat.name}}<a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- create page-->
+            <div class="max-w-2xl m-auto shadow-md rounded-md bg-white lg:mt-20">  
+
+                <!-- form header -->
+                <div class="text-center border-b border-gray-100 py-6">
+                    <h3 class="font-bold text-xl">Join "{{groupchat.name}}" Chat</h3>
+                </div>
+
+                <!-- form body -->
+                <div class="p-10 space-y-7">
+
+                    <div class="line">
+                        <input class="line__input" id="" name=""  type="text" value="{{groupchat.name}}" readonly autocomplete="off">
+                        <span for="username" class="line__placeholder"> Group Chat Name </span>
+                    </div>
+
+                    <div class="line">
+                        <input class="line__input" id="" name=""  type="text" value="{{groupchat.host.profile.full_name}}" readonly autocomplete="off">
+                        <span for="username" class="line__placeholder"> Group Chat Host</span>
+                    </div>
+                    
+                    {% if groupchat.description %}
+                    <div class="line">
+                        <input class="line__input" id="" name=""  type="text" value="{{groupchat.description}}" readonly autocomplete="off">
+                        <span for="username" class="line__placeholder"> Group Chat Description</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="line">
+                        <input class="line__input" id="" name=""  type="text" value="{{groupchat.members.all.count}} Members" readonly autocomplete="off">
+                        <span for="username" class="line__placeholder"> Group Chat Members</span>
+                    </div>
+                    
+                </div>
+                
+                <!-- form footer -->
+                <div class="flex justify-center border-gray-100 py-8">
+                    <a href="{% url 'core:join_group' groupchat.slug  %}" class="button lg:w-1/3"> Join Group Chat </a>
+                </div>
+                
+            </div>
+
+    
+        </div>
+    </div>
+{% endblock content %}

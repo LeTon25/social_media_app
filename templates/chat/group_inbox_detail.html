@@ -1,0 +1,232 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Main Contents -->
+    <div class="main_content">
+
+        <span uk-toggle="target: .message-content;" class="fixed left-0 top-36 bg-red-600 z-10 py-1 px-4 rounded-r-3xl text-white"> Users</span>
+
+        <div class="messages-container">
+            <div class="messages-container-inner">
+
+
+                <div class="messages-inbox">
+                    <div class="messages-headline">
+                        <div class="input-with-icon" hidden>
+                            <input id="autocomplete-input" type="text" placeholder="Search">
+                            <i class="icon-material-outline-search"></i>
+                        </div>
+                        <h2 class="text-2xl font-semibold">Chats</h2>
+                        <span class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
+                    </div>
+                    <div class="messages-inbox-inner" data-simplebar>
+                        <ul>
+                            
+                            {% for m in groupchat_list %}
+                                <li>
+                                    <a href="{% url 'core:group_inbox_detail' m.slug %}">
+                                        <div class="message-avatar"><i class="status-icon status-online"></i><img src="{{m.images.url}}" alt=""></div>
+
+                                        <div class="message-by">
+                                            <div class="message-by-headline">
+                                                <h5>{{m.name}}</h5>
+                                            </div>
+                                            <p>{{m.last_message.message|truncatechars:40}}</p>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="message-content">
+
+                    <div class="messages-headline">
+                        <div class="flex">
+                            <img class="mr-1" src="{{ groupchat.images.url }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="">
+                            <div>
+                                <h4 class="ml-1"> {{ groupchat.name }} </h4>
+                                <p style="font-size: 13px; margin-top: -12px;">{{groupchat.members.all.count}} Members</p>
+                            </div>
+                        </div>
+                        <a href="{% url 'core:leave_group_chat' groupchat.slug  %}" class="message-action text-red-500"><i class="fas fa-sign-out-alt"></i> <span class="md:inline hidden">Leave Group</span> </a>
+                    </div>
+
+                    <div class="message-content-scrolbar" data-simplebar>
+
+                        <!-- Message Content Inner -->
+                        <div class="message-content-inner chat_container" style="overflow-y: scroll; max-height: 550px; height: auto; ">
+
+                            <!-- Time Sign -->
+                            <div class="message-time-sign">
+                                <span>Created on {{groupchat.date|date:"d M, Y"}}</span>
+                            </div>
+
+                            
+                            {% for m in group_messages %}
+                            
+                                {% if m.sender == request.user %}
+                                    <div class="message-bubble me">
+                                        <div class="message-bubble-inner">
+                                            <div class="message-avatar"><img src="{{ m.sender.profile.image.url }}" alt=""></div>
+                                            <div class="message-text">
+                                                <p>{{m.message}}</p>
+                                                <p style="color: rgba(255, 255, 255, 0.479);"><small>{{ m.date|timesince }} ago - {{ m.sender.profile.full_name }}</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                {% else %}
+                                    <div class="message-bubble">
+                                        <div class="message-bubble-inner">
+                                            <div class="message-avatar"><img src="{{ m.sender.profile.image.url }}" alt=""></div>
+                                            <div class="message-text">
+                                                <p>{{m.message}}</p>
+                                                <p style="color: gray"><small>{{ m.date|timesince }} ago - {{ m.sender.profile.full_name }}</small></p>
+
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div id="chat-messages"></div>
+
+                        </div>
+
+                        <!-- Reply Area -->
+                        <div class="message-reply">
+                            <textarea id="chat-input" cols="1" rows="1" placeholder="Write Message"></textarea>
+                            <button id="send-btn" class="button ripple-effect" >Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(function() {
+            var group_name = "{{group_name}}";
+            var groupchat_id = "{{groupchat.id}}";
+
+            console.log(group_name);
+            console.log(groupchat_id);
+    
+            var socket = new WebSocket('ws://' + window.location.host + '/ws/group-chat/' + group_name + '/');
+    
+            socket.onopen = function() {
+                console.log('WebSocket connection established.');
+            }
+    
+            socket.onmessage = function(event) {
+                console.log(event);
+                var data = JSON.parse(event.data);
+                var message = data.message;
+                var sender = data.sender;
+                var profileImage = data.profile_image;
+                var groupchat_id = data.groupchat_id;
+                var full_name = data.full_name
+                var date = data.date
+     
+                if (sender === "{{request.user}}") {
+                        var chatMessage = '<div class="message-bubble me">';
+                        chatMessage += '<div class="message-bubble-inner">';
+                        chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
+                        chatMessage += '<div class="message-text">';
+                        chatMessage += '<p>' + message + '</p>';
+                        chatMessage += '<p style="color: rgba(255, 255, 255, 0.479);"><small>' + date + ' ago - ' + full_name + '</small></p>'
+
+                        chatMessage += '</div>';
+                        chatMessage += '</div>';
+                        chatMessage += '<div class="clearfix"></div>';
+                        chatMessage += '</div>';
+                        // Append the chat message to the main div
+                        $('#chat-messages').append(chatMessage);
+                        // Get the chat container
+                        var chatContainer = document.querySelector('.chat_container');
+                        // Automatically scroll to the bottom of the message after sending.
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                } else {
+                    var chatMessage = '<div class="message-bubble">';
+                        chatMessage += '<div class="message-bubble-inner">';
+                        chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
+                        chatMessage += '<div class="message-text">';
+                        chatMessage += '<p>' + message + '</p>';
+                        chatMessage += '<p style="color: gray"><small>' + date + ' ago - ' + full_name + '</small></p>'
+                        chatMessage += '</div>';
+                        chatMessage += '</div>';
+                        chatMessage += '<div class="clearfix"></div>';
+                        chatMessage += '</div>';
+                        $('#chat-messages').append(chatMessage);
+
+                        var chatContainer = document.querySelector('.chat_container');
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                        console.log("No");
+                }
+            }
+    
+            socket.onclose = function() {
+                console.log('WebSocket connection closed.');
+            }
+    
+            $('#send-btn').on('click', function() {
+                var input = $('#chat-input');
+                var message = input.val();
+                var sender = "{{request.user.username}}"; 
+                var data = {
+                    'message': message,
+                    'sender': sender,
+                    'groupchat_id': 1,
+                };
+                socket.send(JSON.stringify(data));
+                input.val('');
+                var sendButton = $('#send-btn');
+                sendButton.prop('disabled', true);
+                $(".chat_container").scrollTop(100000000000);
+            });
+    
+        });
+
+
+       
+
+
+        $(document).ready(function() {
+          $(".chat_container").scrollTop(100000000000);
+        });
+
+    </script>
+
+    <script>
+       $(document).ready(function() {
+            var chatInputValue = $('#chat-input');
+            var sendButton = $('#send-btn');
+
+            // Disable the button initially
+            sendButton.prop('disabled', true);
+
+            // Check input field on keyup event
+            chatInputValue.on('keyup', function() {
+                var inputText = $(this).val();
+
+                // Enable/disable button based on input field value
+                if (inputText.trim() !== '') {
+                    sendButton.prop('disabled', false);
+                } else {
+                    sendButton.prop('disabled', true);
+                }
+            });
+        })
+    </script>
+
+
+    
+
+    {% endblock content %}

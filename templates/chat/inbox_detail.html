@@ -2,244 +2,310 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<!-- Main Contents -->
+<div class="main_content">
+    <span uk-toggle="target: .message-content;"
+        class="fixed left-0 top-36 bg-red-600 z-10 py-1 px-4 rounded-r-3xl text-white"> Users</span>
 
-    <!-- Main Contents -->
-    <div class="main_content">
-        <span uk-toggle="target: .message-content;" class="fixed left-0 top-36 bg-red-600 z-10 py-1 px-4 rounded-r-3xl text-white"> Users</span>
-
-        <div class="messages-container">
-            <div class="messages-container-inner">
-
-
-                <div class="messages-inbox">
-                    <div class="messages-headline">
-                        <div class="input-with-icon" hidden>
-                            <input id="autocomplete-input" type="text" placeholder="Search">
-                            <i class="icon-material-outline-search"></i>
-                        </div>
-                        <h2 class="text-2xl font-semibold">Chats</h2>
-                        <span class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
+    <div class="messages-container">
+        <div class="messages-container-inner">
+            <div class="messages-inbox">
+                <div class="messages-headline">
+                    <div class="input-with-icon" hidden>
+                        <input id="autocomplete-input" type="text" placeholder="Search">
+                        <i class="icon-material-outline-search"></i>
                     </div>
-                    <div class="messages-inbox-inner" data-simplebar>
-                        <ul>
-                            
-                            {% for m in chat_message %}
-                                {% if request.user == m.sender %}
-                                    <li>
-                                        <a href="{% url 'core:inbox_detail' m.reciever.username %}">
-                                            <div class="message-avatar"><i class="status-icon status-online"></i><img src="{{m.reciever.profile.image.url}}" alt=""></div>
+                    <h2 class="text-2xl font-semibold">Chats</h2>
+                    <span
+                        class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
+                </div>
+                <div class="messages-inbox-inner" data-simplebar>
+                    <ul>
 
-                                            <div class="message-by">
-                                                <div class="message-by-headline">
-                                                    <h5>{{m.reciever.profile.full_name}}</h5>
-                                                    <span>{{m.date|timesince}} ago</span>
-                                                </div>
-                                                <p>{{m.message|truncatechars:40}}</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                {% endif %}
+                        {% for m in chat_message %}
+                        {% if request.user == m.sender %}
+                        <li>
+                            <a href="{% url 'core:inbox_detail' m.reciever.username %}">
+                                <div class="message-avatar"><i class="status-icon status-online"></i><img
+                                        src="{{m.reciever.profile.image.url}}" alt=""></div>
 
-                                {% if request.user == m.reciever %}
-                                    <li>
-                                        <a href="{% url 'core:inbox_detail' m.sender.username %}">
-                                            <div class="message-avatar"><i class="status-icon status-online"></i><img src="{{m.sender.profile.image.url}}" alt=""></div>
+                                <div class="message-by">
+                                    <div class="message-by-headline">
+                                        <h5>{{m.reciever.profile.full_name}}</h5>
+                                        <span>{{m.date|timesince}} ago</span>
+                                    </div>
+                                    <p>{{m.message|truncatechars:40}}</p>
+                                </div>
+                            </a>
+                        </li>
+                        {% endif %}
 
-                                            <div class="message-by">
-                                                <div class="message-by-headline">
-                                                    <h5>{{m.sender.profile.full_name}}</h5>
-                                                    <span>{{m.date|timesince}} ago</span>
-                                                </div>
-                                                <p>{{m.message|truncatechars:40}}</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
+                        {% if request.user == m.reciever %}
+                        <li>
+                            <a href="{% url 'core:inbox_detail' m.sender.username %}">
+                                <div class="message-avatar"><i class="status-icon status-online"></i><img
+                                        src="{{m.sender.profile.image.url}}" alt=""></div>
 
-                        </ul>
+                                <div class="message-by">
+                                    <div class="message-by-headline">
+                                        <h5>{{m.sender.profile.full_name}}</h5>
+                                        <span>{{m.date|timesince}} ago</span>
+                                    </div>
+                                    <p>{{m.message|truncatechars:40}}</p>
+                                </div>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+            <div class="message-content">
+
+                <div class="messages-headline d-flex justify-content-between align-items-center">
+                    <div class="flex">
+                        <img class="mr-1" src="{{ receiver_details.profile.image.url }}"
+                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="">
+                        <h4 class="ml-1"> {{ receiver_details.profile.full_name|title }} </h4>
                     </div>
+
+                    {% if receiver_details in request.user.profile.friends.all %}
+                    <a href="#" id="block-user-btn" data-block-user="{{receiver_details.id}}"
+                        class="message-action text-red-500 "><i class="fas fa-ban"></i> <span
+                            class="md:inline hidden block-text{{receiver_details.id}}"> Block {{
+                            receiver_details.profile.full_name|title }}</span> </a>
+                    {% endif %}
+                    <span class="message-info__btn">
+                        <i class="bi bi-info-circle"></i>
+                    </span>
                 </div>
 
+                <div class="message-content-scrolbar ">
 
-                <div class="message-content">
+                    <!-- Message Content Inner -->
+                    <div class="message-content-inner chat_container"
+                        style="overflow-y: scroll; max-height: 550px; height: auto; ">
 
-                    <div class="messages-headline">
-                        <div class="flex">
-                            <img class="mr-1" src="{{ receiver_details.profile.image.url }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="">
-                            <h4 class="ml-1"> {{ receiver_details.profile.full_name|title }} </h4>
+
+                        {% for m in message_detail %}
+                        {% if m.sender == request.user %}
+                        <div class="message-bubble me">
+                            <div class="message-bubble-inner">
+                                <div class="message-avatar"><img src="{{m.sender.profile.image.url}}" alt=""></div>
+                                <div class="message-text">
+                                    <p>{{m.message}}</p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        
-                        {% if receiver_details in request.user.profile.friends.all %}
-                            <a href="#" id="block-user-btn" data-block-user="{{receiver_details.id}}" class="message-action text-red-500 "><i class="fas fa-ban"></i> <span class="md:inline hidden block-text{{receiver_details.id}}" > Block {{ receiver_details.profile.full_name|title }}</span> </a>
+                        {% else %}
+                        <div class="message-bubble">
+                            <div class="message-bubble-inner">
+                                <div class="message-avatar"><img src="{{m.sender.profile.image.url}}" alt=""></div>
+                                <div class="message-text">
+                                    <p>{{m.message}}</p>
+                                    <p class="text-muted"><small><span
+                                                style="color: rgba(128, 128, 128, 0.596);">2:30</span></small></p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
                         {% endif %}
-                            
+
+                        {% endfor %}
+                        <div id="chat-messages"></div>
+
+                    </div>
+                    <!-- Message Content Inner / End -->
+
+                    <!-- Reply Area -->
+                    <div class="message-reply">
+                        <textarea id="chat-input" cols="1" rows="1" placeholder="Write Message"></textarea>
+                        <button id="send-btn" class="button ripple-effect">Send</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Message Chat Info -->
+            <div class="message-info">
+                <div class="message-info__header d-flex justify-content-center align-items-center ps-1 pe-1">
+                    <span style="color: black; font-size: 1.2rem; font-weight: bold;">Thông tin</span>
+                </div>
+                <div class="message-info__receiver">
+                    <img class="message-info__receiver-avatar" src="{{ receiver_details.profile.image.url }}"
+                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="">
+                    <h6 class="message-info__receiver-name"> {{ receiver_details.profile.full_name|title }} </h6>
+                </div>
+                <div class="message-info__action d-flex justify-content-center align-items-center">
+                    <div class="message-info__action-item">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Profile</span>
+                    </div>
+                    <div class="message-info__action-item">
+                        <i class="bi bi-camera-video"></i>
+                        <span>Video</span>
                     </div>
 
-                    <div class="message-content-scrolbar ">
-
-                        <!-- Message Content Inner -->
-                        <div class="message-content-inner chat_container" style="overflow-y: scroll; max-height: 550px; height: auto; ">
-
-                           
-                            {% for m in message_detail %}
-                                {% if m.sender == request.user %}
-                                <div class="message-bubble me">
-                                    <div class="message-bubble-inner">
-                                        <div class="message-avatar"><img src="{{m.sender.profile.image.url}}" alt=""></div>
-                                        <div class="message-text">
-                                            <p>{{m.message}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                {% else %}
-                                <div class="message-bubble">
-                                    <div class="message-bubble-inner">
-                                        <div class="message-avatar"><img src="{{m.sender.profile.image.url}}" alt=""></div>
-                                        <div class="message-text">
-                                            <p>{{m.message}}</p>
-                                            <p class="text-muted"><small><span style="color: rgba(128, 128, 128, 0.596);">2:30</span></small></p>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                {% endif %}
-
-                            {% endfor %}
-                            <div id="chat-messages"></div>
-                            
-                        </div>
-                        <!-- Message Content Inner / End -->
-
-                        <!-- Reply Area -->
-                        <div class="message-reply">
-                            <textarea id="chat-input" cols="1" rows="1" placeholder="Write Message"></textarea>
-                            <button id="send-btn" class="button ripple-effect" >Send</button>
+                </div>
+                <hr>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h6 class="accordion-header ps-1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Hình ảnh,File,Liên kết
+                            </button>
+                        </h6>
+                        <div id="collapseOne" class="accordion-collapse collapse show"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                Chưa có hình ảnh nào
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-        
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        $(function() {
-            var receiver = null;
-            var receiver_id = "{{ reciever.username }}"; 
-            var logged_in = "{{ request.user.username }}"; 
-            const pathname = window.location.pathname;
-    
-            const parts = pathname.split('/');
-            const username = parts[parts.length - 2];
-    
-            if (receiver_id === logged_in) {
-                receiver = receiver_id;
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        var receiver = null;
+        var receiver_id = "{{ reciever.username }}";
+        var logged_in = "{{ request.user.username }}";
+        const pathname = window.location.pathname;
+
+        const parts = pathname.split('/');
+        const username = parts[parts.length - 2];
+
+        if (receiver_id === logged_in) {
+            receiver = receiver_id;
+        } else {
+            receiver = receiver_id;
+        }
+
+        var socket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + receiver + '/');
+
+        socket.onopen = function () {
+            console.log('WebSocket connection established.');
+        }
+
+        socket.onmessage = function (event) {
+            var data = JSON.parse(event.data);
+            var message = data.message;
+            var sender = data.sender;
+            var profileImage = data.profile_image;
+            var reciever = data.reciever;
+
+            if (sender === "{{sender}}") {
+                var chatMessage = '<div class="message-bubble me">';
+                chatMessage += '<div class="message-bubble-inner">';
+                chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
+                chatMessage += '<div class="message-text">';
+                chatMessage += '<p>' + message + '</p>';
+                chatMessage += '</div>';
+                chatMessage += '</div>';
+                chatMessage += '<div class="clearfix"></div>';
+                chatMessage += '</div>';
+                // Append the chat message to the main div
+                $('#chat-messages').append(chatMessage);
+                // Get the chat container
+                var chatContainer = document.querySelector('.chat_container');
+                // Automatically scroll to the bottom of the message after sending.
+                chatContainer.scrollTop = chatContainer.scrollHeight;
             } else {
-                receiver = receiver_id;
+                var chatMessage = '<div class="message-bubble">';
+                chatMessage += '<div class="message-bubble-inner">';
+                chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
+                chatMessage += '<div class="message-text">';
+                chatMessage += '<p>' + message + '</p>';
+                chatMessage += '</div>';
+                chatMessage += '</div>';
+                chatMessage += '<div class="clearfix"></div>';
+                chatMessage += '</div>';
+                $('#chat-messages').append(chatMessage);
+
+                var chatContainer = document.querySelector('.chat_container');
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                console.log("No");
             }
-    
-            var socket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + receiver + '/');
-    
-            socket.onopen = function() {
-                console.log('WebSocket connection established.');
-            }
-    
-            socket.onmessage = function(event) {
-                var data = JSON.parse(event.data);
-                var message = data.message;
-                var sender = data.sender;
-                var profileImage = data.profile_image;
-                var reciever = data.reciever;
-    
-                if (sender === "{{sender}}") {
-                        var chatMessage = '<div class="message-bubble me">';
-                        chatMessage += '<div class="message-bubble-inner">';
-                        chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
-                        chatMessage += '<div class="message-text">';
-                        chatMessage += '<p>' + message + '</p>';
-                        chatMessage += '</div>';
-                        chatMessage += '</div>';
-                        chatMessage += '<div class="clearfix"></div>';
-                        chatMessage += '</div>';
-                        // Append the chat message to the main div
-                        $('#chat-messages').append(chatMessage);
-                        // Get the chat container
-                        var chatContainer = document.querySelector('.chat_container');
-                        // Automatically scroll to the bottom of the message after sending.
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
-                } else {
-                    var chatMessage = '<div class="message-bubble">';
-                        chatMessage += '<div class="message-bubble-inner">';
-                        chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
-                        chatMessage += '<div class="message-text">';
-                        chatMessage += '<p>' + message + '</p>';
-                        chatMessage += '</div>';
-                        chatMessage += '</div>';
-                        chatMessage += '<div class="clearfix"></div>';
-                        chatMessage += '</div>';
-                        $('#chat-messages').append(chatMessage);
+        }
 
-                        var chatContainer = document.querySelector('.chat_container');
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
-                        console.log("No");
-                }
-            }
-    
-            socket.onclose = function() {
-                console.log('WebSocket connection closed.');
-            }
-    
-            $('#send-btn').on('click', function() {
-                var input = $('#chat-input');
-                var message = input.val();
-                var sender = "{{request.user.username}}"; 
-                var data = {
-                    'message': message,
-                    'sender': sender,
-                    'reciever': username,
-                };
-                socket.send(JSON.stringify(data));
-                input.val('');
-                var sendButton = $('#send-btn');
-                sendButton.prop('disabled', true);
-                $(".chat_container").scrollTop(100000000000);
-            });
-    
-        });
+        socket.onclose = function () {
+            console.log('WebSocket connection closed.');
+        }
 
-
-       
-
-
-        $(document).ready(function() {
-          $(".chat_container").scrollTop(100000000000);
-        });
-
-    </script>
-
-    <script>
-       $(document).ready(function() {
-            var chatInputValue = $('#chat-input');
+        $('#send-btn').on('click', function () {
+            var input = $('#chat-input');
+            var message = input.val();
+            var sender = "{{request.user.username}}";
+            var data = {
+                'message': message,
+                'sender': sender,
+                'reciever': username,
+            };
+            socket.send(JSON.stringify(data));
+            input.val('');
             var sendButton = $('#send-btn');
-
-            // Disable the button initially
             sendButton.prop('disabled', true);
+            $(".chat_container").scrollTop(100000000000);
+        });
 
-            // Check input field on keyup event
-            chatInputValue.on('keyup', function() {
-                var inputText = $(this).val();
+    });
 
-                // Enable/disable button based on input field value
-                if (inputText.trim() !== '') {
-                    sendButton.prop('disabled', false);
-                } else {
-                    sendButton.prop('disabled', true);
-                }
-            });
+
+
+
+
+    $(document).ready(function () {
+        $(".chat_container").scrollTop(100000000000);
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        var chatInputValue = $('#chat-input');
+        var sendButton = $('#send-btn');
+
+        // Disable the button initially
+        sendButton.prop('disabled', true);
+
+        // Check input field on keyup event
+        chatInputValue.on('keyup', function () {
+            var inputText = $(this).val();
+
+            // Enable/disable button based on input field value
+            if (inputText.trim() !== '') {
+                sendButton.prop('disabled', false);
+            } else {
+                sendButton.prop('disabled', true);
+            }
+        });
+    })
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        $('.message-info__btn').click(function(){
+            $('.message-info').toggle()
         })
-    </script>
-
-
+    })
+</script>
 {% endblock content %}

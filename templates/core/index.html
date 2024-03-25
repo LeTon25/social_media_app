@@ -80,7 +80,7 @@
                         <div class="card lg:mx-0 p-4" uk-toggle="target: #create-post-modal">
                             <div class="flex space-x-3">
                                 <img src="{{request.user.profile.image.url}}" class="w-10 h-10 rounded-full">
-                                <input placeholder="What's On Your Mind? {{request.user.profile.full_name|title}}!" class="bg-gray-100 hover:bg-gray-200 flex-1 h-10 px-6 rounded-full">
+                                <input placeholder="{{request.user.profile.full_name|title}} ơi, bạn đang nghĩ gì thế?" class="bg-gray-100 hover:bg-gray-200 flex-1 h-10 px-6 rounded-full">
                             </div>
                             <div class="grid grid-flow-col pt-3 -mx-1 -mb-1 font-semibold text-sm">
                                 <div class="hover:bg-gray-100 flex items-center p-1.5 rounded-md cursor-pointer">
@@ -669,7 +669,7 @@
 
             <div class="relative pt-5 px-4">
 
-                <h3 class="text-2xl font-bold mb-2"> Chats </h3>
+                <h3 class="text-2xl font-bold mb-2"> Đoạn chat </h3>
 
                 <div class="absolute right-3 top-4 flex items-center space-x-2">
 
@@ -730,62 +730,20 @@
             <div class="contact-list px-2 uk-switcher" id="chats-tab">
 
                 <div class="p-1">
-                    <a href="chats-friend.html">
+                    
+                    {% for f in request.user.profile.friends.all %}
+                    
+                    <a href="{% url 'core:inbox_detail' f.username %}">
                         <div class="contact-avatar">
-                            <img src="{% static 'assets/images/avatars/avatar-7.jpg' %}" alt="">
+                            <img src="{{f.profile.image.url}}" alt="">
                         </div>
-                        <div class="contact-username"> Alex Dolgove</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="{% static 'assets/images/avatars/avatar-8.jpg' %}" alt="">
-                            <span class="user_status status_online"></span>
-                        </div>
-                        <div class="contact-username"> Dennis Han</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="">
-                            <span class="user_status"></span>
-                        </div>
-                        <div class="contact-username"> Erica Jones</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="{% static 'assets/images/avatars/avatar-3.jpg' %}" alt="">
-                        </div>
-                        <div class="contact-username">Stella Johnson</div>
+                        <div class="contact-username">{{f.profile.full_name}}</div>
                     </a>
 
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="{% static 'assets/images/avatars/avatar-5.jpg' %}" alt="">
-                        </div>
-                        <div class="contact-username">Adrian Mohani </div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="{% static 'assets/images/avatars/avatar-6.jpg' %}" alt="">
-                        </div>
-                        <div class="contact-username"> Jonathan Madano</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="">
-                            <span class="user_status"></span>
-                        </div>
-                        <div class="contact-username"> Erica Jones</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="">
-                            <span class="user_status status_online"></span>
-                        </div>
-                        <div class="contact-username"> Dennis Han</div>
-                    </a>
-
+                    {% endfor %}
 
                 </div>
+
                 <div class="p-1">
                     <a href="chats-group.html">
                         <div class="contact-avatar">
@@ -867,7 +825,7 @@
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
                     <div class="flex-1">
-                        <div class="text-lg font-semibold"> Create a story </div>
+                        <div class="text-lg font-semibold"> Tạo tin </div>
                         <div class="text-sm -mt-0.5"> Share a photo or write something. </div>
                     </div>
                 </a>
@@ -1051,7 +1009,7 @@
 
     </div>
 
-    <!-- Craete post modal -->
+    <!-- Create post modal -->
     <div id="create-post-modal" class="create-post is-story uk-modal" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical rounded-lg p-0 lg:w-5/12 relative shadow-2xl uk-animation-slide-bottom-small">
             <form  id="post-form" method="POST" enctype="multipart/form-data">
@@ -1063,38 +1021,40 @@
                 <div class="flex flex-1 items-start space-x-4 p-5">
                     <img src="{{request.user.profile.image.url}}" class="bg-gray-200 border border-white rounded-full w-11 h-11">
                     <div class="flex-1 pt-2">
-                        <textarea id="post-caption" name="post-caption" class="uk-textare text-black shadow-none focus:shadow-none text-xl font-medium resize-none" rows="5" placeholder="What's On Your Mind? {{request.user.profile.full_name|title}}!"></textarea>
+                        <textarea id="post-caption" name="post-caption" class="uk-textare text-black shadow-none focus:shadow-none text-xl font-medium resize-none" rows="5" placeholder="{{request.user.profile.full_name|title}} ơi, bạn đang nghĩ gì thế?"></textarea>
                     </div>
 
                 </div>
                 <div class="flex flex-1 p-5 w-100">
                     <div class="flex-1 pt-2"  >
-                            <img src="https://joadre.com/wp-content/uploads/2019/02/no-image.jpg" id="preview_post_thumbnail" style="width: 100%; height: 200px;object-fit: cover; border-radius: 10px;" alt="" for="post-thumbnail">
+                            <img src="" id="preview_post_thumbnail" style="width: 100%; height: 200px;object-fit: cover; border-radius: 10px;" alt="" for="post-thumbnail">
                         </div>
                 </div>
 
                 <script>
+
                     var loadFile = function (event) {
-                      var output2 = document.getElementById("preview_post_thumbnail");
-                      output2.src = URL.createObjectURL(event.target.files[0]);
-                      output2.onload = function () {
-                        URL.revokeObjectURL(output2.src); // free memory
-                      };
+                        var output2 = document.getElementById("preview_post_thumbnail");
+                        output2.src = URL.createObjectURL(event.target.files[0]);
+                        output2.onload = function () {
+                          URL.revokeObjectURL(output2.src); // free memory
+                        };
                     };
-                  </script>
+
+                </script>
                 <div class="bsolute bottom-0 p-4 space-x-4 w-full">
                     <div class="flex bg-gray-50 border border-purple-100 rounded-2xl p-2 shadow-sm items-center">
-                        <div class="lg:block hidden ml-1"> Add to your post </div>
+                        <div class="lg:block hidden ml-1"> Thêm vào bài viết của bạn </div>
                         <div class="flex flex-1 items-center lg:justify-end justify-center space-x-2">
 
                             <label for="post-thumbnail">
                                 <svg class="bg-blue-100 h-9 p-1.5 rounded-full text-blue-600 w-9 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             </label>
                             <input onchange="loadFile(event)" name="post-thumbnail" class="d-none " type="file" id="post-thumbnail">
-                            <label for="">
+                            {% comment %} <label for="">
                                 <svg class="text-red-600 h-9 p-1.5 rounded-full bg-red-100 w-9 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"> </path></svg>
                             </label>
-                            <svg class="hover:bg-gray-200 h-9 p-1.5 rounded-full w-9 cursor-pointer" id="veiw-more" uk-toggle="target: #veiw-more; animation: uk-animation-fade" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"> </path></svg>
+                            <svg class="hover:bg-gray-200 h-9 p-1.5 rounded-full w-9 cursor-pointer" id="veiw-more" uk-toggle="target: #veiw-more; animation: uk-animation-fade" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"> </path></svg> {% endcomment %}
 
                         </div>
                     </div>
@@ -1119,4 +1079,5 @@
 
         </div>
     </div>
+
     {% endblock content %}

@@ -11,6 +11,12 @@ from django.core.paginator import Paginator
 from core.models import Post, Friend, FriendRequest, Notification, Comment, ReplyComment, ChatMessage, GroupChatMessage, GroupChat
 from userauths.models import User, Profile, user_directory_path
 
+import random
+import time
+from agora_token_builder import RtcTokenBuilder
+from .models import RoomVideoCall
+import json
+from django.core.exceptions import ObjectDoesNotExist
 
 import shortuuid
 
@@ -537,3 +543,67 @@ def load_pages(request):
     return render(request,'pages/pages.html')
 def load_create_page(request):
     return render(request,'pages/create-page.html')
+
+# Xử lý call video
+def lobby(request):
+    return render(request, 'core/lobby.html')
+
+def room(request):
+    return render(request, 'core/room.html')
+
+
+def getToken(request):
+    appId = "be589573195146e999b33c5c5e6dec15"
+    appCertificate = "cf64d6ddaeb947b3ab60fe83dd6c3b8c"
+    channelName = request.GET.get('channel')
+    uid = random.randint(1, 230)
+    expirationTimeInSeconds = 3600
+    currentTimeStamp = int(time.time())
+    privilegeExpiredTs = currentTimeStamp + expirationTimeInSeconds
+    role = 1
+
+    token = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, channelName, uid, role, privilegeExpiredTs)
+
+    return JsonResponse({'token': token, 'uid': uid}, safe=False)
+
+
+@csrf_exempt
+def createMember(request):
+    data = json.loads(request.body)
+    member, created = RoomVideoCall.objects.get_or_create(
+        name=data['name'],
+        uid=data['UID'],
+        room_name=data['room_name']
+    )
+
+    return JsonResponse({'name':data['name']}, safe=False)
+
+
+def getMember(request):
+    uid = request.GET.get('UID')
+    room_name = request.GET.get('room_name')
+
+    try:
+        member = RoomVideoCall.objects.get(
+            uid=uid,
+            room_name=room_name,
+        )
+        name = member.name
+        return JsonResponse({'name': member.name}, safe=False)
+    except RoomVideoCall.DoesNotExist:
+        return JsonResponse({'error': 'Member not found'}, status=404)
+    
+@csrf_exempt
+def deleteMember(request):
+    data = json.loads(request.body)
+    
+    try:
+        member = RoomVideoCall.objects.get(
+            name=data['name'],
+            uid=data['UID'],
+            room_name=data['room_name']
+        )
+        member.delete()
+        return JsonResponse('Member deleted', safe=False)
+    except RoomVideoCall.DoesNotExist:
+        return JsonResponse({'error': 'Member not found'}, status=404)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from core.models import Post, Friend, FriendRequest, Notification, Comment, Gallery, ReplyComment, Group, GroupPost, Page, PagePost, ChatMessage, GroupChat, GroupChatMessage
-
+from .models import RoomVideoCall
 
 class FriendRequestAdmin(admin.ModelAdmin):
     list_editable = ['status']
@@ -80,3 +80,4 @@ admin.site.register(Page, PageAdmin)
 admin.site.register(ChatMessage, ChatMessageAdmin)
 admin.site.register(GroupChatMessage, GroupChatMessageAdmin)
 admin.site.register(GroupChat, GroupChatAdmin)
+admin.site.register(RoomVideoCall)

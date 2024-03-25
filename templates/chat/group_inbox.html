@@ -10,15 +10,13 @@
 
         <div class="messages-container">
             <div class="messages-container-inner">
-
-
                 <div class="messages-inbox">
                     <div class="messages-headline">
                         <div class="input-with-icon" hidden>
                             <input id="autocomplete-input" type="text" placeholder="Search">
                             <i class="icon-material-outline-search"></i>
                         </div>
-                        <h2 class="text-2xl font-semibold">Chats</h2>
+                        <h2 class="text-2xl font-semibold">Đoạn chat</h2>
                         <span class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
                     </div>
                     <div class="messages-inbox-inner" data-simplebar>
@@ -151,61 +149,16 @@
             <div class="contact-list px-2 uk-switcher" id="chats-tab">
 
                 <div class="p-1">
-                    <a href="chats-friend.html">
+                    {% for f in request.user.profile.friends.all %}
+                    
+                    <a href="{% url 'core:inbox_detail' f.username %}">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-7.jpg" alt="">
+                            <img src="{{f.profile.image.url}}" alt="">
                         </div>
-                        <div class="contact-username"> Alex Dolgove</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-8.jpg" alt="">
-                            <span class="user_status status_online"></span>
-                        </div>
-                        <div class="contact-username"> Dennis Han</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                            <span class="user_status"></span>
-                        </div>
-                        <div class="contact-username"> Erica Jones</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                        </div>
-                        <div class="contact-username">Stella Johnson</div>
+                        <div class="contact-username">{{f.profile.full_name}}</div>
                     </a>
 
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                        </div>
-                        <div class="contact-username">Adrian Mohani </div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-6.jpg" alt="">
-                        </div>
-                        <div class="contact-username"> Jonathan Madano</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                            <span class="user_status"></span>
-                        </div>
-                        <div class="contact-username"> Erica Jones</div>
-                    </a>
-                    <a href="chats-friend.html">
-                        <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-1.jpg" alt="">
-                            <span class="user_status status_online"></span>
-                        </div>
-                        <div class="contact-username"> Dennis Han</div>
-                    </a>
-
-
+                    {% endfor %}
                 </div>
                 <div class="p-1">
                     <a href="chats-group.html">

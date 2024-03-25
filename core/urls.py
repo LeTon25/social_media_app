@@ -30,7 +30,6 @@ urlpatterns = [
     # Load more post
     path('load_more_posts/', views.load_more_posts, name='load_more_posts'),
 
-
     # Birthday
     path('birthdays/',views.load_birthday,name="birthdays"),
 
@@ -42,6 +41,14 @@ urlpatterns = [
     path('pages/',views.load_pages,name='pages'),
     path('pages/create-page',views.load_create_page,name="create-page-page"),
 
+    # Video call
+    path('', views.lobby),
+    path('room/', views.room),
+    path('get_token/', views.getToken),
+
+    path('create_member/', views.createMember),
+    path('get_member/', views.getMember),
+    path('delete_member/', views.deleteMember),
 
     # Ajax URLs
     path("create-post/", views.create_post, name="create-post"),

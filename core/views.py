@@ -551,6 +551,9 @@ def lobby(request):
 def room(request):
     return render(request, 'core/room.html')
 
+#trả về tạo group chat
+def load_group_chat(request):
+    return render(request, 'chat/create_group_chat.html')
 
 def getToken(request):
     appId = "be589573195146e999b33c5c5e6dec15"

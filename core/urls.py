@@ -50,6 +50,10 @@ urlpatterns = [
     path('get_member/', views.getMember),
     path('delete_member/', views.deleteMember),
 
+    #Group
+    path('group_chat/',views.load_group_chat,name="group_chat"),
+    # path('group_chat/create-group',views.load_create_group,name="group_chat-page"),
+
     # Ajax URLs
     path("create-post/", views.create_post, name="create-post"),
     path("like-post/", views.like_post, name="like-post"),

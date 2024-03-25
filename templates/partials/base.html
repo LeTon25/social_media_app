@@ -194,9 +194,9 @@
                                         <div class="btn_action">
                                             <a href="#" data-tippy-placement="left" title="Tùy chọn">
                                                 {% comment %} <ion-icon name="settings-outline" uk-tooltip="title: Message settings ; pos: left"></ion-icon> {% endcomment %}
-                                                <span class="absolute icon-feather-settings mr-4 text-xl uk-position-center-right cursor-pointer"></span>
+                                                <span class="absolute icon-feather-settings mr-4 text-xl uk-position-center-right cursor-pointer" uk-tooltip="title: Message settings ; pos: left"></span>
                                             </a>
-                                            <a href="#" data-tippy-placement="left" title="Tin nhắn mới">
+                                            <a href="{% url 'core:group_chat' %}" data-tippy-placement="left" title="Tin nhắn mới">
                                                 {% comment %} <ion-icon name="checkbox-outline"></ion-icon> {% endcomment %}
                                                 <span class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
                                             </a>
@@ -282,9 +282,9 @@
                                         <div class="btn_action">
                                             <a href="#" data-tippy-placement="left" title="Tùy chọn">
                                                 {% comment %} <ion-icon name="settings-outline" uk-tooltip="title: Message settings ; pos: left"></ion-icon> {% endcomment %}
-                                                <span class="absolute icon-feather-settings mr-4 text-xl uk-position-center-right cursor-pointer"></span>
+                                                <span class="absolute icon-feather-settings mr-4 text-xl uk-position-center-right cursor-pointer" uk-tooltip="title: Message settings ; pos: left"></span>
                                             </a>
-                                            <a href="#" data-tippy-placement="left" title="Tin nhắn mới">
+                                            <a href="{% url 'core:group_chat' %}" data-tippy-placement="left" title="Tin nhắn mới">
                                                 {% comment %} <ion-icon name="checkbox-outline"></ion-icon> {% endcomment %}
                                                 <span class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
                                             </a>

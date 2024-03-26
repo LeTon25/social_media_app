@@ -9413,7 +9413,7 @@ input[type="submit"].dark1 {
 
 @media only screen and (min-width: 1024px) {
     .responsive-nav {
-        height: 68px;
+        height: 65px;
         overflow: visible;
     }
 
@@ -9431,7 +9431,7 @@ input[type="submit"].dark1 {
     }
 
     .responsive-nav a {
-        line-height: 68px;
+        line-height: 65px;
         font-size: 15.5px;
         font-weight: 600;
     }

@@ -446,3 +446,23 @@ $(document).on("click", "#block-user-btn", function(){
         }
     })
 })
+
+$(document).on("click", "#video-call-btn", () => {
+    console.log("OKKK")
+
+    let id = $(this).attr("data-call-user")
+
+    console.log("id = " + id)
+    
+    // $.ajax({
+    //     url: "/block-user/",
+    //     dataType: "json",
+    //     data: {
+    //         "id":id
+    //     },
+    //     success: function(response){
+    //         console.log(response);
+    //         $(".block-text"+id).html("<i class='fas fa-check-circle'></i> User Blocked Successfully. ")
+    //     }
+    // })
+})

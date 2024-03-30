@@ -470,6 +470,9 @@ def games(request):
 def stack_brick(request):
     return render(request, 'games/stack_brick.html')
 
+def game_2048(request):
+    return render(request, 'games/2048.html')
+
 
 def search_users(request):
     query = request.GET.get('q')

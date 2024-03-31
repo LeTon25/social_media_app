@@ -8549,11 +8549,6 @@ header .header_inner .right_side {
     transition: 0.3s;
     color: #666;
     padding: 0;
-    position: absolute;
-    top: 50%;
-    right: 30px;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
 }
 
 .message-action i {
@@ -8865,13 +8860,14 @@ header .header_inner .right_side {
 
 .message-reply {
     border-top: 1px solid #eaeaea;
-    padding: 30px;
+    padding: 20px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: start;
     -ms-flex-align: start;
     align-items: flex-start;
+    flex-direction: column;
     margin-top: 15px;
 }
 
@@ -8915,7 +8911,27 @@ header .header_inner .right_side {
     padding: 0;
     margin: 0;
 }
+.message-reply__inner{
+    display:  flex;
+    justify-content: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    width: 100%;
+}
+.message-reply__action{
+   padding: 6px 8px 6px 8px; 
+   border-radius: 5px;
+   margin-left: 4px;
 
+}
+.message-reply__action:hover{
+    background-color: rgb(240, 239, 239);
+}
+.message-reply__action:hover svg{
+    color: #007bff !important;
+    fill:#007bff !important;
+}
 /* Message Chat Info */
 .message-info {
     width: 25% !important;
@@ -8984,7 +9000,10 @@ header .header_inner .right_side {
 .message-info__action-item span{
     cursor: pointer;
     color: black;
-    font-size: 0.8rem;
+    font-size: 1rem;
+}
+.message-info__action-item:hover , .message-info__action-item:hover span{
+    color: #007bff;
 }
 /*                   */
 /* Typing Indicastor */

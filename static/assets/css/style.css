@@ -6416,7 +6416,8 @@ a {
 }
 
 a:hover {
-    color: #0056b3;
+    color: white;
+    background-color: blue;
     text-decoration: none;
 }
 

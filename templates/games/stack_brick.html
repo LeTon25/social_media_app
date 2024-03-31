@@ -3,142 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap");
-
-body {
-  margin: 0;
-  color: white;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  cursor: pointer;
-}
-
-#instructions {
-  display: none;
-}
-
-#results,
-body:hover #instructions {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(20, 20, 20, 0.75);
-}
-
-a:visited {
-  color: inherit;
-}
-
-#results {
-  display: none;
-  cursor: default;
-}
-
-#results .content,
-#instructions .content {
-  max-width: 300px;
-  padding: 50px;
-  border-radius: 20px;
-}
-
-#results {
-}
-
-#score {
-  position: absolute;
-  color: white;
-  font-size: 3em;
-  font-weight: bold;
-  top: 30px;
-  right: 30px;
-}
-
-#youtube,
-#youtube-card {
-  display: none;
-  color: black;
-}
-
-@media (min-height: 425px) {
-  /** Youtube logo by https://codepen.io/alvaromontoro */
-  #youtube {
-    z-index: 50;
-    width: 100px;
-    height: 70px;
-    position: fixed;
-    bottom: 20px;
-    transform: scale(0.8);
-    transition: transform 0.5s;
-  }
-
-  #youtube {
-    display: block;
-    background: red;
-    right: 20px;
-    border-radius: 50% / 11%;
-  }
-
-  #youtube:hover,
-  #youtube:focus {
-    transform: scale(0.9);
-    color: black;
-  }
-
-  #youtube::before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 7.5%;
-    left: -6%;
-    width: 112%;
-    height: 85%;
-    background: red;
-    border-radius: 9% / 50%;
-  }
-
-  #youtube::after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 20px;
-    left: 40px;
-    width: 45px;
-    height: 30px;
-    border: 15px solid transparent;
-    box-sizing: border-box;
-    border-left: 30px solid white;
-  }
-
-  #youtube span {
-    font-size: 0;
-    position: absolute;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-  }
-
-  #youtube:hover + #youtube-card {
-    z-index: 49;
-    display: block;
-    position: fixed;
-    bottom: 12px;
-    width: 300px;
-    background-color: white;
-  }
-
-  #youtube:hover + #youtube-card {
-    right: 10px;
-    padding: 25px 130px 25px 25px;
-  }
-}
-
-    </style>
+    <link rel="stylesheet" href="../../static/assets/css/stack_brick/style.css">
+    <link rel="stylesheet" href="../../static/assets/css/stack_brick/media.css">
+    <link rel="shortcut icon" href="../../static/assets/images/favicon/favicon_stack_brick.ico">
+    <title>Stack Brick</title>
 </head>
 <body>
     <div id="instructions">
@@ -151,8 +21,8 @@ a:visited {
       <div id="results">
         <div class="content">
           <p>You missed the block</p>
-          <p>To reset the game press R</p>
-          <p>Follow me<a href="https://youtube.com/@desphixs" , target="_blank">Youtube @Desphixs</a>
+          <p>Nhấn R để quay lại</p>
+          {% comment %} <p>Follow me<a href="https://youtube.com/@desphixs" , target="_blank">Youtube @Desphixs</a> {% endcomment %}
           </p>
         </div>
       </div>

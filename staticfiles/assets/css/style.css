@@ -6062,7 +6062,7 @@ a {
 
 a:hover {
     color: white;
-    background-color: blue;
+    background-color: transparent;
     text-decoration: none;
 }
 
@@ -6589,7 +6589,7 @@ template {
 
 .sidebar .sidebar_inner .footer-links a:hover {
     color: #000;
-    text-decoration: underline;
+    text-decoration: none;
     background-color: transparent;
 }
 

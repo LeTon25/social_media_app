@@ -1,3 +1,5 @@
+import base64
+import os
 from django.utils.timesince import timesince
 
 from asgiref.sync import async_to_sync
@@ -5,6 +7,7 @@ from channels.generic.websocket import WebsocketConsumer
 
 import json
 
+from facebook_prj import settings
 from userauths.models import Profile, User
 from core.models import ChatMessage, GroupChat, GroupChatMessage
 
@@ -25,16 +28,30 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+    def process_image(self,bytes_data):
+        image_data = base64.b64decode(bytes_data.replace('data:image/jpeg;base64,',''))
+        uploads_folder = os.path.join(settings.MEDIA_ROOT, 'uploads')
 
+        if not os.path.exists(uploads_folder):
+            os.makedirs(uploads_folder)
+
+        file_path = os.path.join(uploads_folder, 'hehe.png')
+
+        with open(file_path, 'wb') as file:
+            file.write(image_data)
+    def process_file(self,file_data):
+        pass
     def receive(self, text_data):
         data = json.loads(text_data)
         message = data.get('message')
         sender_username = data.get('sender')
-
+        image = data.get('image')
         try:
             sender = User.objects.get(username=sender_username)
             profile = Profile.objects.get(user=sender)
             profile_image = profile.image.url
+            if (len(image.trim()) != 0):
+                self.process_image(image,'tmp.png')
         except User.DoesNotExist:
             profile_image = ''
 
@@ -50,14 +67,13 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message,
+                'messageKOL': message,
                 'sender': sender_username,
                 'profile_image': profile_image,
                 'reciever': reciever.username,
             }
         )
-    def process_image(self,bytes_data,filename):
-        pass
+
     def chat_message(self, event):
         self.send(text_data=json.dumps(event))
 

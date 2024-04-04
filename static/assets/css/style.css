@@ -8870,6 +8870,7 @@ header .header_inner .right_side {
     align-items: flex-start;
     flex-direction: column;
     margin-top: 15px;
+    background-color: white;
 }
 
 .message-reply textarea {
@@ -8932,6 +8933,40 @@ header .header_inner .right_side {
 .message-reply__action:hover svg{
     color: #007bff !important;
     fill:#007bff !important;
+}
+/* Message Reply File */
+.message-reply__file{
+    position: relative;
+    margin-right: 1.2rem;
+}
+.message-reply__file__image{
+    width: 48px;
+    height: 48px;
+}
+.message-reply__file-delete{
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(+50%) translateY(-50%);
+}
+.message-reply__file-delete:hover i{
+    color: rgb(154, 154, 154);
+}
+.message-reply__file--doc{
+    min-width: 80px;
+    max-width: 120px;
+    background-color: rgb(238, 238, 238);
+}
+.message-reply__file__name{
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    flex:1;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-weight: bold;
+    margin-left: 2px;
 }
 /* Message Chat Info */
 .message-info {

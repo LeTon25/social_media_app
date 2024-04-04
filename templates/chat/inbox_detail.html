@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+<!-- Boostrap -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
@@ -133,6 +134,10 @@
                     <div class="message-reply" style="position: absolute; bottom: 0; left: 0; right: 0;">
                         <div class="message-reply__inner">
                             <input type="file" id="imageInput" style="display: none;" accept="image/*" hidden>
+                            <input type="file" id="fileInput" style="display: none;"
+                                accept=".txt, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv, .xml, .json, .html, .css, .js, .zip, .rar, .tar, .gz"
+                                hidden>
+
                             <div aria-label="Gửi ảnh" data-action="anh" class="message-reply__action">
                                 <svg viewBox="0 0 12 13" width="20" height="20" fill="currentColor" class=""
                                     style="color:black;">
@@ -160,7 +165,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div aria-label="Gửi File" data-action="File" class="message-reply__action">
+                            <div aria-label="Gửi File" data-action="file" class="message-reply__action">
                                 <svg version="1.1" id="Capa_1" width="20px" height="20px" viewBox="0 0 950 950"
                                     xml:space="preserve" style="color: green;">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -175,11 +180,8 @@
                                 </svg>
                             </div>
                         </div>
-                        <!-- <div class="message-reply__inner p-1" id="fileInputContainer">
-                            <div class="message-reply__file">
-                                <img src="https://placehold.co/48x48" class="message-reply__file__image" alt="" >
-                            </div>
-                        </div> -->
+                        <div class="message-reply__inner p-1" id="fileInputContainer">
+                        </div>
                         <div class="message-reply__inner">
                             <textarea id="chat-input" cols="1" rows="1" placeholder="Write Message"></textarea>
                             <button id="send-btn" class="button ripple-effect">Send</button>
@@ -256,7 +258,7 @@
 
         socket.onmessage = function (event) {
             var data = JSON.parse(event.data);
-            var message = data.message;
+            var message = data.messageKOL;
             var sender = data.sender;
             var profileImage = data.profile_image;
             var reciever = data.reciever;
@@ -303,13 +305,16 @@
             var input = $('#chat-input');
             var message = input.val();
             var sender = "{{request.user.username}}";
+            var imageS = $('.message-reply__file__image').attr('src')
             var data = {
                 'message': message,
                 'sender': sender,
                 'reciever': username,
+                'image': `${imageS}`
             };
             socket.send(JSON.stringify(data));
             input.val('');
+            $('#fileInputContainer').empty();
             var sendButton = $('#send-btn');
             sendButton.prop('disabled', true);
             $(".chat_container").scrollTop(100000000000);
@@ -326,6 +331,7 @@
                         uploadImage()
                         break;
                     case 'file':
+                        uploadFile()
                         break;
                     case 'icon':
                         break;
@@ -340,20 +346,75 @@
         $('#imageInput').click()
         $('#imageInput').change(function () {
             var selectedFile = this.files[0];
-            var imgSelectorID = addImageElementToContainer()
+            if (selectedFile) {
+                var imgSelectorID = addImageElementToContainer()
+                addImageInputToContainer(imgSelectorID + ' img', selectedFile)
+                setEventToDeleteFileIcon(imgSelectorID + ' .message-reply__file-delete')
+                $('#imageInput').val('')
+            } else {
+
+            }
         })
     }
-    function addImageInputToContainer(selectedFile) {
+    function addImageInputToContainer(selector, selectedFile) {
+
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            $(selector).attr('src', event.target.result).show();
+        };
+        reader.readAsDataURL(selectedFile);
     }
-    function addImageElementToContainer(){
-            let dateN = new Date()
-            let id = `${dateN.getSeconds()}${dateN.getMinutes()}${dateN.getHours()}`
+    function addImageElementToContainer() {
+        let dateN = new Date()
+        let id = `${dateN.getSeconds()}${dateN.getMinutes()}${dateN.getHours()}`
 
-            let elementN = `
-
+        let elementN = `
+            <div class="message-reply__file" id="${id}" data-type="anh">
+                    <img src="" class="message-reply__file__image" alt="">
+                    <div class="message-reply__file-delete" data-target-ele="${id}">
+                        <i class="bi bi-x-circle "></i>
+                    </div>
+            </div>
              `
+        $('#fileInputContainer').append(elementN)
+        return '#' + id;
     }
-
+    function setEventToDeleteFileIcon(selector) {
+        $(selector).click(function (e) {
+            $('#' + this.getAttribute('data-target-ele')).remove()
+        })
+    }
+</script>
+<script>
+    function uploadFile() {
+        $('#fileInput').click()
+        $('#fileInput').change(function () {
+            var selectedFile = this.files[0];
+            addFileElementToContainer(selectedFile)
+        })
+    }
+    function addFileElementToContainer(selectedFile) {
+        let dateN = new Date()
+        let id = `${dateN.getSeconds()}${dateN.getMinutes()}${dateN.getHours()}`
+        if (selectedFile)
+        {
+            let elementN = `
+            <div class="message-reply__file message-reply__file--doc" id="${id}" data-type="file">
+                <div class="d-flex justify-content-between align-items-center p-1 ">
+                    <i class="bi bi-file-earmark-fill"></i>
+                    <span class="message-reply__file__name">${selectedFile.name}</span>
+                </div>
+                <div class="message-reply__file-delete" data-target-ele="${id}">
+                    <i class="bi bi-x-circle "></i>
+                </div>
+            </div>
+             `
+            $('#fileInputContainer').append(elementN)
+            $('#'+id+' .message-reply__file-delete').click(function(e){
+                $('#' + this.getAttribute('data-target-ele')).remove()
+            })
+        }
+    }
 </script>
 <script>
     $(document).ready(function () {

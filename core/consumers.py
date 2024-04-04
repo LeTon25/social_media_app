@@ -56,7 +56,8 @@ class ChatConsumer(WebsocketConsumer):
                 'reciever': reciever.username,
             }
         )
-
+    def process_image(self,bytes_data,filename):
+        pass
     def chat_message(self, event):
         self.send(text_data=json.dumps(event))
 

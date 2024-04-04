@@ -6062,7 +6062,7 @@ a {
 
 a:hover {
     color: white;
-    background-color: blue;
+    background-color: rgb(212, 212, 212);
     text-decoration: none;
 }
 

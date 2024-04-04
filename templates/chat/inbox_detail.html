@@ -132,6 +132,7 @@
                     <!-- Reply Area -->
                     <div class="message-reply" style="position: absolute; bottom: 0; left: 0; right: 0;">
                         <div class="message-reply__inner">
+                            <input type="file" id="imageInput" style="display: none;" accept="image/*" hidden>
                             <div aria-label="Gửi ảnh" data-action="anh" class="message-reply__action">
                                 <svg viewBox="0 0 12 13" width="20" height="20" fill="currentColor" class=""
                                     style="color:black;">
@@ -149,7 +150,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div aria-label="Gửi Icon"data-action="icon" class="message-reply__action">
+                            <div aria-label="Gửi Icon" data-action="icon" class="message-reply__action">
                                 <svg viewBox="0 0 12 13" width="20" height="20" fill="currentColor" class=""
                                     style="color: black;">
                                     <g fill-rule="evenodd" transform="translate(-450 -1073)">
@@ -160,8 +161,8 @@
                                 </svg>
                             </div>
                             <div aria-label="Gửi File" data-action="File" class="message-reply__action">
-                                <svg  version="1.1" id="Capa_1" width="20px" height="20px"
-                                    viewBox="0 0 950 950" xml:space="preserve" style="color: green;">
+                                <svg version="1.1" id="Capa_1" width="20px" height="20px" viewBox="0 0 950 950"
+                                    xml:space="preserve" style="color: green;">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                     <g id="SVGRepo_iconCarrier">
@@ -174,6 +175,11 @@
                                 </svg>
                             </div>
                         </div>
+                        <!-- <div class="message-reply__inner p-1" id="fileInputContainer">
+                            <div class="message-reply__file">
+                                <img src="https://placehold.co/48x48" class="message-reply__file__image" alt="" >
+                            </div>
+                        </div> -->
                         <div class="message-reply__inner">
                             <textarea id="chat-input" cols="1" rows="1" placeholder="Write Message"></textarea>
                             <button id="send-btn" class="button ripple-effect">Send</button>
@@ -310,29 +316,54 @@
         });
 
     });
-
-
-
-
-
     $(document).ready(function () {
         $(".chat_container").scrollTop(100000000000);
+        $('.message-reply__action').each((index, element) => {
+            $(element).click(e => {
+                let action = e.currentTarget.getAttribute('data-action')
+                switch (action) {
+                    case 'anh':
+                        uploadImage()
+                        break;
+                    case 'file':
+                        break;
+                    case 'icon':
+                        break;
+                }
+            })
+        })
     });
 
 </script>
+<script>
+    function uploadImage() {
+        $('#imageInput').click()
+        $('#imageInput').change(function () {
+            var selectedFile = this.files[0];
+            var imgSelectorID = addImageElementToContainer()
+        })
+    }
+    function addImageInputToContainer(selectedFile) {
+    }
+    function addImageElementToContainer(){
+            let dateN = new Date()
+            let id = `${dateN.getSeconds()}${dateN.getMinutes()}${dateN.getHours()}`
 
+            let elementN = `
+
+             `
+    }
+
+</script>
 <script>
     $(document).ready(function () {
         var chatInputValue = $('#chat-input');
         var sendButton = $('#send-btn');
-
         // Disable the button initially
         sendButton.prop('disabled', true);
-
         // Check input field on keyup event
         chatInputValue.on('keyup', function () {
             var inputText = $(this).val();
-
             // Enable/disable button based on input field value
             if (inputText.trim() !== '') {
                 sendButton.prop('disabled', false);

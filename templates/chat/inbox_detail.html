@@ -78,13 +78,7 @@
                         <h4 class="ml-1"> {{ receiver_details.profile.full_name|title }} </h4>
                     </div>
                     <div class="d-flex align-items-center ">
-                        {% if receiver_details in request.user.profile.friends.all %}
-                        <a href="#" id="block-user-btn" data-block-user="{{receiver_details.id}}"
-                            class="message-action text-red-500 mr-2 "><i class="fas fa-ban"></i> <span
-                                class="md:inline hidden block-text{{receiver_details.id}}"> Chặn {{
-                                receiver_details.profile.full_name|title }}</span> </a>
-                        {% endif %}
-                        <span class="message-info__btn ms-3">
+                        <span class="message-info__btn ms-3" style="cursor: pointer;">
                             <i class="bi bi-info-circle"></i>
                         </span>
                     </div>
@@ -217,6 +211,11 @@
                                 Chưa có hình ảnh nào
                             </div>
                         </div>
+                        {% if receiver_details in request.user.profile.friends.all %}
+                        <a href="#" id="block-user-btn" data-block-user="{{receiver_details.id}}"
+                            class="message-action text-red-500 mr-2 "><i class="fas fa-ban"></i> <span
+                            class="md:inline hidden block-text{{receiver_details.id}}"> Chặn </span> </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

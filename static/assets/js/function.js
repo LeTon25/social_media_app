@@ -433,18 +433,19 @@ $(document).on("click", "#unfriend", function(){
 
 $(document).on("click", "#block-user-btn", function(){
     let id = $(this).attr("data-block-user")
+    console.log(id)
     
-    $.ajax({
-        url: "/block-user/",
-        dataType: "json",
-        data: {
-            "id":id
-        },
-        success: function(response){
-            console.log(response);
-            $(".block-text"+id).html("<i class='fas fa-check-circle'></i> User Blocked Successfully. ")
-        }
-    })
+    // $.ajax({
+    //     url: "/block-user/",
+    //     dataType: "json",
+    //     data: {
+    //         "id":id
+    //     },
+    //     success: function(response){
+    //         console.log(response);
+    //         $(".block-text"+id).html("<i class='fas fa-check-circle'></i> User Blocked Successfully. ")
+    //     }
+    // })
 })
 
 $(document).on("click", "#video-call-btn", () => {

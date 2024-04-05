@@ -547,16 +547,16 @@ def load_pages(request):
 def load_create_page(request):
     return render(request,'pages/create-page.html')
 
-# Xử lý call video
-def lobby(request):
-    return render(request, 'core/lobby.html')
-
-def room(request):
-    return render(request, 'core/room.html')
-
-#trả về tạo group chat
+# trả về tạo group chat
 def load_group_chat(request):
     return render(request, 'chat/create_group_chat.html')
+
+# Xử lý call video
+def lobby(request):
+    return render(request, 'chat/group_call.html')
+
+def room(request):
+    return render(request, 'chat/room_call.html')
 
 def getToken(request):
     appId = "be589573195146e999b33c5c5e6dec15"

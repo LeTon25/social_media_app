@@ -473,6 +473,9 @@ def stack_brick(request):
 def game_2048(request):
     return render(request, 'games/2048.html')
 
+def game_caro(request):
+    return render(request, 'games/caro.html')
+
 
 def search_users(request):
     query = request.GET.get('q')

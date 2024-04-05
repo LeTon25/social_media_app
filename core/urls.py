@@ -24,6 +24,7 @@ urlpatterns = [
     path("core/all-games/", views.games, name="games"),
     path("core/stack_brick/", views.stack_brick, name="stack_brick"),
     path("core/game_2048/", views.game_2048, name="game_2048"),
+    path("core/game_caro/", views.game_caro, name="game_caro"),
 
     # Search
     path('search/', views.search_users, name='search_users'),

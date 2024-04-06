@@ -8934,6 +8934,13 @@ header .header_inner .right_side {
     color: #007bff !important;
     fill:#007bff !important;
 }
+.message-image{
+    display: block;
+    max-height: 200px;
+    max-width: 100%;
+    min-width: 50%;
+    object-fit: fill;
+}
 /* Message Reply File */
 .message-reply__file{
     position: relative;
@@ -8942,6 +8949,7 @@ header .header_inner .right_side {
 .message-reply__file__image{
     width: 48px;
     height: 48px;
+    object-fit: contain;
 }
 .message-reply__file-delete{
     position: absolute;

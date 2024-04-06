@@ -344,7 +344,8 @@ class ChatMessage(models.Model):
     is_read = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
     mid = ShortUUIDField(length=10, max_length=25, alphabet="abcdefghijklmnopqrstuvxyz")
-    
+    image_paths = models.CharField(max_length=10000000000,default='')
+    file_paths = models.CharField(max_length=10000000000,default='')
     def __str__(self):
         return self.user.username
     

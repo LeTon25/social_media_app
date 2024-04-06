@@ -101,6 +101,33 @@
 
                         {% for m in message_detail %}
                         {% if m.sender == request.user %}
+                        {% if m.image_paths %}
+                        <div class="message-bubble me">
+                            <div class="message-bubble-inner">
+                                <div class="message-text">
+                                    <a href="/media/uploads/images/{{ m.image_paths }} " target="_blank">
+                                        <img src="/media/uploads/images/{{ m.image_paths }}" class="message-image" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endif %}
+                        {% if m.file_paths %}
+                        <div class="message-bubble me">
+                            <div class="message-bubble-inner">
+                                <div class="message-text">
+                                    <a href ="/media/uploads/files/{{m.file_paths }}" target="_blank">
+                                        <div class="d-flex justify-content-between align-items-center p-1 text-white ">
+                                             <i class="bi bi-file-earmark-fill"></i>
+                                             <span class="message-reply__file__name">{{m.file_paths }}</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endif %}
                         <div class="message-bubble me">
                             <div class="message-bubble-inner">
                                 <div class="message-avatar"><img src="{{m.sender.profile.image.url}}" alt=""></div>
@@ -111,6 +138,33 @@
                             <div class="clearfix"></div>
                         </div>
                         {% else %}
+                        {% if m.image_paths %}
+                        <div class="message-bubble">
+                            <div class="message-bubble-inner">
+                                <div class="message-text">
+                                    <a href="/media/uploads/images/{{ m.image_paths }}" target="_blank">
+                                        <img src="/media/uploads/images/{{ m.image_paths }}" class="message-image" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endif %}
+                        {% if m.file_paths %}
+                        <div class="message-bubble">
+                            <div class="message-bubble-inner">
+                                <div class="message-text">
+                                    <a href ="/media/uploads/files/{{m.file_paths }}" target="_blank">
+                                        <div class="d-flex justify-content-between align-items-center p-1 text-black ">
+                                             <i class="bi bi-file-earmark-fill"></i>
+                                             <span class="message-reply__file__name">{{m.file_paths }}</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endif %}
                         <div class="message-bubble">
                             <div class="message-bubble-inner">
                                 <div class="message-avatar"><img src="{{m.sender.profile.image.url}}" alt=""></div>
@@ -137,7 +191,6 @@
                             <input type="file" id="fileInput" style="display: none;"
                                 accept=".txt, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv, .xml, .json, .html, .css, .js, .zip, .rar, .tar, .gz"
                                 hidden>
-
                             <div aria-label="Gửi ảnh" data-action="anh" class="message-reply__action">
                                 <svg viewBox="0 0 12 13" width="20" height="20" fill="currentColor" class=""
                                     style="color:black;">
@@ -255,16 +308,48 @@
         socket.onopen = function () {
             console.log('WebSocket connection established.');
         }
-
+        // Hiển thị tin nhắn 
         socket.onmessage = function (event) {
             var data = JSON.parse(event.data);
-            var message = data.messageKOL;
+            var message = data.message;
             var sender = data.sender;
             var profileImage = data.profile_image;
             var reciever = data.reciever;
-
+            var image_path = data.image_paths;
+            var file_path = data.file_paths;
             if (sender === "{{sender}}") {
-                var chatMessage = '<div class="message-bubble me">';
+                var chatMessage = ''
+                // load hình ảnh nếu có
+                if (image_path.length != 0) {
+                    chatMessage += '<div class="message-bubble me">'
+                    chatMessage += '<div class="message-bubble-inner">';
+                    chatMessage += '<div class="message-text">';
+                    chatMessage += '<a href = <img src="/media/uploads/images/' + image_path + '" target="_blank">'    
+                    chatMessage += '<img src="/media/uploads/images/' + image_path + '" class="message-image" alt="">';
+                    chatMessage += '</a>'
+                    chatMessage += '</div>';
+                    chatMessage += '</div>';
+                    chatMessage += '<div class="clearfix"></div>';
+                    chatMessage += '</div>';
+                }
+                // load file nếu có 
+                if (file_path.length !=0)
+                {
+                    chatMessage += '<div class="message-bubble me">'
+                    chatMessage += '<div class="message-bubble-inner">';
+                    chatMessage += '<div class="message-text">';
+                    chatMessage += '<a href ="/media/uploads/files/' + file_path + '" target="_blank">'  
+                    chatMessage += '<div class="d-flex justify-content-between align-items-center p-1 text-black ">'
+                    chatMessage += '<i class="bi bi-file-earmark-fill"></i>'
+                    chatMessage += '<span class="message-reply__file__name">'+ file_path + '</span>'
+                    chatMessage += '</div>'
+                    chatMessage += '</a>'
+                    chatMessage += '</div>';
+                    chatMessage += '</div>';
+                    chatMessage += '<div class="clearfix"></div>';
+                    chatMessage += '</div>';
+                }
+                chatMessage += '<div class="message-bubble me">';
                 chatMessage += '<div class="message-bubble-inner">';
                 chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
                 chatMessage += '<div class="message-text">';
@@ -273,14 +358,41 @@
                 chatMessage += '</div>';
                 chatMessage += '<div class="clearfix"></div>';
                 chatMessage += '</div>';
-                // Append the chat message to the main div
                 $('#chat-messages').append(chatMessage);
-                // Get the chat container
                 var chatContainer = document.querySelector('.chat_container');
-                // Automatically scroll to the bottom of the message after sending.
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             } else {
-                var chatMessage = '<div class="message-bubble">';
+                var chatMessage = ''
+                if (image_path.length != 0) {
+                    chatMessage += '<div class="message-bubble">'
+                    chatMessage += '<div class="message-bubble-inner">';
+                    chatMessage += '<div class="message-text">';
+                    chatMessage += '<a href = <img src="/media/uploads/images/' + image_path + '" target="_blank" >'    
+                    chatMessage += '<img src="/media/uploads/images/' + image_path + '" class="message-image" alt="">';
+                    chatMessage += '</a>'
+                    chatMessage += '</div>';
+                    chatMessage += '</div>';
+                    chatMessage += '<div class="clearfix"></div>';
+                    chatMessage += '</div>';
+                }
+                // load file nếu có 
+                if (file_path.length !=0)
+                {
+                    chatMessage += '<div class="message-bubble me">'
+                    chatMessage += '<div class="message-bubble-inner">';
+                    chatMessage += '<div class="message-text">';
+                    chatMessage += '<a href = <img src="/media/uploads/files/' + file_path + '" target="_blank">'  
+                    chatMessage += '<div class="d-flex justify-content-between align-items-center p-1 text-white ">'
+                    chatMessage += '<i class="bi bi-file-earmark-fill"></i>'
+                    chatMessage += '<span class="message-reply__file__name">'+ file_path + '</span>'
+                    chatMessage += '</div>'
+                    chatMessage += '</a>'
+                    chatMessage += '</div>';
+                    chatMessage += '</div>';
+                    chatMessage += '<div class="clearfix"></div>';
+                    chatMessage += '</div>';
+                }
+                chatMessage += '<div class="message-bubble">';
                 chatMessage += '<div class="message-bubble-inner">';
                 chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
                 chatMessage += '<div class="message-text">';
@@ -293,24 +405,39 @@
 
                 var chatContainer = document.querySelector('.chat_container');
                 chatContainer.scrollTop = chatContainer.scrollHeight;
-                console.log("No");
             }
         }
 
         socket.onclose = function () {
             console.log('WebSocket connection closed.');
         }
-
+        // Xử lí khi nhấn nút gửi
         $('#send-btn').on('click', function () {
             var input = $('#chat-input');
             var message = input.val();
             var sender = "{{request.user.username}}";
-            var imageS = $('.message-reply__file__image').attr('src')
+            var image = '';
+            var fileDoc_data;
+            var fileDoc_name;
+            $('.message-reply__file').each((index, element) => {
+                let type = element.getAttribute('data-type')
+                console.log(element)
+                switch (type) {
+                    case 'anh':
+                        image = element.getAttribute('src')
+                    case 'file':
+                        fileDoc_data = element.getAttribute('data-value') ?  element.getAttribute('data-value') : ''
+                        fileDoc_name = element.getElementsByClassName('message-reply__file__name')[0].textContent ? element.getElementsByClassName('message-reply__file__name')[0].textContent : ''
+                }
+            })
+
             var data = {
                 'message': message,
                 'sender': sender,
                 'reciever': username,
-                'image': `${imageS}`
+                'image': `${image}`,
+                'file_doc':`${fileDoc_data}`,
+                'file_name': `${fileDoc_name}`
             };
             socket.send(JSON.stringify(data));
             input.val('');
@@ -341,6 +468,7 @@
     });
 
 </script>
+<!-- Xử lí khi gửi hình ảnh -->
 <script>
     function uploadImage() {
         $('#imageInput').click()
@@ -351,8 +479,6 @@
                 addImageInputToContainer(imgSelectorID + ' img', selectedFile)
                 setEventToDeleteFileIcon(imgSelectorID + ' .message-reply__file-delete')
                 $('#imageInput').val('')
-            } else {
-
             }
         })
     }
@@ -385,22 +511,23 @@
         })
     }
 </script>
+<!-- Xử lí khi gửi file doc,pdf,txt...-->
 <script>
     function uploadFile() {
         $('#fileInput').click()
         $('#fileInput').change(function () {
             var selectedFile = this.files[0];
             addFileElementToContainer(selectedFile)
+            $('#fileInput').val('')
         })
     }
     function addFileElementToContainer(selectedFile) {
         let dateN = new Date()
         let id = `${dateN.getSeconds()}${dateN.getMinutes()}${dateN.getHours()}`
-        if (selectedFile)
-        {
+        if (selectedFile) {
             let elementN = `
             <div class="message-reply__file message-reply__file--doc" id="${id}" data-type="file">
-                <div class="d-flex justify-content-between align-items-center p-1 ">
+                <div class="d-flex justify-content-between align-items-center p-1 text-white ">
                     <i class="bi bi-file-earmark-fill"></i>
                     <span class="message-reply__file__name">${selectedFile.name}</span>
                 </div>
@@ -410,12 +537,19 @@
             </div>
              `
             $('#fileInputContainer').append(elementN)
-            $('#'+id+' .message-reply__file-delete').click(function(e){
+            $('#' + id + ' .message-reply__file-delete').click(function (e) {
                 $('#' + this.getAttribute('data-target-ele')).remove()
             })
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                $('#'+id).attr('data-value', event.target.result);
+            };
+            reader.readAsDataURL(selectedFile);
         }
     }
 </script>
+
+<!-- Xử lí khi chưa nhập tin nhắn thì không cho nhắn nút gửi-->
 <script>
     $(document).ready(function () {
         var chatInputValue = $('#chat-input');
@@ -442,6 +576,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
     crossorigin="anonymous"></script>
+<!-- Bật tắt phần message Info-->
 <script>
     $(document).ready(function () {
         $('.message-info__btn').click(function () {

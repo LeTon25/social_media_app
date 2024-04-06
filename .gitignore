@@ -4,4 +4,4 @@
 /addon/__pycache__/
 /addon/migrations/__pycache__
 /core/__pycache__/
-/core/migrations/
+/core/migrations/__pycache__/

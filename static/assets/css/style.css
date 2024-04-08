@@ -9105,7 +9105,7 @@ header .header_inner .right_side {
 
     .messages-inbox-inner,
     .message-content-scrolbar {
-        width: 100vw;
+        width: calc(100vw - 20px);
     }
 
     .messages-container-inner .message-content {
@@ -9114,6 +9114,9 @@ header .header_inner .right_side {
         bottom: -50px;
         left: 0;
         height: 98vh;
+    }
+    .message-info{
+        display: none;
     }
 }
 
@@ -10518,7 +10521,9 @@ html.dark,
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-
+.messages-container-inner{
+    position: relative;
+}
 /*Level three d*/
 
 .dark .bg-gray-200,

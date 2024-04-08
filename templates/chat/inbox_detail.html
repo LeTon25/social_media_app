@@ -417,20 +417,21 @@
             var message = input.val();
             var sender = "{{request.user.username}}";
             var image = '';
-            var fileDoc_data;
-            var fileDoc_name;
+            var fileDoc_data='';
+            var fileDoc_name='';
             $('.message-reply__file').each((index, element) => {
                 let type = element.getAttribute('data-type')
-                console.log(element)
                 switch (type) {
                     case 'anh':
                         image = element.getAttribute('src')
+                        break;
                     case 'file':
                         fileDoc_data = element.getAttribute('data-value') ?  element.getAttribute('data-value') : ''
                         fileDoc_name = element.getElementsByClassName('message-reply__file__name')[0].textContent ? element.getElementsByClassName('message-reply__file__name')[0].textContent : ''
+                        break;    
                 }
             })
-
+            console.log(fileDoc_data)
             var data = {
                 'message': message,
                 'sender': sender,

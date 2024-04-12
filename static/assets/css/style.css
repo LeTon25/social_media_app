@@ -8979,6 +8979,8 @@ header .header_inner .right_side {
 .message-info__btn{
     font-size: 1.2rem;
 }
+.call__btn:hover,
+.video-call__btn:hover,
 .message-info__btn:hover{
     color: #007bff;
 }

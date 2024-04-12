@@ -78,14 +78,23 @@
                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="">
                         <h4 class="ml-1"> {{ receiver_details.profile.full_name|title }} </h4>
                     </div>
-                    <div class="d-flex align-items-center ">
+                    <div class="d-flex align-items-center">
+
                         {% if receiver_details in request.user.profile.friends.all %}
-                        <a href="#" id="block-user-btn" data-block-user="{{receiver_details.id}}"
-                            class="message-action text-red-500 mr-2 "><i class="fas fa-ban"></i> <span
-                                class="md:inline hidden block-text{{receiver_details.id}}"> Chặn {{
-                                receiver_details.profile.full_name|title }}</span> </a>
+                        <span class="video-call__btn mr-3" 
+                            style="cursor: pointer; font-size: 20px;"
+                            data-call-user="{{receiver_details.id}}"
+                            data-name-user="{{receiver_details.username}}">
+
+                            <i class="bi bi-camera-video-fill"></i>
+                        </span>
                         {% endif %}
-                        <span class="message-info__btn ms-3">
+
+                        <span class="call__btn mr-3" style="cursor: pointer; font-size: 18px;">
+                            <i class="bi bi-telephone-fill"></i>
+                        </span>
+
+                        <span class="message-info__btn ms-3" style="cursor: pointer; font-size: 20px;">
                             <i class="bi bi-info-circle"></i>
                         </span>
                     </div>
@@ -278,6 +287,11 @@
                                 Chưa có hình ảnh nào
                             </div>
                         </div>
+                        {% comment %} {% if receiver_details in request.user.profile.friends.all %}
+                        <a href="#" id="block-user-btn" data-block-user="{{receiver_details.id}}"
+                            class="message-action text-red-500 mr-2 "><i class="fas fa-ban"></i> <span
+                            class="md:inline hidden block-text{{receiver_details.id}}"> Chặn </span> </a>
+                        {% endif %} {% endcomment %}
                     </div>
                 </div>
             </div>
@@ -582,6 +596,37 @@
     $(document).ready(function () {
         $('.message-info__btn').click(function () {
             $('.message-info').toggle()
+        })
+
+        $('.call__btn').click(function () {
+            // Lấy tất cả các khóa trong sessionStorage
+            const keys = Object.keys(sessionStorage);
+
+            // Lặp qua từng khóa và lấy giá trị tương ứng
+            keys.forEach(key => {
+                const value = sessionStorage.getItem(key);
+                console.log(`Key: ${key}, Value: ${value}`);
+            });
+
+            //sessionStorage.clear();
+        })
+        
+        $('.video-call__btn').click(async function () {
+            let user_id = $(this).attr("data-call-user")
+            let user_name = $(this).attr("data-name-user")
+            
+            let response = await fetch(`/get_token/?channel=${user_id}`)
+            let data = await response.json()
+
+            let UID = data.uid
+            let token = data.token
+
+            sessionStorage.setItem('UID', UID)
+            sessionStorage.setItem('token', token)
+            sessionStorage.setItem('user_id', user_id)
+            sessionStorage.setItem('user_name', user_name)
+
+            window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
         })
     })
 </script>

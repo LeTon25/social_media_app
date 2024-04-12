@@ -44,8 +44,7 @@ urlpatterns = [
     path('pages/create-page',views.load_create_page,name="create-page-page"),
 
     # Video call
-    path('', views.lobby),
-    path('room/', views.room),
+    path('core/inbox/<username>/video/', views.videoCall),
     path('get_token/', views.getToken),
 
     path('create_member/', views.createMember),
@@ -58,6 +57,8 @@ urlpatterns = [
 
     # Ajax URLs
     path("create-post/", views.create_post, name="create-post"),
+    path("delete-post/", views.delete_post, name="delete-post"),
+    path("edit-post/", views.edit_post, name="edit-post"),
     path("like-post/", views.like_post, name="like-post"),
     path("comment-post/", views.comment_on_post, name="comment-post"),
     path("like-comment/", views.like_comment, name="like-comment"),

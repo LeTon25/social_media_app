@@ -61,7 +61,6 @@ def send_notification(user, sender, post, comment, notification_type):
 
 @csrf_exempt
 def create_post(request):
-
     if request.method == 'POST':
         title = request.POST.get('post-caption')
         visibility = request.POST.get('visibility')
@@ -92,6 +91,22 @@ def create_post(request):
 
     return JsonResponse({"data":"Sent"})
 
+
+@csrf_exempt
+def delete_post(request):
+    id = request.GET['id']
+    print("=============================== id = " + id)
+    post = Post.objects.get(id=id)
+    post.delete()
+
+    data = {
+        "bool":True,
+    }
+    return JsonResponse({"data":data})
+        
+@csrf_exempt
+def edit_post(request):
+    print("OKKK")
 
 @csrf_exempt
 def like_post(request):
@@ -360,8 +375,6 @@ def inbox_detail(request, username):
         )
     ).order_by("-id")
 
-
-    
     sender = request.user
     receiver = User.objects.get(username=username)
     receiver_details = User.objects.get(username=username)
@@ -541,6 +554,7 @@ def load_birthday(request):
 #trả về trang groups
 def load_groups(request):
     return render(request,'groups/index.html')
+
 def load_create_group(request):
     return render(request,'groups/create-group.html')
 
@@ -550,16 +564,13 @@ def load_pages(request):
 def load_create_page(request):
     return render(request,'pages/create-page.html')
 
-# Xử lý call video
-def lobby(request):
-    return render(request, 'core/lobby.html')
-
-def room(request):
-    return render(request, 'core/room.html')
-
-#trả về tạo group chat
+# trả về tạo group chat
 def load_group_chat(request):
     return render(request, 'chat/create_group_chat.html')
+
+# Xử lý call video
+def videoCall(request, username):
+    return render(request, 'chat/create_room_call.html')
 
 def getToken(request):
     appId = "be589573195146e999b33c5c5e6dec15"

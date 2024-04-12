@@ -13,7 +13,6 @@
     }
 </style>
     
-
         <!-- Main Contents -->
         <div class="main_content">
             <div class="mcontainer">
@@ -76,9 +75,11 @@
                             <i class="icon-feather-chevron-right"></i></span>
 
                         </div>
-                        <!-- create post -->
-                        <div class="card lg:mx-0 p-4" uk-toggle="target: #create-post-modal">
-                            <div class="flex space-x-3">
+
+                        <!-- Create post -->
+                        {% comment %} {% include "post/create_post.html" %} {% endcomment %}
+                        <div class="card lg:mx-0 p-4">
+                            <div class="flex space-x-3" uk-toggle="target: #create-post-modal">
                                 <img src="{{request.user.profile.image.url}}" class="w-10 h-10 rounded-full">
                                 <input placeholder="{{request.user.profile.full_name|title}} ơi, bạn đang nghĩ gì thế?" class="bg-gray-100 hover:bg-gray-200 flex-1 h-10 px-6 rounded-full">
                             </div>
@@ -94,10 +95,13 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- List post -->
+                        {% comment %} {% include "post/list_post.html" %} {% endcomment %}
                         <div class="post-div" id="post-list">
                             {% for p in posts %}
-                            <div class="card lg:mx-0 uk-animation-slide-bottom-small mb-3">
-
+                            <div id="post-item-{{p.id}}" class="card lg:mx-0 uk-animation-slide-bottom-small mb-3">
+                        
                                 <!-- post header-->
                                 <div class="flex justify-between items-center lg:p-4 p-2.5">
                                     <div class="flex flex-1 items-center space-x-4">
@@ -106,7 +110,7 @@
                                         </a>
                                         <div class="flex-1 font-semibold capitalize">
                                             <a href="{% url 'userauths:profile' p.user.username %}" class="text-black dark:text-gray-100">{{ p.user.profile.full_name|title }}</a>
-                                            <div class="text-gray-700 flex items-center space-x-2">{{p.date|timesince}} ago 
+                                            <div class="text-gray-700 flex items-center space-x-2">{{p.date|timesince}} ago123 
                                                 <ion-icon name="story-time"></ion-icon>
                                             </div>
                                         </div>
@@ -114,43 +118,45 @@
                                     <div>
                                         <a href="#"> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 dark:hover:bg-gray-700"></i> </a>
                                         <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700" uk-drop="mode: click;pos: bottom-right;animation: uk-animation-slide-bottom-small">
-
+                        
                                             <ul class="space-y-1">
                                                 <li>
                                                     <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
-                                                <i class="uil-share-alt mr-1"></i> Share
-                                                </a>
+                                                        <i class="uil-share-alt mr-1"></i> Share
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" uk-toggle="target: #edit-post-modal" data-post-id="{{p.id}}" class="link-edit-post flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                                        <i class="uil-edit-alt mr-1"></i>  Edit Post 
+                                                    </a>
                                                 </li>
                                                 <li>
                                                     <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
-                                                <i class="uil-edit-alt mr-1"></i>  Edit Post 
-                                                </a>
+                                                        <i class="uil-comment-slash mr-1"></i>   Disable comments
+                                                    </a>
                                                 </li>
                                                 <li>
                                                     <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
-                                                <i class="uil-comment-slash mr-1"></i>   Disable comments
-                                                </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
-                                                <i class="uil-favorite mr-1"></i>  Add favorites 
-                                                </a>
+                                                        <i class="uil-favorite mr-1"></i>  Add favorites 
+                                                    </a>
                                                 </li>
                                                 <li>
                                                     <hr class="-mx-2 my-2 dark:border-gray-800">
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">
-                                                <i class="uil-trash-alt mr-1"></i>  Delete
-                                                </a>
+                                                    <a href="#" uk-toggle="target: #delete-post-modal" class="link-delete-post flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">
+                                                        <i class="uil-trash-alt mr-1"></i>  Delete1123
+                                                    </a>
+                                                    <!-- Delete post modal -->
+                                                    {% include "post/delete_post.html" %}
                                                 </li>
                                             </ul>
-
+                        
                                         </div>
                                     </div>
                                 </div>
-
-
+                        
+                        
                                 <div uk-lightbox>
                                     
                                     {% if p.title %}
@@ -165,12 +171,12 @@
                                     {% if p.image %}
                                         
                                     <div class="grid grid-cols-2 gap-2 px-5">
-
+                        
                                         <!-- Show thumnnail -->
                                         <a href="{{p.image.url}}" class="col-span-2">  
                                             <img src="{{p.image.url}}" style="width: 100%; height: 300px; object-fit: cover;" alt="" class="rounded-md w-full lg:h-76 object-cover">
                                         </a>
-
+                        
                                         <!-- Loop Throught Multiple Images -->
                                         {% for i in p.gallery_images|slice:"2" %}
                                         
@@ -187,11 +193,11 @@
                                         {% endfor %}
                                     </div>
                                     {% endif %}
-
+                        
                                 </div>
-
+                        
                                 <div class="p-4 space-y-3">
-
+                        
                                     <div class="flex space-x-4 lg:font-bold">
                                         <a  class="flex items-center space-x-2  text-blue-500" style="cursor: pointer;" >
                                             <div class="p-2 rounded-full like-btn{{p.id}} {% if request.user in p.likes.all %}text-blue-500 {% else %} text-black {% endif %} " id="like-btn" data-like-btn="{{p.id}}">
@@ -253,9 +259,9 @@
                                             <strong><span id="like-count{{p.id}}">0</span></strong> Likes
                                         </div>
                                         {% endif %}
-
+                        
                                     </div>
-
+                        
                                     <div class="border-t py-4 space-y-4 dark:border-gray-600" id="comment-div{{p.id}}">
                                         
                                         {% for c in p.post_comments|slice:"2" %}
@@ -273,7 +279,7 @@
                                                 </div>
                                                 <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
                                                     <a id="like-comment-btn" data-like-comment="{{c.id}}" class="like-comment{{c.id}} text-red-500" {% if request.user in c.likes.all %} style="color: red;" {% else %} style="color: gray;"  {% endif %} > <i id="comment-icon{{c.cid}}" class=" fas fa-heart  "></i></a> <small><span class="" id="comment-likes-count{{c.id}}">{{ c.likes.all.count }}</span></small> 
-
+                        
                                                           <details >
                                                                 <summary><div class="">Reply</div></summary>
                                                         
@@ -312,13 +318,13 @@
                                                         {% endif %}
                                                             
                                                     {% endfor %}
-
+                        
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- <hr> -->
                                         {% endfor %}
-
+                        
                                     </div>
                                     
                                     
@@ -328,7 +334,7 @@
                                     <a href="{% url 'core:post-detail' p.slug %}" class="hover:text-blue-600 hover:underline">  View {{p.post_comments.count|sub:2}} more Comments </a>
                                     {% endif %}
                                         
-
+                        
                                     <div class="bg-gray-100 rounded-full relative dark:bg-gray-800 border-t">
                                         <input placeholder="Add your Comment..." id="comment-input{{p.id}}" data-comment-input="{{p.id}}" class="bg-transparent max-h-10 shadow-none px-5 comment-input{{p.id}}">
                                         <div class="-m-0.5 absolute bottom-0 flex items-center right-3 text-xl">
@@ -337,15 +343,19 @@
                                             </a>
                                         </div>
                                     </div>
-
+                        
                                 </div>
-
+                        
                             </div>
                             {% endfor %}
                         </div>
+                        
+                        <!-- Load more -->
                         {% if posts.has_next %}
                             <div class="flex justify-center mt-6">
-                                <a href="#" id="load-more-btn" class="bg-white dark:bg-gray-900 font-semibold my-3 px-6 py-2 rounded-full shadow-md dark:bg-gray-800 dark:text-white">Load more ..</a>
+                                <a href="#" id="load-more-btn" 
+                                class="bg-white dark:bg-gray-900 font-semibold my-3 px-6 py-2 
+                                rounded-full shadow-md dark:bg-gray-800 dark:text-white">Xem thêm ...</a>
                             </div>
                         {% endif %}
 
@@ -416,7 +426,7 @@
                                                                         </li>\
                                                                         <li>\
                                                                             <a href="#" class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">\
-                                                                        <i class="uil-trash-alt mr-1"></i>  Delete\
+                                                                            <i class="uil-trash-alt mr-1"></i>  Delete\
                                                                         </a>\
                                                                         </li>\
                                                                     </ul>\
@@ -1079,5 +1089,8 @@
 
         </div>
     </div>
+
+    <!-- Edit post modal -->
+    {% include "post/edit_post.html" %}
 
     {% endblock content %}

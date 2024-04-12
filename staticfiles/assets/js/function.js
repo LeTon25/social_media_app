@@ -1,3 +1,4 @@
+// Xử lý thêm bài post mới
 $(document).ready(function() {
     $('#post-form').submit(function(e) {
       e.preventDefault();
@@ -50,31 +51,31 @@ $(document).ready(function() {
                         <ul class="space-y-1">\
                             <li>\
                                 <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">\
-                            <i class="uil-share-alt mr-1"></i> Share\
-                            </a>\
+                                    <i class="uil-share-alt mr-1"></i> Share\
+                                </a>\
                             </li>\
                             <li>\
                                 <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">\
-                            <i class="uil-edit-alt mr-1"></i>  Edit Post \
-                            </a>\
+                                    <i class="uil-edit-alt mr-1"></i>  Edit Post \
+                                </a>\
                             </li>\
                             <li>\
                                 <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">\
-                            <i class="uil-comment-slash mr-1"></i>   Disable comments\
-                            </a>\
+                                    <i class="uil-comment-slash mr-1"></i>   Disable comments\
+                                </a>\
                             </li>\
                             <li>\
                                 <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">\
-                            <i class="uil-favorite mr-1"></i>  Add favorites \
-                            </a>\
+                                    <i class="uil-favorite mr-1"></i>  Add favorites \
+                                </a>\
                             </li>\
                             <li>\
                                 <hr class="-mx-2 my-2 dark:border-gray-800">\
                             </li>\
                             <li>\
-                                <a href="#" class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">\
-                            <i class="uil-trash-alt mr-1"></i>  Delete\
-                            </a>\
+                                <a href="#" uk-toggle="target: #delete-post-modal" data-id="{{p.id}}" class="link-delete-post flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">\
+                                    <i class="uil-trash-alt mr-1"></i>  Delete\
+                                </a>\
                             </li>\
                         </ul>\
                     </div>\
@@ -147,11 +148,9 @@ $(document).ready(function() {
         }
       });
     });
-  });
+});
 
-
-
-//   LIke Post
+// Xử lý like post
 $(document).on("click", "#like-btn", function(){
     let btn_val = $(this).attr("data-like-btn")
     console.log(btn_val);
@@ -429,3 +428,44 @@ $(document).on("click", "#unfriend", function(){
         }
     })
 })
+
+
+$(document).on("click", "#block-user-btn", function(){
+    let id = $(this).attr("data-block-user")
+    
+    $.ajax({
+        url: "/block-user/",
+        dataType: "json",
+        data: {
+            "id":id
+        },
+        success: function(response){
+            console.log(response);
+            $(".block-text"+id).html("<i class='fas fa-check-circle'></i> User Blocked Successfully. ")
+        }
+    })
+})
+
+// $(document).on("click", "#video-call__btn", () => {
+//     console.log("OKKK")
+//     console.log("OKKK")
+//     console.log("OKKK")
+//     console.log("OKKK")
+
+
+//     let id = $(this).attr("data-call-user")
+
+//     console.log("id = " + id)
+    
+//     // $.ajax({
+//     //     url: "/block-user/",
+//     //     dataType: "json",
+//     //     data: {
+//     //         "id":id
+//     //     },
+//     //     success: function(response){
+//     //         console.log(response);
+//     //         $(".block-text"+id).html("<i class='fas fa-check-circle'></i> User Blocked Successfully. ")
+//     //     }
+//     // })
+// })

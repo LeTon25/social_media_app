@@ -6417,6 +6417,10 @@ a {
 
 a:hover {
     color: white;
+<<<<<<< HEAD
+=======
+    background-color: rgb(212, 212, 212);
+>>>>>>> 2e982bc4159075bedecb1235128fe1d9d77c57eb
     text-decoration: none;
 }
 

@@ -1,0 +1,67 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Basic Page Needs
+        ================================================== -->
+    <title>Call Video</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Socialite is - Professional A unique and beautiful collection of UI elements">
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+
+    <!-- CSS 
+    ================================================== -->
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Swal -->
+    <script src="https://unpkg.com/sweetalert2@7.8.2/dist/sweetalert2.all.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    
+</head>
+
+<body>
+    <div class="main_content">
+        <div class="mcontainer">
+            <section id="room-name-wrapper">
+                <p>Room Name: <span id="room-name"></span></p>
+            </section>
+        
+            <section id="video-streams"></section>
+        
+            <section id="controls-wrapper">
+                <div class="icon-wrapper">
+                    <img class="control-icon" id="mic-btn" src="{% static 'assets/images/microphone.svg' %}" />
+                </div>
+        
+                <div class="icon-wrapper">
+                    <img class="control-icon" id="camera-btn" src="{% static 'assets/images/video.svg' %}" />
+                </div>
+        
+                <div class="icon-wrapper">
+                    <img class="control-icon" id="leave-btn" src="{% static 'assets/images/leave.svg' %}" />
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Script 
+    ================================================== -->
+    {% comment %} <script type="text/javascript" src="{% static 'assets/js/AgoraRTC_N-4.8.0.js' %}"></script> {% endcomment %}
+    <script type="text/javascript" src="{% static 'assets/js/stream.js' %}" ></script>
+</body>
+
+</html>
+

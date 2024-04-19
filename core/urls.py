@@ -38,6 +38,8 @@ urlpatterns = [
     #Group
     path('groups/',views.load_groups,name="groups"),
     path('groups/create-group',views.load_create_group,name="create-group-page"),
+    path('groups/add-group',views.add_group,name="add_group"),
+    path('groups/my-group/<username>',views.my_group,name="my_group"),
 
     #Pages
     path('pages/',views.load_pages,name='pages'),
@@ -47,7 +49,7 @@ urlpatterns = [
     path('core/inbox/<username>/video/', views.videoCall),
     path('get_token/', views.getToken),
 
-    path('create_member/', views.createMember),
+    path('core/inbox/<username>/video/create_member/', views.createMember),
     path('get_member/', views.getMember),
     path('delete_member/', views.deleteMember),
 

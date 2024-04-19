@@ -558,6 +558,12 @@ def load_groups(request):
 def load_create_group(request):
     return render(request,'groups/create-group.html')
 
+def add_group(request):
+    return render(request,'groups/create-group.html')
+
+def my_group(request, username):
+    return render(request,'groups/create-group.html')
+
 #trả về trang pages
 def load_pages(request):
     return render(request,'pages/pages.html')
@@ -588,7 +594,7 @@ def getToken(request):
 
 
 @csrf_exempt
-def createMember(request):
+def createMember(request, username):
     data = json.loads(request.body)
     member, created = RoomVideoCall.objects.get_or_create(
         name=data['name'],

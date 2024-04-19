@@ -446,26 +446,29 @@ $(document).on("click", "#block-user-btn", function(){
     })
 })
 
-// $(document).on("click", "#video-call__btn", () => {
-//     console.log("OKKK")
-//     console.log("OKKK")
-//     console.log("OKKK")
-//     console.log("OKKK")
-
-
-//     let id = $(this).attr("data-call-user")
-
-//     console.log("id = " + id)
+$(document).on("click", "#btn-add-group", () => {
     
-//     // $.ajax({
-//     //     url: "/block-user/",
-//     //     dataType: "json",
-//     //     data: {
-//     //         "id":id
-//     //     },
-//     //     success: function(response){
-//     //         console.log(response);
-//     //         $(".block-text"+id).html("<i class='fas fa-check-circle'></i> User Blocked Successfully. ")
-//     //     }
-//     // })
-// })
+    let gr_name = $('.form-create-group #gr-name').val()
+    let gr_category = $('.form-create-group #select-category').val()
+    let gr_description = $('.form-create-group #txt-description').val()
+    let gr_friend = $('.form-create-group #select-friends').val()
+    let gr_status = $('.form-create-group #select-status').val()
+
+    console.log(gr_name)
+    console.log(gr_category)
+    console.log(gr_description)
+    console.log(gr_friend)
+    console.log(gr_status)
+    
+    // $.ajax({
+    //     url: "/block-user/",
+    //     dataType: "json",
+    //     data: {
+    //         "id":id
+    //     },
+    //     success: function(response){
+    //         console.log(response);
+    //         $(".block-text"+id).html("<i class='fas fa-check-circle'></i> User Blocked Successfully. ")
+    //     }
+    // })
+})

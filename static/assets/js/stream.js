@@ -1,24 +1,25 @@
-
 const APP_ID = 'be589573195146e999b33c5c5e6dec15'
 const TOKEN = sessionStorage.getItem('token')
-const CHANNEL = sessionStorage.getItem('room')
+const USER_ID = sessionStorage.getItem('user_id')
 let UID = sessionStorage.getItem('UID')
 
-let NAME = sessionStorage.getItem('name')
+let NAME = sessionStorage.getItem('user_name')
 
 const client = AgoraRTC.createClient({mode:'rtc', codec:'vp8'})
+
+console.log(client)
 
 let localTracks = []
 let remoteUsers = {}
 
 let joinAndDisplayLocalStream = async () => {
-    document.getElementById('room-name').innerText = CHANNEL
+    document.getElementById('room-name').innerText = USER_ID
 
     client.on('user-published', handleUserJoined)
     client.on('user-left', handleUserLeft)
 
     try{
-        UID = await client.join(APP_ID, CHANNEL, TOKEN, UID)
+        UID = await client.join(APP_ID, USER_ID, TOKEN, UID)
     }catch(error){
         console.error(error)
         window.open('/', '_self')
@@ -104,20 +105,21 @@ let toggleMic = async (e) => {
 }
 
 let createMember = async () => {
-    let response = await fetch('/create_member/', {
+    let response = await fetch(`create_member/`, {
         method:'POST',
         headers: {
             'Content-Type':'application/json'
         },
-        body:JSON.stringify({'name':NAME, 'room_name':CHANNEL, 'UID':UID})
+        body:JSON.stringify({'name':NAME, 'room_name':USER_ID, 'UID':UID})
     })
     let member = await response.json()
+    console.log(member)
     return member
 }
 
 
 let getMember = async (user) => {
-    let response = await fetch(`/get_member/?UID=${user.uid}&room_name=${CHANNEL}`)
+    let response = await fetch(`/get_member/?UID=${user.uid}&room_name=${USER_ID}`)
     let member = await response.json()
     return member
 }
@@ -128,7 +130,7 @@ let deleteMember = async () => {
         headers: {
             'Content-Type':'application/json'
         },
-        body:JSON.stringify({'name':NAME, 'room_name':CHANNEL, 'UID':UID})
+        body:JSON.stringify({'name':NAME, 'room_name':USER_ID, 'UID':UID})
     })
     let member = await response.json()
 }

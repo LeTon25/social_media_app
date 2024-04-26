@@ -333,6 +333,7 @@ def unfriend(request):
 @login_required
 def inbox(request):
     user_id = request.user
+    print("===================================== inbox user_id: ", request)
 
     chat_message = ChatMessage.objects.filter(
         id__in =  Subquery(
@@ -359,7 +360,9 @@ def inbox(request):
 @login_required
 def inbox_detail(request, username):
     user_id = request.user
-    print("===================================== user_id: ", request)
+    # user_id = get_object_or_404(User, username=username)
+    # print("===================================== username: ", username)
+    # print("===================================== user_id: ", user_id)
     message_list = ChatMessage.objects.filter(
         id__in =  Subquery(
             User.objects.filter(
@@ -385,7 +388,6 @@ def inbox_detail(request, username):
     ).order_by("date")
 
     messages_detail.update(is_read=True)
-    
     if messages_detail:
         r = messages_detail.first()
         reciever = User.objects.get(username=r.reciever)

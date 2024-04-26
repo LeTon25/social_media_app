@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from userauths.models import User, Profile
 from userauths.forms import UserRegisterForm, ProfileUpdateForm, UserUpdateForm
-from core.models import FriendRequest, Post
+from core.models import FriendRequest, Post, Group
 
 
 def RegisterView(request, *args, **kwargs):
@@ -74,9 +74,11 @@ def LogoutView(request):
 def my_profile(request):
     profile = request.user.profile
     posts = Post.objects.filter(active=True, user=request.user)
+    groups = Group.objects.filter(active=True, user=request.user)
 
     context = {
         "posts":posts,
+        "groups": groups,
         "profile":profile,
     }
     return render(request, "userauths/my-profile.html", context)

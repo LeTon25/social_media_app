@@ -25,7 +25,6 @@
             }
         </style>
 
-
         <!-- Main Contents -->
         <div class="main_content">
             <div class="mcontainer">
@@ -41,8 +40,8 @@
                             {% csrf_token %}
                             <!-- form header -->
                             <div class="lg:px-10 lg:py-8 p-6">
-                                <h3 class="font-bold mb-2 text-xl">Profile</h3>
-                                <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
+                                <h3 class="font-bold mb-2 text-xl">Hồ sơ</h3>
+                                <p class=""> Thông tin này sẽ được hiển thị công khai vì vậy hãy cẩn thận với những gì bạn chia sẻ. </p>
                             </div>
 
                             <!-- form body -->
@@ -50,7 +49,7 @@
 
                                 
 
-                                <h4><b>Personal</b></h4>
+                                <h4><b>Cá nhân</b></h4>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <!-- Column 1: Profile Image -->
                                     <div class="bg-gray-100 p-4  flex items-center" style="border-radius: 10px;">
@@ -102,43 +101,43 @@
                                 </div>
                                 <div class="line">
                                     {% render_field p_form.full_name class="line__input" %}
-                                    <span for="username" class="line__placeholder"> First Name   </span>
+                                    <span for="username" class="line__placeholder"> Họ tên </span>
                                 </div>
                                 <div class="line">
                                     {% render_field p_form.bio class="line__input"  %}
-                                    <span for="username" class="line__placeholder"> Bio  </span>
+                                    <span for="username" class="line__placeholder"> Bio </span>
                                 </div>
                                 <div class="line">
                                     {% render_field p_form.about_me class="line__input" %}
-                                    <span for="username" class="line__placeholder"> About Me   </span>
+                                    <span for="username" class="line__placeholder"> Giới thiệu </span>
                                 </div>
                                 <div class="line">
                                     {% render_field p_form.relationship class="line__input" %}
-                                    <span for="username" class="line__placeholder"> Relationship Status   </span>
+                                    <span for="username" class="line__placeholder"> Tình trạng hôn nhân  </span>
                                 </div>
                             </div>
 
                             <div class="lg:py-4 lg:px-20 flex-1 space-y-4 p-6">
-                                <h4><b>Contact</b></h4>
+                                <h4><b>Liên lạc</b></h4>
                                 <div class="line">
                                     {% render_field p_form.phone class="line__input" %}
-                                    <span for="username" class="line__placeholder"> Mobile Number   </span>
+                                    <span for="username" class="line__placeholder"> Số điện thoại </span>
                                 </div>
                                 <div class="line">
                                     {% render_field u_form.email class="line__input" %}
-                                    <span for="username" class="line__placeholder"> Email  </span>
+                                    <span for="username" class="line__placeholder"> Email </span>
                                 </div>
                             </div>
 
                             <div class="lg:py-4 lg:px-20 flex-1 space-y-4 p-6">
-                                <h4><b>Address</b></h4>
+                                <h4><b>Địa chỉ</b></h4>
                                 <div class="line">
                                     {% render_field p_form.address class="line__input" %}
-                                    <span for="username" class="line__placeholder"> Address   </span>
+                                    <span for="username" class="line__placeholder"> Địa chỉ   </span>
                                 </div>
                                 <div class="line">
                                     {% render_field p_form.city class="line__input" %}
-                                    <span for="username" class="line__placeholder"> City  </span>
+                                    <span for="username" class="line__placeholder"> Thành phố  </span>
                                 </div>
                                 <div class="line">
                                     {% render_field p_form.state class="line__input" %}
@@ -146,27 +145,7 @@
                                 </div>
                                 <div class="line">
                                     {% render_field p_form.country class="line__input" %}
-                                    <span for="username" class="line__placeholder"> State  </span>
-                                </div>
-                            </div>
-
-                            <div class="lg:py-4 lg:px-20 flex-1 space-y-4 p-6">
-                                <h4><b>Address</b></h4>
-                                <div class="line">
-                                    {% render_field p_form.address class="line__input" %}
-                                    <span for="username" class="line__placeholder"> Address   </span>
-                                </div>
-                                <div class="line">
-                                    {% render_field p_form.city class="line__input" %}
-                                    <span for="username" class="line__placeholder"> City  </span>
-                                </div>
-                                <div class="line">
-                                    {% render_field p_form.state class="line__input" %}
-                                    <span for="username" class="line__placeholder"> State  </span>
-                                </div>
-                                <div class="line">
-                                    {% render_field p_form.country class="line__input" %}
-                                    <span for="username" class="line__placeholder"> State  </span>
+                                    <span for="username" class="line__placeholder"> Đất nước  </span>
                                 </div>
                             </div>
 

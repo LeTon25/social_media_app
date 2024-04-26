@@ -11,7 +11,7 @@ urlpatterns = [
     path("core/inbox/", views.inbox, name="inbox"),
     path("core/inbox/<username>/", views.inbox_detail, name="inbox_detail"),
 
-    # Group CHat
+    # Group Chát
     path("core/group-inbox/", views.group_inbox, name="group_inbox"),
     path("core/group-inbox/<slug:slug>/", views.group_inbox_detail, name="group_inbox_detail"),
 
@@ -38,6 +38,8 @@ urlpatterns = [
     #Group
     path('groups/',views.load_groups,name="groups"),
     path('groups/create-group',views.load_create_group,name="create-group-page"),
+    path('groups/<slug:slug>/', views.group_detail, name='group_detail'),   
+    # path('group/<slug:slug>/view', views.increase_group_views, name='increase_group_views'),
 
     #Pages
     path('pages/',views.load_pages,name='pages'),
@@ -47,7 +49,7 @@ urlpatterns = [
     path('core/inbox/<username>/video/', views.videoCall),
     path('get_token/', views.getToken),
 
-    path('create_member/', views.createMember),
+    path('core/inbox/<username>/video/create_member/', views.createMember),
     path('get_member/', views.getMember),
     path('delete_member/', views.deleteMember),
 
@@ -69,5 +71,7 @@ urlpatterns = [
     path("reject-friend-request/", views.reject_friend_request, name="reject-friend-request"),
     path("unfriend/", views.unfriend, name="unfriend"),
     path("block-user/", views.block_user, name="block_user"),
+    path('add-group/',views.add_group,name="add-group"),
+    path('groups/my-group/<username>',views.my_group,name="my-group"),
 
 ]

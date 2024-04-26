@@ -18,14 +18,14 @@ $(document).ready(function() {
       $.ajax({
         url: '/create-post/',
         type: 'POST',
-        dataType: 'json',
+        dataType: 'JSON',
         data: formData,
         processData: false,
         contentType: false,
         
   
         success: function(res) {
-            console.log("Post Saved to DB...");
+            console.log("============ POST da luu vao db ============");
             console.log(res.post.title);
             console.log(res.post.image_url);
             console.log(res.post.full_name);
@@ -157,7 +157,7 @@ $(document).on("click", "#like-btn", function(){
 
     $.ajax({
         url: "/like-post/",
-        dataType: "json",
+        dataType: "JSON",
         data:{
             "id":btn_val
         },
@@ -193,7 +193,7 @@ $(document).on("click", "#comment-btn", function(){
 
     $.ajax({
         url: "/comment-post/",
-        dataType: "json",
+        dataType: "JSON",
         data:{
             "id":id,
             "comment":comment,
@@ -250,7 +250,7 @@ $(document).on("click", "#like-comment-btn", function(){
 
     $.ajax({
         url: "/like-comment/",
-        dataType: "json",
+        dataType: "JSON",
         data:{
             "id":id
         },
@@ -289,7 +289,7 @@ $(document).on("click", "#reply-comment-btn", function(){
 
     $.ajax({
         url: "/reply-comment/",
-        dataType: "json",
+        dataType: "JSON",
         data:{
             "id":id,
             "reply":reply,
@@ -326,7 +326,7 @@ $(document).on("click", "#delete-comment", function(){
 
     $.ajax({
         url: "/delete-comment/",
-        dataType: "json",
+        dataType: "JSON",
         data: {
             "id":id
         },
@@ -345,7 +345,7 @@ $(document).on("click", "#add-friend", function(){
 
     $.ajax({
         url: "/add-friend/",
-        dataType: "json",
+        dataType: "JSON",
         data:{
             "id":id
         },
@@ -373,7 +373,7 @@ $(document).on("click", "#accept-friend-request", function(){
 
     $.ajax({
         url: "/accept-friend-request/",
-        dataType: "json",
+        dataType: "JSON",
         data: {
             "id":id
         },
@@ -394,7 +394,7 @@ $(document).on("click", "#reject-friend-request", function(){
 
     $.ajax({
         url: "/reject-friend-request/",
-        dataType: "json",
+        dataType: "JSON",
         data: {
             "id":id
         },
@@ -416,7 +416,7 @@ $(document).on("click", "#unfriend", function(){
 
     $.ajax({
         url: "/unfriend/",
-        dataType: "json",
+        dataType: "JSON",
         data: {
             "id":id
         },
@@ -435,7 +435,7 @@ $(document).on("click", "#block-user-btn", function(){
     
     $.ajax({
         url: "/block-user/",
-        dataType: "json",
+        dataType: "JSON",
         data: {
             "id":id
         },
@@ -446,26 +446,3 @@ $(document).on("click", "#block-user-btn", function(){
     })
 })
 
-// $(document).on("click", "#video-call__btn", () => {
-//     console.log("OKKK")
-//     console.log("OKKK")
-//     console.log("OKKK")
-//     console.log("OKKK")
-
-
-//     let id = $(this).attr("data-call-user")
-
-//     console.log("id = " + id)
-    
-//     // $.ajax({
-//     //     url: "/block-user/",
-//     //     dataType: "json",
-//     //     data: {
-//     //         "id":id
-//     //     },
-//     //     success: function(response){
-//     //         console.log(response);
-//     //         $(".block-text"+id).html("<i class='fas fa-check-circle'></i> User Blocked Successfully. ")
-//     //     }
-//     // })
-// })

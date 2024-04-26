@@ -1,14 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.timesince import timesince
 from django.utils.text import slugify
 from django.db.models import OuterRef, Subquery
 from django.db.models import Q, Count, Sum, F, FloatField
 from django.core.paginator import Paginator
+from django.urls import reverse
 
-from core.models import Post, Friend, FriendRequest, Notification, Comment, ReplyComment, ChatMessage, GroupChatMessage, GroupChat
+from core.models import Post, Friend, FriendRequest, Notification, Comment, ReplyComment, ChatMessage, GroupChatMessage, GroupChat, Group
 from userauths.models import User, Profile, user_directory_path
 
 import random
@@ -131,7 +132,6 @@ def like_post(request):
         'likes':post.likes.all().count()
     }
     return JsonResponse({"data":data})
-
 
 
 @csrf_exempt
@@ -333,6 +333,7 @@ def unfriend(request):
 @login_required
 def inbox(request):
     user_id = request.user
+    print("===================================== inbox user_id: ", request)
 
     chat_message = ChatMessage.objects.filter(
         id__in =  Subquery(
@@ -359,6 +360,9 @@ def inbox(request):
 @login_required
 def inbox_detail(request, username):
     user_id = request.user
+    # user_id = get_object_or_404(User, username=username)
+    # print("===================================== username: ", username)
+    # print("===================================== user_id: ", user_id)
     message_list = ChatMessage.objects.filter(
         id__in =  Subquery(
             User.objects.filter(
@@ -384,7 +388,6 @@ def inbox_detail(request, username):
     ).order_by("date")
 
     messages_detail.update(is_read=True)
-    
     if messages_detail:
         r = messages_detail.first()
         reciever = User.objects.get(username=r.reciever)
@@ -564,6 +567,93 @@ def load_pages(request):
 def load_create_page(request):
     return render(request,'pages/create-page.html')
 
+#trả về trang groups
+def load_groups(request):
+    groups = Group.objects.filter(active=True)
+    
+    context = {
+        "groups":groups
+    }
+    return render(request,'groups/index.html', context)
+
+def group_detail(request, slug):
+    group = get_object_or_404(Group, slug=slug)
+    return render(request, 'groups/group-detail.html', {'group': group})
+
+def load_create_group(request):
+    return render(request,'groups/create-group.html')
+
+def load_group_profile(request):
+    return render(request,'groups/group-detail.html')
+
+@csrf_exempt
+def add_group(request):
+    if request.method == 'POST':
+        name = request.POST.get('group-name')
+        topic = request.POST.get('group-topic')
+        description = request.POST.get('group-description')
+        friend = request.POST.get('group-friend')
+        visibility = request.POST.get('visibility')
+
+        print("name ============", name)
+        print("topic ============", topic)
+        print("description ============", description)
+        print("friend ============", friend)
+        print("access ============", visibility)
+
+        uuid_key = shortuuid.uuid()
+        uniqueid = uuid_key[:4]
+
+        if name and description:
+            group = Group(user=request.user, name=name, topic=topic, description=description, visibility=visibility, slug=slugify(name) + "-" + str(uniqueid.lower()))
+            group.save()
+
+            if friend:
+                friend_ids = [int(num) for num in friend.split(",")] if friend else []
+                for id in friend_ids:
+                    friend_user = User.objects.get(id=id)
+                    group.members.add(friend_user)
+            
+
+            return JsonResponse({'group': {
+                "group": group,
+                "name": group.name,
+                "topic": group.topic,
+                "description": group.description,
+                "date": timesince(group.date),
+                "views": group.views,
+                "visibility": group.visibility,
+            }})
+        else:
+            return JsonResponse({'error': 'Invalid post data'})
+
+    return JsonResponse({"data":"Sent"})
+            
+    #         context = {
+    #             "group": {
+    #                 "name": group.name,
+    #                 "description": group.description,
+    #                 "date": timesince(group.date),
+    #                 "views": group.views,
+    #                 "visibility": group.visibility,
+    #             }
+    #         }
+
+    #         return render(request, 'groups/group-detail.html', context)
+    #     else:
+    #         return JsonResponse({'error': 'Invalid post data'})
+    # else:
+    #     return render(request, 'groups/group-detail.html')
+
+
+# def increase_group_views(request, slug):
+#     group = get_object_or_404(Group, slug=slug)
+#     Group.objects.filter(slug=slug).update(views=F('views') + 1)
+#     return HttpResponseRedirect(reverse('group_detail', args=[slug]))
+
+def my_group(request, username):
+    return render(request,'groups/create-group.html')
+
 # trả về tạo group chat
 def load_group_chat(request):
     return render(request, 'chat/create_group_chat.html')
@@ -588,7 +678,7 @@ def getToken(request):
 
 
 @csrf_exempt
-def createMember(request):
+def createMember(request, username):
     data = json.loads(request.body)
     member, created = RoomVideoCall.objects.get_or_create(
         name=data['name'],

@@ -40,19 +40,19 @@
                 </div>
 
                 <div>
-                    <label for="" class="font-semibold text-base"> Danh mục nhóm </label>
+                    <label for="" class="font-semibold text-base"> Chủ đề của nhóm </label>
                     <select id="select-category" name="select-category" class="shadow-none selectpicker with-border">
-                        <option value="1">Công nghệ</option>
-                        <option value="2">Xe cộ</option>
-                        <option value="3">Hài kịch</option>
-                        <option value="4">Kinh tế và thương mại</option>
-                        <option value="5">Giáo dục</option>
-                        <option value="6">Giải trí</option>
-                        <option value="7">Phim ảnh</option>
-                        <option value="8">Trò chơi</option>
-                        <option value="9">Khoa học viễn tưởng</option>
-                        <option value="10">Lịch sử</option>
-                        <option value="0">Khác</option>
+                        <option value="Công nghệ">Công nghệ</option>
+                        <option value="Xe cộ">Xe cộ</option>
+                        <option value="Hài kịch">Hài kịch</option>
+                        <option value="Kinh tế và thương mại">Kinh tế và thương mại</option>
+                        <option value="Giáo dục">Giáo dục</option>
+                        <option value="Giải trí">Giải trí</option>
+                        <option value="Phim ảnh">Phim ảnh</option>
+                        <option value="Trò chơi">Trò chơi</option>
+                        <option value="Khoa học viễn tưởng">Khoa học viễn tưởng</option>
+                        <option value="Lịch sử">Lịch sử</option>
+                        <option value="Khác">Khác</option>
                     </select>
                 </div>
 
@@ -64,10 +64,10 @@
 
                 <div>
                     <label for="" class="font-semibold text-base"> Mời bạn bè (không bắt buộc) </label>
-                    <select id="select-friends" name="select-friends" class="shadow-none selectpicker with-border">
+                    <select id="select-friends" name="select-friends" class="shadow-none selectpicker with-border" multiple>
                         {% for f in request.user.profile.friends.all %}
                         
-                        <option value="{{f.sender.id}}">{{f.profile.full_name}}</option>
+                        <option value="{{f.id}}">{{f.profile.full_name}}</option>
 
                         {% endfor %}
                     </select>
@@ -77,8 +77,8 @@
                     <label for="" class="font-semibold text-base"> Chọn quyền riêng tư </label>
                     <div> Anyone can see who's in the group and what they post. </div>
                     <select id="select-status" name="" class="shadow-none selectpicker with-border">
-                        <option value="1" data-icon="uil-globe" selected>Công khai</option>
-                        <option value="2" data-icon="uil-bullseye"> Riêng tư </option>
+                        <option value="Everyone" data-icon="uil-globe" selected>Công khai</option>
+                        <option value="Only Me" data-icon="uil-bullseye">Riêng tư</option>
                         {% comment %} <option data-icon="uil-chat-bubble-user">My Following</option>
                         <option data-icon="uil-layer-group-slash">Unlisted</option> {% endcomment %}
                     </select>

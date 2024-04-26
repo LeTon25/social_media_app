@@ -12,8 +12,6 @@ from shortuuid.django_fields import ShortUUIDField
 import shortuuid
 import os
 
-
-
 VISIBILITY = (
     ("Only Me","Only Me"),
     ("Everyone","Everyone"),
@@ -25,7 +23,6 @@ FRIEND_REQUEST = (
     ("reject","Reject"),
 )
 
-
 NOTIFICATION_TYPE = (
     ("Friend Request", "Friend Request"),
     ("Friend Request Accepted", "Friend Request Accepted"),
@@ -34,10 +31,12 @@ NOTIFICATION_TYPE = (
     ("New Comment", "New Comment"),
     ("Comment Liked", "Comment Liked"),
     ("Comment Replied", "Comment Replied"),
-    
-
 )
 
+# ACCESS_PERMISSION = {
+#     ("Private","Private"),
+#     ("Public","Public"),
+# }
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -200,10 +199,10 @@ class Notification(models.Model):
 
 class Group(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    memebers = models.ManyToManyField(User, blank=True, related_name="memebers")
-
+    members = models.ManyToManyField(User, blank=True, related_name="members")
     image = models.ImageField(upload_to=user_directory_path, null=True, blank=True)
     name = models.CharField(max_length=500, blank=True ,null=True)
+    topic = models.CharField(max_length=900, blank=True ,null=True)
     description = models.TextField(blank=True ,null=True)
     video = models.FileField(upload_to=user_directory_path, null=True, blank=True)
     visibility = models.CharField(max_length=10, default="everyone", choices=VISIBILITY)
@@ -230,8 +229,11 @@ class Group(models.Model):
     def thumbnail(self):
         return mark_safe('<img src="/media/%s" width="50" height="50" object-fit:"cover" style="border-radius: 5px;" />' % (self.image))
     
-    def memeber_count(self):
-        return self.memebers.all().count()
+    def member_count(self):
+        return self.members.all().count()
+    
+    def first_member(self):
+        return self.members.first()
     
 
 class GroupPost(models.Model):

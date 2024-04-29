@@ -163,7 +163,7 @@ LOGOUT_REDIRECT_URL = "userauths:sign-up"
 
 
 JAZZMIN_SETTINGS = {
-    'site_header': "Facebook Clone",
+    'site_header': "Open World",
     'site_brand': "Connecting people together...",
     'site_logo': "images/logo.png",
     'copyright':  "All Right Reserved 2023",
@@ -173,7 +173,7 @@ JAZZMIN_SETTINGS = {
         {"name": "Company", "url": "/admin/addons/company/"},
         {"name": "Users", "url": "/admin/userauths/user/"},
     ],
-
+    'custom_css': 'assets/css/custom_jazzmin.css',
     "order_with_respect_to": [
         "core",
         "core.post",

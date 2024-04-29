@@ -55,7 +55,13 @@ div.inline-related {
     color: rgb(255,255,255,0.3);
     margin-top: 1rem;
 }
-
+.jazzmin-login-page{
+    min-height: auto !important;
+}
+.login-logo img{
+    height: 80px;
+    width: 80px;
+}
 /* Table styles */
 .table tr.form-row {
     display: table-row;

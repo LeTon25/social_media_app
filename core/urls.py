@@ -61,6 +61,7 @@ urlpatterns = [
     path("create-post/", views.create_post, name="create-post"),
     path("delete-post/", views.delete_post, name="delete-post"),
     path("edit-post/", views.edit_post, name="edit-post"),
+    path("get-post/", views.get_post, name="get-post"),
     path("like-post/", views.like_post, name="like-post"),
     path("comment-post/", views.comment_on_post, name="comment-post"),
     path("like-comment/", views.like_comment, name="like-comment"),

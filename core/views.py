@@ -96,7 +96,6 @@ def create_post(request):
 @csrf_exempt
 def delete_post(request):
     id = request.GET['id']
-    print("=============================== id = " + id)
     post = Post.objects.get(id=id)
     post.delete()
 
@@ -105,9 +104,51 @@ def delete_post(request):
     }
     return JsonResponse({"data":data})
         
+def get_post(request):
+    try:
+        post_id = request.GET['id']
+        post = Post.objects.get(id=post_id)
+
+        print("============================ post.title =", post.title)
+        print("============================ post.image =", post.image.url)
+        print("============================ post.visibility =", post.visibility)
+
+        posts = {
+            "title": post.title,
+            "image": post.image.url,
+            "visibility": post.visibility
+        }
+        return JsonResponse(posts)
+    except ObjectDoesNotExist:
+        return JsonResponse({"error": "Post not found"}, status=404)
+
+
 @csrf_exempt
 def edit_post(request):
-    print("OKKK")
+    try:
+        if request.method == 'POST':
+            post_id = request.POST['post-id']
+            title = request.POST['post-caption']
+            image = request.FILES['post-thumbnail']
+            visibility = request.POST['visibility']
+            
+            post = Post.objects.get(id=post_id)
+
+            post.title = title
+            post.image = image
+            post.visibility = visibility
+            post.save()
+
+            updated_post = {
+                "title": post.title,
+                "image": post.image.url,
+                "visibility": post.visibility
+            }
+            return JsonResponse(updated_post)
+    except ObjectDoesNotExist:
+        return JsonResponse({"error": "Post not found"}, status=404)
+
+
 
 @csrf_exempt
 def like_post(request):

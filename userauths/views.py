@@ -13,7 +13,7 @@ from core.models import FriendRequest, Post, Group
 
 def RegisterView(request, *args, **kwargs):
     if request.user.is_authenticated:
-        messages.warning(request, f"Hey {request.user.username}, you are already logged in")
+        messages.warning(request, f"Người dùng {request.user.username} đã đăng nhập ")
         return redirect('core:feed')   
 
     form = UserRegisterForm(request.POST or None)
@@ -27,7 +27,7 @@ def RegisterView(request, *args, **kwargs):
         user = authenticate(email=email, password=password)
         login(request, user)
 
-        messages.success(request, f"Hi {request.user.username}, your account have been created successfully.")
+        messages.success(request, f"Xin chào {request.user.username}, tài khoản của bạn đã đươc tạo thành công.")
 
         profile = Profile.objects.get(user=request.user)
         profile.full_name = full_name
@@ -46,27 +46,22 @@ def LoginView(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-
         try:
             user = User.objects.get(email=email)
-
             user = authenticate(request, email=email, password=password)
-
             if user is not None:
                 login(request, user)
-                messages.success(request, "You are Logged In")
+                messages.success(request, "Đăng nhập thành công")
                 return redirect('core:feed')
             else:
-                messages.error(request, 'Username or password does not exit.')
-        
+                messages.error(request, 'Username hoặc mật khẩu không dúng')
         except:
-            messages.error(request, 'User does not exist')
-
+            messages.error(request, 'Người dùng không tồn tại')
     return HttpResponseRedirect("/")
 
 def LogoutView(request):
     logout(request)
-    messages.success(request, 'You have been logged out')
+    messages.success(request, 'Đăng xuất thành công')
     return redirect("userauths:sign-in")
 
 
@@ -96,7 +91,7 @@ def friend_profile(request, username):
     sender = request.user
     receiver = profile.user
     bool_friend = False
-    print("========================  Add or cancel")
+    print("========================  Thêm hoặc hủy")
     try:
         friend_request = FriendRequest.objects.get(sender=sender, receiver=receiver)
         if friend_request:
@@ -133,7 +128,7 @@ def profile_update(request):
         if p_form.is_valid() and u_form.is_valid():
             p_form.save()
             u_form.save()
-            messages.success(request, "Profile Updated Successfully.")
+            messages.success(request, "Hồ sơ đã được cập nhật thành công")
             return redirect('userauths:profile-update')
     else:
         p_form = ProfileUpdateForm(instance=request.user.profile)

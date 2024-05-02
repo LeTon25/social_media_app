@@ -349,7 +349,7 @@
                     chatMessage += '<div class="message-bubble me">'
                     chatMessage += '<div class="message-bubble-inner">';
                     chatMessage += '<div class="message-text">';
-                    chatMessage += '<a href = <img src="/media/uploads/images/' + image_path + '" target="_blank">'    
+                    chatMessage += '<a href = "/media/uploads/images/' + image_path + '" src="/media/uploads/images/' + image_path + '" target="_blank">'    
                     chatMessage += '<img src="/media/uploads/images/' + image_path + '" class="message-image" alt="">';
                     chatMessage += '</a>'
                     chatMessage += '</div>';
@@ -447,7 +447,8 @@
                 let type = element.getAttribute('data-type')
                 switch (type) {
                     case 'anh':
-                        image = element.getAttribute('src')
+                        image = element.getElementsByClassName('message-reply__file__image')[0].getAttribute('src')
+                        console.log(image)
                         break;
                     case 'file':
                         fileDoc_data = element.getAttribute('data-value') ?  element.getAttribute('data-value') : ''

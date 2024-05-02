@@ -68,6 +68,24 @@ class ChatConsumer(WebsocketConsumer):
         data = json.loads(text_data)
         message_type = data.get('type')
         print("==================== message_type = ", message_type)
+        print(data)
+        message = data.get('message')
+        sender_username = data.get('sender')
+        image = data.get('image')
+        imageName= ''
+        file_data = data.get('file_doc')
+        file_name = data.get('file_name')
+        try:
+            sender = User.objects.get(username=sender_username)
+            profile = Profile.objects.get(user=sender)
+            profile_image = profile.image.url
+            if(len(image) >0):
+                imageName =  self.process_image(image)
+            if (len(file_name) > 0 and len(file_data) > 0):
+                self.process_file(file_name,file_data)
+                #print(file_data)
+        except User.DoesNotExist:
+            profile_image = ''
 
         if message_type == 'chat_message':
             message = data.get('message')

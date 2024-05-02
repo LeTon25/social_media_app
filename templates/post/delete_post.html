@@ -16,34 +16,8 @@
         <div class="flex items-center w-full justify-end border-t p-3">
             <div class="flex space-x-2">
                 <button class="uk-modal-close bg-red-600 flex h-9 items-center justify-center rounded-md text-white px-5 font-medium">Hủy</button>
-                <button id="delete-confirm" data-post-id="{{ p.id }}" class="bg-blue-600 flex h-9 items-center justify-center rounded-md text-white px-5 font-medium"> Xóa </button>
+                <button id="delete-confirm" class="bg-blue-600 flex h-9 items-center justify-center rounded-md text-white px-5 font-medium"> Xóa </button>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-
-    // Xử lý xóa bài post
-    $(document).on("click", "#delete-confirm", function(e){
-        e.preventDefault();
-        var post_id = $(this).data("post-id");
-        console.log(post_id)
-/*
-        $.ajax({
-            url: "/delete-post/",
-            dataType: "JSON",
-            data: { "id": post_id },
-            success: function(res) {
-                console.log(res + "Xoa POST thanh cong");
-                $("#post-item-" + post_id).addClass("d-none");
-                $('#delete-post-modal').removeClass("uk-open");
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        })
-*/
-    });
-
-</script>

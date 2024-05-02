@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -165,7 +166,7 @@
                                                     </span>
                                                     <div class="drop_text">
                                                         <p> <strong>{{f.sender.profile.full_name}}</strong> send you a friend request. </p>
-                                                        <time> {{f.date|timesince}} ago </time>
+                                                        <time> {{f.date|custom_timesince}} </time>
                                                     </div>
                                                     <div class="d-flex" id="friend-request-button-div">
                                                         <a id="accept-friend-request"  data-request-id="{{f.sender.id}}" class="accept-friend-request-hide{{f.sender.id}} flex items-center justify-center h-10 px-5 rounded-md bg-blue-600 text-white space-x-1.5 hover:text-white" style="margin-left: 5px;"> 
@@ -300,7 +301,7 @@
                                                         <div class="drop_avatar"> <img style="object-fit: cover; width: 40px; height: 40px;" src="{{m.reciever.profile.image.url}}" alt="">
                                                         </div>
                                                         <div class="drop_text">
-                                                            <strong> {{m.reciever.profile.full_name}} </strong> <time>{{m.date|timesince}} ago</time>
+                                                            <strong> {{m.reciever.profile.full_name}} </strong> <time>{{m.date|custom_timesince}}</time>
                                                             <p> {{m.message|truncatechars:30}}</p>
                                                         </div>
                                                     </a>
@@ -323,8 +324,8 @@
                                         
                                     </ul>
                                 </div>
-                                <a href="{% url 'core:inbox' %}" class="see-all">All Chat Messages</a>
-                                <a href="{% url 'core:group_inbox' %}" class="see-all">All Group Messages</a>
+                                <a href="{% url 'core:inbox' %}" class="see-all">Xem tất cả trong Messenger</a>
+                                {% comment %} <a href="{% url 'core:group_inbox' %}" class="see-all">All Group Messages</a> {% endcomment %}
                             </div>
 
 
@@ -596,6 +597,8 @@
     <script src="{% static 'assets/js/custom.js' %}"></script>
     <script src="{% static 'assets/js/function.js' %}"></script>
     <script src="{% static 'assets/js/group.js' %}"></script>
+    <script src="{% static 'assets/js/post.js' %}"></script>
+    <script src="{% static 'assets/js/message.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap-select.min.js' %}"></script>
     <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 

@@ -1,6 +1,6 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-
+{% load custom_filters %}
 {% block content %}
 <!-- Boostrap -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
@@ -23,7 +23,7 @@
                         <input id="autocomplete-input" type="text" placeholder="Search">
                         <i class="icon-material-outline-search"></i>
                     </div>
-                    <h2 class="text-2xl font-semibold">Chats</h2>
+                    <h2 class="text-2xl font-semibold">Đoạn chat</h2>
                     <span
                         class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
                 </div>
@@ -40,7 +40,7 @@
                                 <div class="message-by">
                                     <div class="message-by-headline">
                                         <h5>{{m.reciever.profile.full_name}}</h5>
-                                        <span>{{m.date|timesince}} ago</span>
+                                        <span>{{m.date|custom_timesince}}</span>
                                     </div>
                                     <p>{{m.message|truncatechars:40}}</p>
                                 </div>
@@ -57,7 +57,7 @@
                                 <div class="message-by">
                                     <div class="message-by-headline">
                                         <h5>{{m.sender.profile.full_name}}</h5>
-                                        <span>{{m.date|timesince}} ago</span>
+                                        <span>{{m.date|custom_timesince}}</span>
                                     </div>
                                     <p>{{m.message|truncatechars:40}}</p>
                                 </div>
@@ -245,8 +245,8 @@
                         <div class="message-reply__inner p-1" id="fileInputContainer">
                         </div>
                         <div class="message-reply__inner">
-                            <textarea id="chat-input" cols="1" rows="1" placeholder="Write Message"></textarea>
-                            <button id="send-btn" class="button ripple-effect">Send</button>
+                            <textarea id="chat-input" cols="1" rows="1" placeholder="Gửi tin nhắn đến @"></textarea>
+                            <button id="send-btn" class="button ripple-effect">Gửi</button>
                         </div>
                     </div>
                 </div>
@@ -264,7 +264,7 @@
                 <div class="message-info__action d-flex justify-content-center align-items-center">
                     <div class="message-info__action-item">
                         <i class="bi bi-person-circle"></i>
-                        <span>Profile</span>
+                        <span>Hồ sơ</span>
                     </div>
                     <div class="message-info__action-item">
                         <i class="bi bi-camera-video"></i>
@@ -301,6 +301,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+
 <script>
     $(function () {
         var receiver = null;
@@ -331,6 +332,16 @@
             var reciever = data.reciever;
             var image_path = data.image_paths;
             var file_path = data.file_paths;
+            
+            if (data.type === 'incoming_video_call') {
+                // Hiển thị thông báo cuộc gọi đến trên bên nhận
+                alert(`Cuộc gọi đến từ ${data.from}`);
+            } else if (data.type === 'outgoing_video_call') {
+                // Kiểm tra nếu là bên gọi mới mở cửa sổ video call
+                if (data.to === "{{sender}}") {
+                    window.open(`/core/inbox/${data.to}/video/`, "_blank", "width=800,height=600,left=400,top=100");
+                }
+            }
             if (sender === "{{sender}}") {
                 var chatMessage = ''
                 // load hình ảnh nếu có
@@ -347,8 +358,7 @@
                     chatMessage += '</div>';
                 }
                 // load file nếu có 
-                if (file_path.length !=0)
-                {
+                if (file_path.length !=0) {
                     chatMessage += '<div class="message-bubble me">'
                     chatMessage += '<div class="message-bubble-inner">';
                     chatMessage += '<div class="message-text">';
@@ -441,12 +451,14 @@
                         break;
                     case 'file':
                         fileDoc_data = element.getAttribute('data-value') ?  element.getAttribute('data-value') : ''
-                        fileDoc_name = element.getElementsByClassName('message-reply__file__name')[0].textContent ? element.getElementsByClassName('message-reply__file__name')[0].textContent : ''
+                        fileDoc_name = element.getElementsByClassName('message-reply__file__name')[0].textContent 
+                            ? element.getElementsByClassName('message-reply__file__name')[0].textContent : ''
                         break;    
                 }
             })
             console.log(fileDoc_data)
             var data = {
+                'type': "chat_message",
                 'message': message,
                 'sender': sender,
                 'reciever': username,
@@ -462,6 +474,37 @@
             $(".chat_container").scrollTop(100000000000);
         });
 
+        $('.video-call__btn').click(async function () {
+            let user_id = $(this).attr("data-call-user")
+            let user_name = $(this).attr("data-name-user")
+
+            var sender = "{{request.user.username}}";
+    
+            let response = await fetch(`/get_token/?channel=${user_id}`)
+            let data = await response.json()
+    
+            let UID = data.uid
+            let token = data.token
+
+            var callData = {
+                'type': 'video-call',
+                'sender': sender,
+                'receiver_id': user_id,
+                'receiver_name': user_name,
+                'UID': UID,
+                'token': token
+            };
+
+            socket.send(JSON.stringify(callData));
+    
+        })
+        //sessionStorage.setItem('UID', UID)
+        //sessionStorage.setItem('token', token)
+        //sessionStorage.setItem('user_id', user_id)
+        //sessionStorage.setItem('user_name', user_name)
+
+        //window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
+        
     });
     $(document).ready(function () {
         $(".chat_container").scrollTop(100000000000);
@@ -483,6 +526,7 @@
     });
 
 </script>
+
 <!-- Xử lí khi gửi hình ảnh -->
 <script>
     function uploadImage() {
@@ -526,7 +570,7 @@
         })
     }
 </script>
-<!-- Xử lí khi gửi file doc,pdf,txt...-->
+<!-- Xử lí khi gửi file doc,pdf,txt... -->
 <script>
     function uploadFile() {
         $('#fileInput').click()
@@ -564,7 +608,7 @@
     }
 </script>
 
-<!-- Xử lí khi chưa nhập tin nhắn thì không cho nhắn nút gửi-->
+<!-- Xử lí khi chưa nhập tin nhắn thì không cho nhắn nút gửi -->
 <script>
     $(document).ready(function () {
         var chatInputValue = $('#chat-input');
@@ -584,6 +628,24 @@
     })
 </script>
 
+<!-- Bật tắt phần message Info -->
+<script>
+    $(document).ready(function () {
+        $('.message-info__btn').click(function () {
+            $('.message-info').toggle()
+        })
+    })
+</script>
+
+<!-- Thực hiện cuộc gọi -->
+<script>
+    $('.call__btn').click(function () {
+        console.log("call__btn OKKKK")
+    })
+    
+    
+</script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
@@ -591,43 +653,5 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
     crossorigin="anonymous"></script>
-<!-- Bật tắt phần message Info-->
-<script>
-    $(document).ready(function () {
-        $('.message-info__btn').click(function () {
-            $('.message-info').toggle()
-        })
 
-        $('.call__btn').click(function () {
-            // Lấy tất cả các khóa trong sessionStorage
-            const keys = Object.keys(sessionStorage);
-
-            // Lặp qua từng khóa và lấy giá trị tương ứng
-            keys.forEach(key => {
-                const value = sessionStorage.getItem(key);
-                console.log(`Key: ${key}, Value: ${value}`);
-            });
-
-            //sessionStorage.clear();
-        })
-        
-        $('.video-call__btn').click(async function () {
-            let user_id = $(this).attr("data-call-user")
-            let user_name = $(this).attr("data-name-user")
-            
-            let response = await fetch(`/get_token/?channel=${user_id}`)
-            let data = await response.json()
-
-            let UID = data.uid
-            let token = data.token
-
-            sessionStorage.setItem('UID', UID)
-            sessionStorage.setItem('token', token)
-            sessionStorage.setItem('user_id', user_id)
-            sessionStorage.setItem('user_name', user_name)
-
-            window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
-        })
-    })
-</script>
 {% endblock content %}

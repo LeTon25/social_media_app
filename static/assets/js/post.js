@@ -141,7 +141,8 @@ $(document).ready(function() {
             ';
         $(".post-div").prepend(_html);
         $("#create-post-modal").removeClass("uk-flex uk-open")
-        // create-post is-story uk-modal 
+        $('#post-caption').val("")
+        $('#preview_post_thumbnail').attr("src", "")
         },
         error: function(xhr, status, error) {
           console.error(error);
@@ -184,7 +185,6 @@ $(document).on("click", "#delete-confirm", function(e){
 $(document).on("click", ".link-edit-post", function(e){
     e.preventDefault();
     var post_id = $(this).attr('data-id');
-    console.log(post_id)
 
     $.ajax({
         url: "/get-post/",
@@ -216,31 +216,46 @@ $(document).on("click", "#save-post", function(e){
     let post_caption = $("#post-caption-edit").val();
     let post_visibility = $("#visibility-edit").val();
 
-    var fileInput = document.getElementById('post-thumbnail-edit');
+    let fileInput = $('#post-thumbnail-edit')[0];
     var file = fileInput.files[0];
-    if(file) {
-        var fileName = file.name;
-    }
-    else {
-        console.log(file)
-    }
-
+    var fileName;
+    let urlImage;
+    
     var formData = new FormData();
     formData.append('post-id', post_id);
     formData.append('post-caption', post_caption);
     formData.append('visibility', post_visibility);
-    formData.append('post-thumbnail', file, fileName);
+    
+    console.log($('#post-thumbnail-edit'))
+    console.log("fileInput = " + fileInput)
+    console.log("file = " + file)
+    
+    if(file != undefined) {
+        fileName = file.name;
+        console.log("fileName = " + fileName)
+        formData.append('post-thumbnail', file, fileName);
+    }
+    else {
+        urlImage = $('#preview_post_thumbnail_edit').attr("src").split("/media")[1]
+        console.log("urlImage = " + urlImage)
+        formData.append('url-image', urlImage);
+    }
 
     $.ajax({
         url: "/edit-post/",
+        type: 'POST',
         dataType: "JSON",
-        data: { "id": post_id },
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function(res) {
             var postToUpdate = $("#post-item-" + post_id);
 
             postToUpdate.find(".post-title").text(res.title);
             postToUpdate.find(".post-image").attr("src", res.image);
-            // postToUpdate.find(".post-visibility").text(res.visibility);
+            $("#edit-post-modal").removeClass("uk-flex uk-open")
+            $('#post-caption-edit').val("")
+            $('#preview_post_thumbnail_edit').attr("src", "")
         },
         error: function(xhr, status, error) {
             console.error(error);

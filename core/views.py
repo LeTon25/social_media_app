@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.utils.timesince import timesince
 from django.utils.text import slugify
 from django.db.models import OuterRef, Subquery
@@ -109,10 +109,6 @@ def get_post(request):
         post_id = request.GET['id']
         post = Post.objects.get(id=post_id)
 
-        print("============================ post.title =", post.title)
-        print("============================ post.image =", post.image.url)
-        print("============================ post.visibility =", post.visibility)
-
         posts = {
             "title": post.title,
             "image": post.image.url,
@@ -127,15 +123,21 @@ def get_post(request):
 def edit_post(request):
     try:
         if request.method == 'POST':
-            post_id = request.POST['post-id']
-            title = request.POST['post-caption']
-            image = request.FILES['post-thumbnail']
-            visibility = request.POST['visibility']
-            
+            post_id = request.POST.get('post-id')
+            title = request.POST.get('post-caption')
+            visibility = request.POST.get('visibility')
             post = Post.objects.get(id=post_id)
 
+            image = request.FILES.get('post-thumbnail') if 'post-thumbnail' in request.FILES else request.POST.get('url-image')
+            print("image = ", image)
+            if image:
+                if 'post-thumbnail' in request.POST and '/media/' in image:
+                    image = image.replace('/media/', '') 
+                post.image = image
+                print(post.image)
+
+
             post.title = title
-            post.image = image
             post.visibility = visibility
             post.save()
 
@@ -145,9 +147,10 @@ def edit_post(request):
                 "visibility": post.visibility
             }
             return JsonResponse(updated_post)
+        else:
+            return HttpResponse("Invalid request method")
     except ObjectDoesNotExist:
         return JsonResponse({"error": "Post not found"}, status=404)
-
 
 
 @csrf_exempt
@@ -374,7 +377,6 @@ def unfriend(request):
 @login_required
 def inbox(request):
     user_id = request.user
-    print("===================================== inbox user_id: ", request)
 
     chat_message = ChatMessage.objects.filter(
         id__in =  Subquery(
@@ -401,9 +403,7 @@ def inbox(request):
 @login_required
 def inbox_detail(request, username):
     user_id = request.user
-    # user_id = get_object_or_404(User, username=username)
-    # print("===================================== username: ", username)
-    # print("===================================== user_id: ", user_id)
+    
     message_list = ChatMessage.objects.filter(
         id__in =  Subquery(
             User.objects.filter(

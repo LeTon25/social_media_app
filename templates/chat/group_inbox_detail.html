@@ -75,7 +75,7 @@
                                             <div class="message-avatar"><img src="{{ m.sender.profile.image.url }}" alt=""></div>
                                             <div class="message-text">
                                                 <p>{{m.message}}</p>
-                                                <p style="color: rgba(255, 255, 255, 0.479);"><small>{{ m.date|timesince }} ago - {{ m.sender.profile.full_name }}</small></p>
+                                                <p style="color: rgba(255, 255, 255, 0.479);"><small>{{ m.date|custom_timesince }} - {{ m.sender.profile.full_name }}</small></p>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
@@ -86,7 +86,7 @@
                                             <div class="message-avatar"><img src="{{ m.sender.profile.image.url }}" alt=""></div>
                                             <div class="message-text">
                                                 <p>{{m.message}}</p>
-                                                <p style="color: gray"><small>{{ m.date|timesince }} ago - {{ m.sender.profile.full_name }}</small></p>
+                                                <p style="color: gray"><small>{{ m.date|custom_timesince }} - {{ m.sender.profile.full_name }}</small></p>
 
                                             </div>
                                         </div>

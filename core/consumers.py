@@ -66,6 +66,7 @@ class ChatConsumer(WebsocketConsumer):
         
     def receive(self, text_data):
         data = json.loads(text_data)
+        print(data)
         message = data.get('message')
         sender_username = data.get('sender')
         image = data.get('image')

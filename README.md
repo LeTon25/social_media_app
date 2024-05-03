@@ -101,10 +101,10 @@ python manage.py runserver
 <img src="game_star.jpg" style="zoom:60%" alt="game"/>
 <h3 align="center">Stack Brick Page</h3>
 
-#### 6.2 2048
+#### 6.2 2048 Game
 
 <img src="2048.jpg" style="zoom:60%" alt="usecase" />
-<h3 align="center">2048 Page</h3>
+<h3 align="center">2048 Game Page</h3>
 
 #### 6.3 Tic Tac Toe
 

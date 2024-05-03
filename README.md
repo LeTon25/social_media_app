@@ -88,28 +88,31 @@ python manage.py runserver
 
 ### Database
 
-<img src="website_to_register_to_buy_movie_tickets\source\ERD.png" style="zoom:60%;" alt ="ERD"/>
-
+<img src="so\source\ERD.png" style="zoom:60%;" alt ="ERD"/>
+<img src="SOCIAL_MEDIA_APP\asset"/>
 ### 6. Game
+<img src="game.jpg" style="zoom:60%" alt="game"/>
+<h3 align="center">Game Page</h3>
 
 #### 6.1 Stack Brick
 
-<img src="website_to_register_to_buy_movie_tickets\source\Usecasetq.png" style="zoom:60%" alt="usecase" />
+
+<img src="game_star.jpg" style="zoom:60%" alt="game"/>
 <h3 align="center">Stack Brick Page</h3>
 
 #### 6.2 2048
 
-<img src="website_to_register_to_buy_movie_tickets\source\Usecasetq.png" style="zoom:60%" alt="usecase" />
+<img src="2048.jpg" style="zoom:60%" alt="usecase" />
 <h3 align="center">2048 Page</h3>
 
 #### 6.3 Tic Tac Toe
 
-<img src="website_to_register_to_buy_movie_tickets\source\Usecasetq.png" style="zoom:60%" alt="usecase" />
+<img src="TicTacToe.jpg" style="zoom:60%" alt="usecase" />
 <h3 align="center">Tic Tac Toe Page</h3>
 
 #### 6.4 Fire && Water
 
-<img src="website_to_register_to_buy_movie_tickets\source\Usecasetq.png" style="zoom:60%" alt="usecase" />
+<img src="game_fire.jpg" style="zoom:60%" alt="usecase" />
 <h3 align="center">Fire && Water Page</h3>
 
 #### Any question you can contact with us
@@ -132,3 +135,6 @@ Author:
 #### Note:
 The website won second prize at the University of Natural Sciences in the Hackathon Contest
 
+
+
+[def]: ocial_media_app\asset\game

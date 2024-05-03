@@ -8,9 +8,16 @@
    sudo apt-get install python 
    ```
 
-<space>2.Cài đặt django : pip install django<space>
+2.Cài đặt django : 
+ ```bash
+   pip install django 
+   ```
 
-<space>3.Di chuyển vào thư mục dự án : cd đường dẫn đến dự án /social_media_app><space>
+3.Di chuyển vào thư mục dự án : cd đường dẫn đến dự án /social_media_app>
+
+ ```bash
+   cd đường dẫn đến dự án /social_media_app>
+   ```
 
 <space>4.Cài đặt các thư viện cần thiết từ file requirements.txt : pip install -r requirements.txt<space>
 

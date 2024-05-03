@@ -133,10 +133,10 @@ Above is all of function we made
 Any question you can contact with us
 
 #### email:
-- [vothuongtruongnhon2002@gmail.com](mailto:vothuongtruongnhon2002@gmail.com)
+- [letanminhtoan2505@gmail.com](mailto:letanminhtoan2505@gmail.com)
 - [lengocgiau2k3@gmail.com](mailto:lengocgiau2k3@gmail.com)
-- [Phamductai2k3@gmail.com](mailto:Phamductai2k3@gmail.com)
-- [PHThaiNT@gmail.com](mailto:PHThaiNT@gmail.com)
+- [dominhquan15623@gmail.com](mailto:dominhquan15623@gmail.com)
+- [TangQuocTuan@gmail.com](mailto:PHThaiNT@gmail.com)
 
 
 Author:

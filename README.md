@@ -90,6 +90,7 @@ python manage.py runserver
 
 <img src="so\source\ERD.png" style="zoom:60%;" alt ="ERD"/>
 <img src="SOCIAL_MEDIA_APP\asset"/>
+
 ### 6. Game
 <img src="game.jpg" style="zoom:60%" alt="game"/>
 <h3 align="center">Game Page</h3>

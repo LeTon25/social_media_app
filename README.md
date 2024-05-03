@@ -16,12 +16,24 @@
 3.Di chuyển vào thư mục dự án : 
 
  ```bash
-   cd  /social_media_app>
+   cd  social_media_app
    ```
 
-<space>4.Cài đặt các thư viện cần thiết từ file requirements.txt : pip install -r requirements.txt<space>
+4.Cài đặt các thư viện cần thiết từ file requirements.txt : 
 
-<space>5.Chạy dự án web : python manage.py runserver<space>
+```bash
+   pip install -r requirements.txt
+   ```
+5.Chạỵ Cơ Sở Dữ Liệu: 
+```bash
+   python manage.py migrate
+   ```
+
+5.Chạy dự án web : 
+```bash
+   python manage.py runserver
+   ```
+
 
 
 

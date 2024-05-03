@@ -143,7 +143,7 @@ Author:
 
 | leader                | member       | member         | member         |
 |-----------------------|--------------|----------------|----------------|
-| Võ Trường Nhơn        | Phạm Đức Tài | Phạm Hồng Thái | Lê Ngọc Giàu   |
+|Lê Tấn Minh Toàn       | Lê Ngọc Giàu | Đỗ Minh Quân   | Tăng QUốc Tuấn |
 
 #### Note:
 The website won second prize at the University of Natural Sciences in the Hackathon Contest

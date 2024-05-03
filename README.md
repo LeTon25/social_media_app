@@ -4,9 +4,9 @@
 ### Linux
 <space>1.Cài đặt python : sudo apt-get install python <space>
 
-<space2.Cài đặt django : pip install django><space>
+<space?2.Cài đặt django : pip install django<space>
 
-<space3.Di chuyển vào thư mục dự án : cd đường dẫn đến dự án /social_media_app><space>
+<space>3.Di chuyển vào thư mục dự án : cd đường dẫn đến dự án /social_media_app><space>
 
 4.Cài đặt các thư viện cần thiết từ file requirements.txt : pip install -r requirements.txt
 5.Chạy dự án web : python manage.py runserver

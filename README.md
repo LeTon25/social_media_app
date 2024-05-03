@@ -1,7 +1,7 @@
 # Social Media App
 ## Installation Guide
 
-### Linux
+#### Linux
 
 1.Cài đặt python : sudo apt-get install python 
  ```bash

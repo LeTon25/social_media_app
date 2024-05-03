@@ -1,6 +1,6 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-
+{% load custom_filters %}
 {% block content %}
 
     <!-- Main Contents -->
@@ -33,7 +33,7 @@
                                             <div class="message-by">
                                                 <div class="message-by-headline">
                                                     <h5>{{m.reciever.profile.full_name}}</h5>
-                                                    <span>{{m.date|timesince}} ago</span>
+                                                    <span>{{m.date|custom_timesince}}</span>
                                                 </div>
                                                 <p>{{m.message|truncatechars:40}}</p>
                                             </div>
@@ -49,7 +49,7 @@
                                             <div class="message-by">
                                                 <div class="message-by-headline">
                                                     <h5>{{m.sender.profile.full_name}}</h5>
-                                                    <span>{{m.date|timesince}} ago</span>
+                                                    <span>{{m.date|timcustom_timesinceesince}}</span>
                                                 </div>
                                                 <p>{{m.message|truncatechars:40}}</p>
                                             </div>
@@ -66,7 +66,7 @@
                 <div class="message-content">
 
                     <div class="messages-headline">
-                        <h4> Start a new conversation</h4>
+                        <h4> Bắt đầu cuộc trò chuyện mới </h4>
                     </div>
                 </div>
 

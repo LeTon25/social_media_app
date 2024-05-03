@@ -2,7 +2,11 @@
 ## Installation Guide
 
 ### Linux
-<space>1.Cài đặt python : sudo apt-get install python <space>
+
+1.Cài đặt python : sudo apt-get install python 
+ ```bash
+   sudo apt-get install python 
+   ```
 
 <space>2.Cài đặt django : pip install django<space>
 

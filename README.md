@@ -132,7 +132,7 @@ Above is all of function we made
 
 Any question you can contact with us
 
-#### email:
+#### Contact email:
 - [letanminhtoan2505@gmail.com](mailto:letanminhtoan2505@gmail.com)
 - [lengocgiau2k3@gmail.com](mailto:lengocgiau2k3@gmail.com)
 - [dominhquan15623@gmail.com](mailto:dominhquan15623@gmail.com)

@@ -13,10 +13,10 @@
    pip install django 
    ```
 
-3.Di chuyển vào thư mục dự án : cd đường dẫn đến dự án /social_media_app>
+3.Di chuyển vào thư mục dự án : 
 
  ```bash
-   cd đường dẫn đến dự án /social_media_app>
+   cd  /social_media_app>
    ```
 
 <space>4.Cài đặt các thư viện cần thiết từ file requirements.txt : pip install -r requirements.txt<space>

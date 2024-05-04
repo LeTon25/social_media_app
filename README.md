@@ -1,7 +1,7 @@
 # Social Media App
 ## 1. Introduction Product
 
-Minh Quân
+Dự án web Django của chúng tôi là một nền tảng truyền thông xã hội đa chức năng, nơi người dùng có thể kết nối và tương tác thông qua nhắn tin, gọi video, và tạo nhóm. Nó cung cấp một không gian để chia sẻ suy nghĩ và ý tưởng thông qua việc đăng bài, kết bạn và bình luận các bài viết, tạo ra một cộng đồng sống động và tương tác. Dự án này không chỉ là một nền tảng giao tiếp mà còn là một môi trường để mọi người thể hiện bản thân và xây dựng mối quan hệ.
 
 ## 2. Installation Guide
 

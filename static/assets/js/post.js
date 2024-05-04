@@ -226,10 +226,6 @@ $(document).on("click", "#save-post", function(e){
     formData.append('post-caption', post_caption);
     formData.append('visibility', post_visibility);
     
-    console.log($('#post-thumbnail-edit'))
-    console.log("fileInput = " + fileInput)
-    console.log("file = " + file)
-    
     if(file != undefined) {
         fileName = file.name;
         console.log("fileName = " + fileName)

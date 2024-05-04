@@ -333,15 +333,14 @@
             var image_path = data.image_paths;
             var file_path = data.file_paths;
             
-            if (data.type === 'incoming_video_call') {
+            /*if (data.type === 'incoming_video_call') {
                 // Hiển thị thông báo cuộc gọi đến trên bên nhận
                 alert(`Cuộc gọi đến từ ${data.from}`);
             } else if (data.type === 'outgoing_video_call') {
                 // Kiểm tra nếu là bên gọi mới mở cửa sổ video call
-                if (data.to === "{{sender}}") {
-                    window.open(`/core/inbox/${data.to}/video/`, "_blank", "width=800,height=600,left=400,top=100");
-                }
-            }
+                window.open(`/core/inbox/${data.to}/video/`, "_blank", "width=800,height=600,left=400,top=100");
+                
+            }*/
             if (sender === "{{sender}}") {
                 var chatMessage = ''
                 // load hình ảnh nếu có
@@ -480,6 +479,9 @@
             let user_name = $(this).attr("data-name-user")
 
             var sender = "{{request.user.username}}";
+
+            console.log(sender)
+            console.log(user_name)
     
             let response = await fetch(`/get_token/?channel=${user_id}`)
             let data = await response.json()
@@ -487,7 +489,7 @@
             let UID = data.uid
             let token = data.token
 
-            var callData = {
+            /*var callData = {
                 'type': 'video-call',
                 'sender': sender,
                 'receiver_id': user_id,
@@ -496,15 +498,17 @@
                 'token': token
             };
 
-            socket.send(JSON.stringify(callData));
+            socket.send(JSON.stringify(callData));*/
     
-        })
-        //sessionStorage.setItem('UID', UID)
-        //sessionStorage.setItem('token', token)
-        //sessionStorage.setItem('user_id', user_id)
-        //sessionStorage.setItem('user_name', user_name)
+            sessionStorage.setItem('UID', UID)
+            sessionStorage.setItem('token', token)
+            sessionStorage.setItem('user_id', user_id)
+            sessionStorage.setItem('user_name', user_name)
+            sessionStorage.setItem('sender', sender)
 
-        //window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
+    
+            //window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
+        })
         
     });
     $(document).ready(function () {

@@ -24,7 +24,7 @@
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
                         clip-rule="evenodd"></path>
                 </svg>
-                <span class="md:block hidden"> Create </span>
+                <span class="md:block hidden"> Tạo nhóm mới </span>
             </a>
         </div>
 
@@ -89,7 +89,9 @@
 
                                         <div class="flex mt-3.5 space-x-2 text-sm font-medium">
                                             <a href="#"
-                                                class="bg-blue-600 flex flex-1 h-8 items-center justify-center rounded-md text-white capitalize">
+                                                id="join-group"
+                                                class="bg-blue-600 flex flex-1 h-8 items-center justify-center rounded-md text-white capitalize"
+                                                data-group-id="{{g.id}}">
                                                 Tham gia
                                             </a>
                                             <a href="{% url 'core:group_detail' g.slug %}"
@@ -208,7 +210,7 @@
         <div class="sm:my-6 my-3 flex items-center justify-between border-b pb-3">
             <div>
                 <h2 class="text-xl font-semibold"> Nhóm bạn đã tham gia </h2>
-                <p class="font-medium text-gray-500 leading-6"> Nhóm CCCCC </p>
+                <p class="font-medium text-gray-500 leading-6"> Nhóm </p>
             </div>
         </div>
 

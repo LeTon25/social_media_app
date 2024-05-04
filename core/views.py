@@ -291,7 +291,7 @@ def add_friend(request):
     bool = False
 
     if sender.id == int(receiver_id):
-        return JsonResponse({'error': 'You cannot send a friend request to yourself.'})
+        return JsonResponse({'error': 'Bạn không thể gửi kết bạn cho chính mình'})
     
     receiver = User.objects.get(id=receiver_id)
     
@@ -310,6 +310,7 @@ def add_friend(request):
         send_notification(receiver, sender, None, None, noti_friend_request)
 
         return JsonResponse({'success': 'Sent',  'bool':bool})
+    
 
 
 @csrf_exempt
@@ -594,11 +595,6 @@ def load_more_posts(request):
 def load_birthday(request):
     return render(request,'core/birthday.html')
 
-
-#trả về trang groups
-def load_groups(request):
-    return render(request,'groups/index.html')
-
 def load_create_group(request):
     return render(request,'groups/create-group.html')
 
@@ -685,6 +681,21 @@ def add_group(request):
     #         return JsonResponse({'error': 'Invalid post data'})
     # else:
     #     return render(request, 'groups/group-detail.html')
+
+
+@csrf_exempt
+def join_group(request):
+    user = request.user
+    group_id = request.GET.get('id')
+
+    try:
+        group = Group.objects.get(id=group_id)
+        group.members.add(user)
+        # Lấy URL chi tiết nhóm
+        group_detail_url = reverse('core:group_detail', kwargs={'slug': group.slug})
+        return JsonResponse({'success': 'Sent', 'group_id': group.id, 'group_detail_url': group_detail_url})
+    except ObjectDoesNotExist:
+        return JsonResponse({'error': 'Group not found'}, status=404)
 
 
 # def increase_group_views(request, slug):

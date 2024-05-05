@@ -10361,6 +10361,10 @@ body.story-active header .header_widgets .is_link {
         padding-bottom: 50px;
     }
 
+    body .main_content.video {
+        padding: 0 !important;
+    }
+
     .container,
     .mcontainer {
         padding: 25px 15px;
@@ -10407,6 +10411,10 @@ body.story-active header .header_widgets .is_link {
     top: 35%;
     right: 13px;
     position: absolute;
+}
+
+.flex.space-x-4.lg\:font-bold {
+    justify-content: space-around;
 }
 
 .btn-night-mode .uk-switch-button {
@@ -10773,7 +10781,7 @@ html.dark,
 
 #room-name-wrapper{
     text-align: center;
-    font-size: 18px;
+    visibility: hidden;
 }
 
 #video-streams{
@@ -10846,11 +10854,11 @@ html.dark,
 }
 
 .control-icon{
-    height: 20px;
-    width: 20px;
+    height: 38px;
+    width: 38px;
     box-shadow: var(--shaddow);
     background-color: #fff;
-    padding: 10px;
+    padding: 6px;
     border-radius: 5px;
     cursor: pointer;
 }

@@ -74,5 +74,10 @@ urlpatterns = [
     path("block-user/", views.block_user, name="block_user"),
     path('add-group/',views.add_group,name="add-group"),
     path('groups/my-group/<username>',views.my_group,name="my-group"),
+    path("join-group/", views.join_group, name="join-group"),
+    path("create-group-post/", views.create_group_post, name="create-group-post"),
+    path("delete-group-post/", views.delete_group_post, name="delete-group-post"),
+    path("edit-group-post/", views.edit_group_post, name="edit-group-post"),
+    path("get-group-post/", views.get_group_post, name="get-group-post"),
 
 ]

@@ -31,7 +31,7 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title", )}
 
 class GroupAdmin(admin.ModelAdmin):
-    # inlines = [GroupPostTabAdmin]
+    inlines = [GroupPostTabAdmin]
     list_editable = ['user', 'name', 'visibility']
     list_display = ['thumbnail', 'user', 'name', 'visibility']
     prepopulated_fields = {"slug": ("name", )}
@@ -56,7 +56,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class ChatMessageAdmin(admin.ModelAdmin):
-    list_display = ['user', 'sender', 'reciever' ,'message','date', 'is_read']
+    list_display = ['sender', 'reciever' ,'message','date', 'is_read']
     
 
 class GroupChatAdmin(admin.ModelAdmin):
@@ -81,3 +81,4 @@ admin.site.register(ChatMessage, ChatMessageAdmin)
 admin.site.register(GroupChatMessage, GroupChatMessageAdmin)
 admin.site.register(GroupChat, GroupChatAdmin)
 admin.site.register(RoomVideoCall)
+admin.site.register(GroupPost)

@@ -1,6 +1,7 @@
 {% extends 'partials/base.html' %}
 {% load static %}
 {% load mathfilters %}
+{% load custom_filters %}
 {% block content %}
     
 
@@ -35,61 +36,6 @@
                 <!--  Feeds  -->
                 <div class="lg:flex lg:space-x-10">
                     <div class="lg:w-3/4 lg:px-20 space-y-7">
-
-                        <!-- user story -->
-                        <div class="user_story grid md:grid-cols-5 grid-cols-3 gap-2 lg:-mx-20 relative">
-
-                            <a href="#create-post" uk-toggle="target: body ; cls: story-active">
-                                <div class="single_story">
-                                    <img src="{% static 'assets/images/avatars/avatar-lg-1.jpg' %}" alt="">
-                                    <div class="story-avatar"> <img src="{% static 'assets/images/avatars/avatar-6.jpg' %}" alt=""></div>
-                                    <div class="story-content">
-                                        <h4>Erica Jones </h4>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" uk-toggle="target: body ; cls: story-active">
-                                <div class="single_story">
-                                    <img src="{% static 'assets/images/avatars/avatar-lg-2.jpg' %}" alt="">
-                                    <div class="story-avatar"> <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt=""></div>
-                                    <div class="story-content">
-                                        <h4> Dennis Han</h4>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" uk-toggle="target: body ; cls: story-active">
-                                <div class="single_story">
-                                    <img src="{% static 'assets/images/avatars/avatar-lg-3.jpg' %}" alt="">
-                                    <div class="story-avatar"> <img src="{% static 'assets/images/avatars/avatar-3.jpg' %}" alt=""></div>
-                                    <div class="story-content">
-                                        <h4> Alex Mohani</h4>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" uk-toggle="target: body ; cls: story-active">
-                                <div class="single_story">
-                                    <img src="{% static 'assets/images/avatars/avatar-lg-4.jpg' %}" alt="">
-                                    <div class="story-avatar"> <img src="{% static 'assets/images/avatars/avatar-4.jpg' %}" alt=""></div>
-                                    <div class="story-content">
-                                        <h4> Jonathan </h4>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" uk-toggle="target: body ; cls: story-active">
-                                <div class="single_story">
-                                    <img src="{% static 'assets/images/avatars/avatar-lg-5.jpg' %}" alt="">
-                                    <div class="story-avatar"> <img src="{% static 'assets/images/avatars/avatar-5.jpg' %}" alt=""></div>
-                                    <div class="story-content">
-                                        <h4> Stella Johnson</h4>
-                                    </div>
-                                </div>
-                            </a>
-
-                            <span class="absolute bg-white lg:flex items-center justify-center p-2 rounded-full 
-                            shadow-md text-xl w-9 z-10 uk-position-center-right -mr-4 hidden" uk-toggle="target: body ; cls: story-active"> 
-                            <i class="icon-feather-chevron-right"></i></span>
-
-                        </div>
                         <!-- create post -->
                         <div class="card lg:mx-0 p-4" uk-toggle="target: #create-post-modal">
                             <div class="flex space-x-3">
@@ -208,7 +154,7 @@
                                                     <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
                                                 </svg>
                                             </div>
-                                            <div> Like</div>
+                                            <div> Thích</div>
                                         </a>
                                         <a href="#" class="flex items-center space-x-2">
                                             <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
@@ -216,15 +162,15 @@
                                                     <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" />
                                                 </svg>
                                             </div>
-                                            <div> <b><span id="comment-count{{p.id}}">{{p.post_comments_count}}</span></b> Comment</div>
+                                            <div> <b><span id="comment-count{{p.id}}">{{p.post_comments_count}}</span></b> Bình luận</div>
                                         </a>
-                                        <a href="#" class="flex items-center space-x-2 flex-1 justify-end">
+                                        <a href="#" class="flex items-center space-x-2 justify-end">
                                             <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
                                                     <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
                                                 </svg>
                                             </div>
-                                            <div> Share</div>
+                                            <div> Chia sẻ</div>
                                         </a>
                                     </div>
                                     
@@ -353,7 +299,7 @@
                     </div>
                     <div class="lg:w-72 w-full">
 
-                        <a href="#birthdays" uk-toggle>
+                        {% comment %} <a href="#birthdays" uk-toggle>
                             <div class="bg-white mb-5 px-4 py-3 rounded-md shadow">
                                 <h3 class="text-line-through font-semibold mb-1"> Sinh nhật </h3>
                                 <div class="-mx-2 duration-300 flex hover:bg-gray-50 px-2 py-2 rounded-md">
@@ -362,7 +308,7 @@
                                     </p>
                                 </div>
                             </div>
-                        </a>
+                        </a> {% endcomment %}
 
                         <h3 class="text-xl font-semibold"> Liên lạc </h3>
 
@@ -397,7 +343,7 @@
                                         </p>
                                         <div class="contact-list-box-btns">
                                             <button type="button" class="button primary flex-1 block mr-2">
-                                                <i class="uil-envelope mr-1"></i> Send message</button>
+                                                <i class="uil-envelope mr-1"></i> Nhắn tin</button>
                                             <button type="button" href="#" class="button secondary button-icon mr-2">
                                                 <i class="uil-list-ul"> </i> </button>
                                             <button type="button" a href="#" class="button secondary button-icon"> 
@@ -427,7 +373,7 @@
                                         </p>
                                         <div class="contact-list-box-btns">
                                             <button type="button" class="button primary flex-1 block mr-2">
-                                                <i class="uil-envelope mr-1"></i> Send message</button>
+                                                <i class="uil-envelope mr-1"></i> Nhắn tin</button>
                                             <button type="button" href="#" class="button secondary button-icon mr-2">
                                                 <i class="uil-list-ul"> </i> </button>
                                             <button type="button" a href="#" class="button secondary button-icon"> 
@@ -913,13 +859,6 @@
             </ul>
 
         </div>
-
-        <!-- story colose button-->
-        <span class="story-btn-close" uk-toggle="target: body ; cls: story-active" uk-tooltip="title:Close story ; pos: left">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </span>
 
     </div>
 

@@ -154,6 +154,10 @@ python manage.py runserver
 <img src="./static/images/game_fire.jpg" style="zoom:60%" alt="usecase" />
 <h3 align="center">Fire && Water Page</h3>
 
+### 7. Database
+<img src="./static/images/ERD.drawio.png" style="zoom:60%" alt="database"/>
+<h3 align="center">Database</h3>
+
 #### Any question you can contact with us
 
 

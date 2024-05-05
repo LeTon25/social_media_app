@@ -232,6 +232,9 @@ class Group(models.Model):
     def member_count(self):
         return self.members.all().count()
     
+    def member_user_count(self):
+        return self.members.all().count() + 1
+    
     def first_member(self):
         return self.members.first()
     

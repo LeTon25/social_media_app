@@ -7,8 +7,6 @@ let NAME = sessionStorage.getItem('fullname')
 
 const client = AgoraRTC.createClient({mode:'rtc', codec:'vp8'})
 
-console.log(client)
-
 let localTracks = []
 let remoteUsers = {}
 

@@ -140,7 +140,7 @@
                                         </a>
                                         <div class="flex-1 font-semibold capitalize">
                                             <a href="#" class="text-black dark:text-gray-100">{{ p.user.profile.full_name|title }}</a>
-                                            <div class="text-gray-700 flex items-center space-x-2">{{p.date|timesince}} ago 
+                                            <div class="text-gray-700 flex items-center space-x-2">{{p.date|custom_timesince}} 
                                                 <ion-icon name="story-time"></ion-icon>
                                             </div>
                                         </div>
@@ -319,7 +319,7 @@
                                                                     </div>
                                                                 </details-menu>
                                                             </details>
-                                                    <span> <small>{{c.date|timesince}} ago</small> </span>
+                                                    <span> <small>{{c.date|custom_timesince}}</small> </span>
                                                 </div>
                                                 <div class="reply-div{{c.id}}">
                                                     
@@ -333,7 +333,7 @@
                                                                     <p class="leading-6">{{r.reply}}</p>
                                                                     <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
                                                                 </div>
-                                                                <span> <small>{{r.date|timesince}} ago</small> </span>
+                                                                <span> <small>{{r.date|custom_timesince}}</small> </span>
                                                             </div>
                                                         </div>
                                                         

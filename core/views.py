@@ -754,15 +754,17 @@ def add_group(request):
                     friend_user = User.objects.get(id=id)
                     group.members.add(friend_user)
             
+            group_detail_url = reverse('core:group_detail', kwargs={'slug': group.slug})
 
             return JsonResponse({'group': {
-                "group": group,
+                "id": group.id,
                 "name": group.name,
                 "topic": group.topic,
                 "description": group.description,
                 "date": timesince(group.date),
                 "views": group.views,
                 "visibility": group.visibility,
+                'group_detail_url': group_detail_url
             }})
         else:
             return JsonResponse({'error': 'Invalid post data'})
@@ -794,7 +796,6 @@ def join_group(request):
     try:
         group = Group.objects.get(id=group_id)
         group.members.add(user)
-        # Lấy URL chi tiết nhóm
         group_detail_url = reverse('core:group_detail', kwargs={'slug': group.slug})
         return JsonResponse({'success': 'Sent', 'group_id': group.id, 'group_detail_url': group_detail_url})
     except ObjectDoesNotExist:

@@ -156,7 +156,7 @@ Author:
 
 | leader                | member       | member         | member         |
 |-----------------------|--------------|----------------|----------------|
-|Lê Tấn Minh Toàn       | Lê Ngọc Giàu | Đỗ Minh Quân   | Tăng QUốc Tuấn |
+|Lê Tấn Minh Toàn       | Lê Ngọc Giàu | Đỗ Minh Quân   | Tăng Quốc Tuấn |
 
 
 #### Contact email:

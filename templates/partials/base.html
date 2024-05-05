@@ -1,0 +1,582 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="assets/images/favicon.png" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+        ================================================== -->
+    <title>Socialite Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Socialite is - Professional A unique and beautiful collection of UI elements">
+
+    <!-- icons
+    ================================================== -->
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+
+    <!-- CSS 
+    ================================================== -->
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Swal -->
+    <script src="https://unpkg.com/sweetalert2@7.8.2/dist/sweetalert2.all.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+
+    <style>
+        a{
+            text-decoration: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        <!-- Header -->
+        <header>
+            <div class="header_wrap">
+                <div class="header_inner mcontainer">
+                    <div class="left_side">
+
+                        <span class="slide_menu" uk-toggle="target: #wrapper ; cls: is-collapse is-active">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 4h18v2H3V4zm0 7h12v2H3v-2zm0 7h18v2H3v-2z" fill="currentColor"></path></svg>
+                        </span>
+
+                        <div id="logo">
+                            <a href="{% url 'core:feed' %}"> 
+                                <img src="{% static 'assets/images/logo_fb.png' %}" alt="">
+                                <img src="{% static 'assets/images/logo_fb.png' %}" class="logo_mobile" alt="">
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- search icon for mobile -->
+                    <div class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"> </div>
+                    <div class="header_search"><i class="uil-search-alt"></i>
+                        <input value="" type="text" class="form-control" placeholder="Tìm kiếm trên Facebook" id="search-input" autocomplete="off">
+                        <div uk-drop="mode: click" class="header_search_dropdown">
+                            
+                            <h4 class="search_title"> Recently </h4>
+                            <!-- <ul>
+                                
+                                <li>
+                                    <a href="#">  
+                                        <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="" class="list-avatar">
+                                        <div class="list-name">  Erica Jones </div>
+                                    </a>
+                                </li>
+
+                            </ul> -->
+                            <ul id="search-results"></ul>
+                        </div>
+                    </div>
+
+
+                        <script>
+                            $(document).ready(function() {
+                                $('#search-input').on('input', function() {
+                                    const query = $(this).val().trim();
+
+                                    if (query) {
+                                        $.ajax({
+                                            url: '/search/',
+                                            data: {
+                                                'q': query,
+                                            },
+                                            dataType: 'json',
+                                            success: function(data) {
+                                                const resultsUl = $('#search-results');
+                                                resultsUl.empty();
+
+                                                for (const user of data.users) {
+                                                    const listItem = $('<li></li>');
+
+                                                    const link = $('<a></a>').attr('href', '/user/profile/'+user.username + '/');
+                                                    listItem.append(link);
+
+                                                    if (user.profile_image) {
+                                                        const profileImage = $('<img>').attr('src', user.profile_image);
+                                                        profileImage.attr('alt', 'Profile Image');
+                                                        profileImage.addClass('list-avatar');
+                                                        link.append(profileImage);
+                                                    }
+
+                                                    const nameDiv = $('<div></div>').addClass('list-name').text(user.full_name);
+                                                    link.append(nameDiv);
+
+                                                    resultsUl.append(listItem);
+                                                }
+                                            },
+                                            error: function() {
+                                                console.log('Error occurred during the AJAX request.');
+                                            }
+                                        });
+                                    } else {
+                                        $('#search-results').empty();
+                                    }
+                                });
+                            });
+
+                        </script>
+
+                    <div class="right_side">
+
+                        <div class="header_widgets">
+
+                            <a href="#" class="is_icon">
+                                <i class="fas fa-user-plus text-gray-800"></i>
+                                <!-- <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg> -->
+                                <span>{{ friend_request.count }}</span>
+                            </a>
+                            <div uk-drop="mode: click" class="header_dropdown">
+                                <div class="dropdown_scrollbar" data-simplebar>
+                                    <div class="drop_headline">
+                                        <h4> Yêu cầu kết bạn </h4>
+                                        <div class="btn_action">
+                                            <a href="#" data-tippy-placement="left" title="Friend Requests">
+                                                <ion-icon name="settings-outline"></ion-icon>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <ul>
+                                        {% for f in friend_request %}
+                                            <li class="mt-3 mb-4 shadow p-3">
+                                                <a href="#">
+                                                    <div class="drop_avatar">
+                                                        <img src="{{f.sender.profile.image.url}}" alt="">
+                                                    </div>
+                                                    <span class="drop_icon bg-gradient-primary">
+                                                        <i class="icon-feather-thumbs-up"></i>
+                                                    </span>
+                                                    <div class="drop_text">
+                                                        <p> <strong>{{f.sender.profile.full_name}}</strong> gửi cho bạn lời mời kết bạn. </p>
+                                                        <time> {{f.date|custom_timesince}} </time>
+                                                    </div>
+                                                    <div class="d-flex" id="friend-request-button-div">
+                                                        <a id="accept-friend-request"  data-request-id="{{f.sender.id}}" class="accept-friend-request-hide{{f.sender.id}} flex items-center justify-center h-10 px-5 rounded-md bg-blue-600 text-white space-x-1.5 hover:text-white" style="margin-left: 5px;"> 
+                                                            <span style="cursor: pointer;" class="text-white accept-friend-request{{f.sender.id}}" id="friend-text"><i class="fas fa-user-plus"></i> Accept </span>
+                                                        </a>
+                                                        <a id="reject-friend-request"  data-request-id="{{f.sender.id}}" class="reject-friend-request-hide{{f.sender.id}} flex items-center justify-center h-10 px-5 rounded-md bg-red-600 text-white space-x-1.5 hover:text-white" style="margin-left: 5px;"> 
+                                                            <span style="cursor: pointer;" class="text-white reject-friend-request{{f.sender.id}}" id="friend-text"><i class="fas fa-user-minus"></i> Reject </span>
+                                                        </a>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        {% empty %}
+                                            <li> Chưa có lời mời kết bạn </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <a href="#" class="is_icon" uk-tooltip="title: Notifications">
+                                <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>
+                                <span>{{ notification.count }}</span>
+                            </a>
+                            <div uk-drop="mode: click" class="header_dropdown">
+                                <div class="dropdown_scrollbar" data-simplebar>
+                                    <div class="drop_headline">
+                                        <h4>Notifications </h4>
+                                        <div class="btn_action">
+                                            <a href="#" data-tippy-placement="left" title="Tùy chọn">
+                                                {% comment %} <ion-icon name="settings-outline" uk-tooltip="title: Message settings ; pos: left"></ion-icon> {% endcomment %}
+                                                <span class="absolute icon-feather-settings mr-4 text-xl uk-position-center-right cursor-pointer" uk-tooltip="title: Message settings ; pos: left"></span>
+                                            </a>
+                                            <a href="{% url 'core:group_chat' %}" data-tippy-placement="left" title="Tin nhắn mới">
+                                                {% comment %} <ion-icon name="checkbox-outline"></ion-icon> {% endcomment %}
+                                                <span class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <ul>
+                                        
+                                        {% for n in notification %}
+                                            <li class="{% if n.is_read == False %}not-read{% endif %} mb-3 mt-3">
+                                                <a href="#">
+                                                    <div class="drop_avatar">
+                                                        <img src="{{n.sender.profile.image.url}}" alt="">
+                                                    </div>
+                                                    <span class="drop_icon bg-gradient-primary">
+                                                        
+                                                        {% if n.notification_type == "New Like" %}<i class="icon-feather-thumbs-up"></i>{% endif %}
+                                                        {% if n.notification_type == "New Comment" %}<i class="icon-feather-message-square"></i>{% endif %}
+                                                        {% if n.notification_type == "Comment Liked" %}<i class="icon-feather-thumbs-up"></i>{% endif %}
+                                                        {% if n.notification_type == "Comment Replied" %}<i class="icon-feather-message-square"></i>{% endif %}
+                                                        {% if n.notification_type == "New Follower" %}<i class="icon-feather-user-plus"></i>{% endif %}
+                                                        {% if n.notification_type == "New Follower" %}<i class="icon-feather-user-plus"></i>{% endif %}
+                                                        {% if n.notification_type == "Friend Request Accepted" %}<i class="icon-feather-check-circle"></i>{% endif %}
+                                                        {% if n.notification_type == "Friend Request" %}<i class="icon-feather-user-plus"></i>{% endif %}
+                                                            
+                                                    </span>
+                                                    <div class="drop_text">
+                                                        <p>
+                                                            <strong>{{n.sender.profile.full_name|title}}</strong> 
+                                                            
+                                                            {% if n.notification_type == "New Like" %} đã thích bài đăng của bạn {% endif %}
+
+                                                            {% if n.notification_type == "New Comment" %} đã bình luận vào bài đăng của bạn {% endif %}
+
+                                                            {% if n.notification_type == "Comment Liked" %} đã thích bình luận của bạn {% endif %}
+
+                                                            {% if n.notification_type == "Comment Replied" %} đã trả lời bình luận của bạn {% endif %}
+
+                                                            {% if n.notification_type == "New Follower" %} vừa theo dõi bạn {% endif %}
+
+                                                            {% if n.notification_type == "Friend Request Accepted" %} Đã chấp nhận lời mời kết bạn {% endif %}
+
+                                                            {% if n.notification_type == "Friend Request" %} vừa gửi yêu cầu kết bạn {% endif %}
+                                                            
+                                                            
+                                                            {% if n.post %}
+                                                            <span class="text-link">{{ n.post.title }} </span>
+                                                            {% endif %}
+                                                                
+                                                        </p>
+                                                        <time> <small>{{n.date|custom_timesince}}</small> </time>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+
+                                        <!-- <li class="not-read">
+                                            <a href="#">
+                                                <div class="drop_avatar status-online"> <img src="{{request.user.profile.image.url}}" alt="">
+                                                </div>
+                                                <div class="drop_text">
+                                                    <p>
+                                                        <strong>{{request.user.profile.full_name}}</strong> Replay Your Comments in
+                                                        <span class="text-link">{{request.user.profile.bio|title}}</span>
+                                                    </p>
+                                                    <time> 9 hours ago </time>
+                                                </div>
+                                            </a>
+                                        </li> -->
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Message -->
+                            <a href="#" class="is_icon" uk-tooltip="title: Message">
+                                <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path></svg>
+                                <span>{{ chat_message.count }}</span>
+                            </a>
+                            <div uk-drop="mode: click" class="header_dropdown is_message">
+                                <div class="dropdown_scrollbar" data-simplebar>
+                                    <div class="drop_headline">
+                                        <h4>Messages </h4>
+                                        <div class="btn_action">
+                                            <a href="#" data-tippy-placement="left" title="Tùy chọn">
+                                                {% comment %} <ion-icon name="settings-outline" uk-tooltip="title: Message settings ; pos: left"></ion-icon> {% endcomment %}
+                                                <span class="absolute icon-feather-settings mr-4 text-xl uk-position-center-right cursor-pointer" uk-tooltip="title: Message settings ; pos: left"></span>
+                                            </a>
+                                            <a href="{% url 'core:group_chat' %}" data-tippy-placement="left" title="Tin nhắn mới">
+                                                {% comment %} <ion-icon name="checkbox-outline"></ion-icon> {% endcomment %}
+                                                <span class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="uk-input" placeholder="Search in Messages">
+                                    <ul style="overflow: hidden;">
+                                        {% for m in chat_message %}
+                                            {% if request.user == m.sender %}
+                                                <li class="un-read" style="overflow: hidden;">
+                                                    <a href="{% url 'core:inbox_detail' m.reciever.username %}">
+                                                        <div class="drop_avatar"> <img style="object-fit: cover; width: 40px; height: 40px;" src="{{m.reciever.profile.image.url}}" alt="">
+                                                        </div>
+                                                        <div class="drop_text">
+                                                            <strong> {{m.reciever.profile.full_name}} </strong> <time>{{m.date|custom_timesince}}</time>
+                                                            <p> {{m.message|truncatechars:30}}</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if request.user == m.reciever %}
+                                                <li class="un-read" style="overflow: hidden;">
+                                                    <a href="{% url 'core:inbox_detail' m.sender.username %}">
+                                                        <div class="drop_avatar"> <img style="object-fit: cover; width: 40px; height: 40px;" src="{{m.sender.profile.image.url}}" alt="">
+                                                        </div>
+                                                        <div class="drop_text">
+                                                            <strong> {{m.sender.profile.full_name}} </strong> <time><small>{{m.date|custom_timesince}}</small></time>
+                                                            <p> {{m.message|truncatechars:30}}</p>
+                                                        </div>
+                                                    </a>    
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        
+                                    </ul>
+                                </div>
+                                <a href="{% url 'core:inbox' %}" class="see-all">Xem tất cả trong Messenger</a>
+                            </div>
+
+                            <a href="#">
+                                <img src="{{request.user.profile.image.url}}" class="is_avatar" alt="">
+                            </a>
+                            <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
+
+                                <a href="{% url 'userauths:my-profile' %}" class="user">
+                                    <div class="user_avatar">
+                                        <img src="{{request.user.profile.image.url}}" alt="">
+                                    </div>
+                                    
+                                    <div class="user_name">
+                                        <div> {{request.user.profile.full_name}} </div>
+                                        <span> @{{request.user.username}}</span>
+                                    </div>
+                                </a>
+                                <hr>
+                                <a href="{% url 'userauths:my-profile' %}">
+                                    <i class="fas fa-user"></i>
+                                    Tài khoản của tôi
+                                </a>
+                                <a href="{% url 'userauths:profile-update' %}">
+                                    <i class="fas fa-cog"></i>
+                                    Chỉnh sửa hồ sơ
+                                </a>
+                                <a href="{% url 'core:groups' %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z"  clip-rule="evenodd" />
+                                    </svg>
+                                    Quản lý nhóm
+                                </a>
+                                <a href="#" id="night-mode" class="btn-night-mode">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                                      </svg>
+                                     Night mode
+                                    <span class="btn-night-mode-switch">
+                                        <span class="uk-switch-button"></span>
+                                    </span>
+                                </a>
+                                <a href="{% url 'userauths:sign-out' %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                    </svg>
+                                    Log Out 
+                                </a>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- sidebar -->
+        <div class="sidebar">
+
+            <div class="sidebar_inner" data-simplebar>
+
+                <ul>
+                    <li class="active"><a href="{% url 'core:feed' %}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                        </svg>
+                        <span> Bảng feed </span> </a>
+                    </li>
+                    {% comment %} <li><a href="{% url 'core:pages' %}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-yellow-500">
+                          <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path>
+                        </svg> 
+                        <span> Trang </span> </a>
+                    </li> {% endcomment %}
+                    <li><a href="{% url 'core:groups' %}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                        </svg><span> Nhóm </span></a>
+                    </li>
+                    <li><a href="{% url 'core:games' %}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-green-500">
+                            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                        </svg>  <span>  Chơi game </span></a>
+                    </li>
+                </ul>
+
+                {% comment %} <a href="#" class="see-mover h-10 flex my-1 pl-2 rounded-xl text-gray-600" uk-toggle="target: #more-veiw; animation: uk-animation-fade"> 
+                    <span class="w-full flex items-center" id="more-veiw">
+                        <svg class="  bg-gray-100 mr-2 p-0.5 rounded-full text-lg w-7" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        Xem thêm
+                    </span>
+                    <span class="w-full flex items-center" id="more-veiw" hidden>
+                        <svg  class="bg-gray-100 mr-2 p-0.5 rounded-full text-lg w-7"  fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg> 
+                        Ẩn bớt
+                    </span>
+                </a> {% endcomment %}
+
+                <h3 class="side-title"> Liên lạc </h3>
+
+                <div class="contact-list my-2 ml-1">
+
+                    {% for f in request.user.profile.friends.all %}
+                                    
+                                    
+                    <a href="{% url 'userauths:profile' f.username %}">
+                        <div class="contact-avatar">
+                            <img src="{{f.profile.image.url}}" alt="">
+                            <span class="user_status status_online"></span>
+                        </div>
+                        <div class="contact-username"> {{f.profile.full_name}}</div>
+                    </a>
+                    <div uk-drop="pos: left-center ;animation: uk-animation-slide-left-small">
+                        <div class="contact-list-box">
+                            <div class="contact-avatar">
+                                <img src="{{f.profile.image.url}}" alt="">
+                                <span class="user_status status_online"></span>
+                            </div>
+                            <div class="contact-username">  {{f.profile.full_name}}</div>
+                            {% comment %} <p>
+                                <ion-icon name="people" class="text-lg mr-1"></ion-icon> Become friends with
+                                <strong> Stella Johnson </strong> and <strong> 14 Others</strong>
+                            </p> {% endcomment %}
+                            <div class="contact-list-box-btns">
+                                <a href="{% url 'core:inbox_detail' f.username %}" class="button primary flex-1 block mr-2"> <i class="uil-envelope mr-1"></i> Nhắn tin</a>
+                                <button type="button" href="#" class="button secondary button-icon mr-2"><i class="uil-list-ul"> </i> </button>
+                                <button type="button" a href="#" class="button secondary button-icon"> <i class="uil-ellipsis-h"> </i> </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                <ul class="side_links" data-sub-title="Cài đặt">
+                    <li>
+                        <a href="{% url 'userauths:profile-update' %}"><ion-icon name="settings-outline" class="side-icon"></ion-icon> <span> Hồ sơ  </span> </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'core:create-group-page' %}">
+                            <ion-icon name="document-outline" class="side-icon"></ion-icon> <span> Tạo nhóm </span> 
+                        </a>
+                    </li>
+                    <script>
+                        function openNewWindow(event) {
+                          event.preventDefault();
+                          window.open(event.target.href, "_blank", "width=800,height=600,left=400,top=100");
+                        }
+                    </script>
+                    <li>
+                        <a href="{% url 'userauths:sign-out' %}" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');">
+                            <ion-icon name="log-in-outline" class="side-icon"></ion-icon> <span>  Đăng xuất  </span> 
+                        </a>    
+                    </li>
+
+                </ul>
+
+                <div class="footer-links">
+                    <a href="#">About</a>
+                    <a href="#">Blog </a>       
+                    <a href="#">Careers</a>
+                    <a href="#">Support</a>
+                    <a href="#">Contact Us </a>
+                    <a href="#">Developer</a>
+                    <a href="#">Terms of service</a>
+                </div>
+
+            </div>
+
+            <!-- sidebar overly for mobile -->
+            <div class="side_overly" uk-toggle="target: #wrapper ; cls: is-collapse is-active"></div>
+
+        </div>
+
+        
+        {% block content %}
+            
+        {% endblock content %}
+    </div>
+        
+        <script>
+            {% for message in messages %}
+    
+            Swal.fire({
+                icon: '{{message.tags}}',
+                title: '{{message}}',
+                text: '{{message.tags}}',
+                timer: 1500
+            })
+            {% endfor %}
+        </script>
+
+
+    <!-- For Night mode -->
+    <script>
+        (function(window, document, undefined) {
+            'use strict';
+            if (!('localStorage' in window))
+                return;
+            var nightMode = localStorage.getItem('gmtNightMode');
+            if (nightMode) {
+                document.documentElement.className += ' night-mode';
+            }
+        })(window, document);
+
+        (function(window, document, undefined) {
+
+            'use strict';
+
+            // Feature test
+            if (!('localStorage' in window)) return;
+
+            // Get our newly insert toggle
+            var nightMode = document.querySelector('#night-mode');
+            if (!nightMode) return;
+
+            // When clicked, toggle night mode on or off
+            nightMode.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.setItem('gmtNightMode', true);
+                    return;
+                }
+                localStorage.removeItem('gmtNightMode');
+            }, false);
+
+            // Áp dụng khi load lại trang không mất sự kiện night-mode
+            document.addEventListener('DOMContentLoaded', (event) => {
+                if (localStorage.getItem('gmtNightMode') === 'true') {
+                    document.documentElement.classList.add('dark');
+                }
+            });
+
+        })(window, document);
+    </script>
+
+    <!-- Javascript
+    ================================================== -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="{% static 'assets/js/function.js' %}"></script>
+    <script src="{% static 'assets/js/group.js' %}"></script>
+    <script src="{% static 'assets/js/post.js' %}"></script>
+    <script src="{% static 'assets/js/message.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap-select.min.js' %}"></script>
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+
+</body>
+
+</html>

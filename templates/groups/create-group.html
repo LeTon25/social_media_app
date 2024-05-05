@@ -1,0 +1,102 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% load custom_filters %}
+{% block content %}
+
+<!-- Main Contents -->
+<div class="main_content">
+    <div class="mcontainer">
+
+        <!--  breadcrumb -->
+        <div class="breadcrumb-area py-0">
+            <div class="breadcrumb">
+                <ul class="m-0">
+                    <li>
+                        <a href="{% url 'core:groups'%}">NHÓM</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">Tạo nhóm mới</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- create page-->
+        <div class="max-w-2xl m-auto shadow-md rounded-md bg-white lg:mt-20">
+
+            <!-- form header -->
+            <div class="text-center border-b border-gray-100 py-6">
+                <h3 class="font-bold text-xl"> Tạo nhóm </h3>
+            </div>
+
+            <!-- form body -->
+            <div class="p-10 space-y-7 form-create-group">
+
+                <div class="line">
+                    <input class="line__input" id="gr-name" name="" type="text"
+                        onkeyup="this.setAttribute('value', this.value);" value="" autocomplete="off">
+                    <span for="username" class="line__placeholder"> Tên nhóm </span>
+                </div>
+
+                <div>
+                    <label for="" class="font-semibold text-base"> Chủ đề của nhóm </label>
+                    <select id="select-category" name="select-category" class="shadow-none selectpicker with-border">
+                        <option value="Công nghệ">Công nghệ</option>
+                        <option value="Xe cộ">Xe cộ</option>
+                        <option value="Hài kịch">Hài kịch</option>
+                        <option value="Kinh tế và thương mại">Kinh tế và thương mại</option>
+                        <option value="Giáo dục">Giáo dục</option>
+                        <option value="Giải trí">Giải trí</option>
+                        <option value="Phim ảnh">Phim ảnh</option>
+                        <option value="Trò chơi">Trò chơi</option>
+                        <option value="Khoa học viễn tưởng">Khoa học viễn tưởng</option>
+                        <option value="Lịch sử">Lịch sử</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+
+                <div class="line h-32">
+                    <textarea class="line__input h-32" id="txt-description" name="" type="text"
+                        onkeyup="this.setAttribute('value', this.value);" value="" autocomplete="off"></textarea>
+                    <span for="username" class="line__placeholder"> Mô tả nhóm </span>
+                </div>
+
+                <div>
+                    <label for="" class="font-semibold text-base"> Mời bạn bè (không bắt buộc) </label>
+                    <select id="select-friends" name="select-friends" class="shadow-none selectpicker with-border" multiple>
+                        {% for f in request.user.profile.friends.all %}
+                        
+                        <option value="{{f.id}}">{{f.profile.full_name}}</option>
+
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="px-2 space-y-2">
+                    <label for="" class="font-semibold text-base"> Chọn quyền riêng tư </label>
+                    <div> Anyone can see who's in the group and what they post. </div>
+                    <select id="select-status" name="" class="shadow-none selectpicker with-border">
+                        <option value="Everyone" data-icon="uil-globe" selected>Công khai</option>
+                        <option value="Only Me" data-icon="uil-bullseye">Riêng tư</option>
+                        {% comment %} <option data-icon="uil-chat-bubble-user">My Following</option>
+                        <option data-icon="uil-layer-group-slash">Unlisted</option> {% endcomment %}
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- form footer -->
+            <div class="flex justify-center border-gray-100 py-8">
+                <button id="btn-add-group" type="button" class="button lg:w-1/3">
+                    Tạo
+                </button>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}

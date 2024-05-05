@@ -1,0 +1,97 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% load custom_filters %}
+{% block content %}
+
+<!-- Main Contents -->
+<div class="main_content">
+    <div class="mcontainer">
+
+        <!--  breadcrumb -->
+        <div class="breadcrumb-area py-0">
+            <div class="breadcrumb">
+                <ul class="m-0">
+                    <li>
+                        <a href="{% url 'core:group_chat'%}">Groups</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">Tạo nhóm chat mới</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- create page-->
+        <div class="max-w-2xl m-auto shadow-md rounded-md bg-white lg:mt-20">
+
+            <!-- form header -->
+            <div class="text-center border-b border-gray-100 py-6">
+                <h3 class="font-bold text-xl"> Tạo nhóm chat mới </h3>
+            </div>
+
+            <!-- form body -->
+            <div class="p-10 space-y-7">
+
+                <div class="line">
+                    <input class="line__input" id="" name="" type="text"
+                        onkeyup="this.setAttribute('value', this.value);" value="" autocomplete="off">
+                    <span for="username" class="line__placeholder"> Tên nhóm </span>
+                </div>
+
+                <div>
+                    <label for="" class="font-semibold text-base"> Thành viên </label>
+                    <select id="" name="" class="shadow-none selectpicker with-border">
+                        {% for f in request.user.profile.friends.all %}
+                        
+                        <option value="{{f.sender.id}}">{{f.profile.full_name}}</option>
+
+                        {% endfor %}
+                        {% comment %} <option value="1">Technology</option>
+                        <option value="2">Cars and Vehicles</option>
+                        <option value="3">Comedy</option>
+                        <option value="4">Economics and Trade</option>
+                        <option value="5">Education</option>
+                        <option value="6">Entertainment</option>
+                        <option value="7">Movies & Animation</option>
+                        <option value="8">Gaming</option>
+                        <option value="9">History and Facts</option>
+                        <option value="10">Live Style</option>
+                        <option value="0">Other</option> {% endcomment %}
+                    </select>
+                </div>
+
+                <div class="line h-14">
+                    <text class="line__input h-32" id="" name="" type="text"
+                        onkeyup="this.setAttribute('value', this.value);" value="" autocomplete="off"></text>
+                    {% comment %} <span for="username" class="line__placeholder"> Group description </span> {% endcomment %}
+                </div>
+
+                {% comment %} <div class="px-2 space-y-2">
+                    <label for="" class="font-semibold text-base"> Choose Privacy </label>
+                    <div> Anyone can see who's in the group and what they post. </div>
+                    <select id="" name="" class="shadow-none selectpicker with-border">
+                        <option data-icon="uil-bullseye"> Private </option>
+                        <option data-icon="uil-chat-bubble-user">My Following</option>
+                        <option data-icon="uil-layer-group-slash">Unlisted</option>
+                        <option data-icon="uil-globe" selected>Puplic</option>
+                    </select>
+                </div> {% endcomment %}
+
+            </div>
+
+            <!-- form footer -->
+            <div class="flex justify-center border-gray-100 py-8">
+                <button id="create-new-grchat-btn" type="button" class="button lg:w-1/3">
+                    Create Now
+                </button>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}

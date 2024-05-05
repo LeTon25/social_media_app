@@ -1,0 +1,696 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block content %}
+<!-- Boostrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<!-- Main Contents -->
+<div class="main_content">
+    <span uk-toggle="target: .message-content;"
+        class="fixed left-0 top-36 bg-red-600 z-10 py-1 px-4 rounded-r-3xl text-white"> Users</span>
+
+    <div class="messages-container">
+        <div class="messages-container-inner">
+            <!--Message-inbox -->
+            <div class="messages-inbox">
+                <div class="messages-headline">
+                    <div class="input-with-icon" hidden>
+                        <input id="autocomplete-input" type="text" placeholder="Search">
+                        <i class="icon-material-outline-search"></i>
+                    </div>
+                    <h2 class="text-2xl font-semibold">Đoạn chat</h2>
+                    <span
+                        class="absolute icon-feather-edit mr-4 text-xl uk-position-center-right cursor-pointer"></span>
+                </div>
+                <div class="messages-inbox-inner" data-simplebar>
+                    <ul>
+
+                        {% for m in chat_message %}
+                        {% if request.user == m.sender %}
+                        <li>
+                            <a href="{% url 'core:inbox_detail' m.reciever.username %}">
+                                <div class="message-avatar"><i class="status-icon status-online"></i><img
+                                        src="{{m.reciever.profile.image.url}}" alt=""></div>
+
+                                <div class="message-by">
+                                    <div class="message-by-headline">
+                                        <h5>{{m.reciever.profile.full_name}}</h5>
+                                        <span>{{m.date|custom_timesince}}</span>
+                                    </div>
+                                    <p>{{m.message|truncatechars:40}}</p>
+                                </div>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if request.user == m.reciever %}
+                        <li>
+                            <a href="{% url 'core:inbox_detail' m.sender.username %}">
+                                <div class="message-avatar"><i class="status-icon status-online"></i><img
+                                        src="{{m.sender.profile.image.url}}" alt=""></div>
+
+                                <div class="message-by">
+                                    <div class="message-by-headline">
+                                        <h5>{{m.sender.profile.full_name}}</h5>
+                                        <span>{{m.date|custom_timesince}}</span>
+                                    </div>
+                                    <p>{{m.message|truncatechars:40}}</p>
+                                </div>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+            <!-- Message-content-->
+            <div class="message-content">
+
+                <div class="messages-headline d-flex justify-content-between align-items-center">
+                    <div class="flex">
+                        <img class="mr-1" src="{{ receiver_details.profile.image.url }}"
+                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="">
+                        <h4 class="ml-1"> {{ receiver_details.profile.full_name|title }} </h4>
+                    </div>
+                    <div class="d-flex align-items-center">
+
+                        <span class="video-call__btn mr-3" 
+                            style="cursor: pointer; font-size: 20px;"
+                            data-id="{{request.user.id}}"
+                            data-username="{{request.user.username}}"
+                            data-fullname="{{request.user.full_name}}">
+
+                            <i class="bi bi-camera-video-fill"></i>
+                        </span>
+
+                        <span class="message-info__btn ms-3" style="cursor: pointer; font-size: 20px;">
+                            <i class="bi bi-info-circle"></i>
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="message-content-scrolbar" style="position: relative;">
+
+                    <!-- Message Content Inner -->
+                    <div class="message-content-inner chat_container"
+                        style="overflow-y: scroll; max-height: 429px; height: auto; ">
+
+
+                        {% for m in message_detail %}
+                        {% if m.sender == request.user %}
+                        {% if m.image_paths %}
+                        <div class="message-bubble me">
+                            <div class="message-bubble-inner">
+                                <div class="message-text">
+                                    <a href="/media/uploads/images/{{ m.image_paths }} " target="_blank">
+                                        <img src="/media/uploads/images/{{ m.image_paths }}" class="message-image" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endif %}
+                        {% if m.file_paths %}
+                        <div class="message-bubble me">
+                            <div class="message-bubble-inner">
+                                <div class="message-text">
+                                    <a href ="/media/uploads/files/{{m.file_paths }}" target="_blank">
+                                        <div class="d-flex justify-content-between align-items-center p-1 text-white ">
+                                             <i class="bi bi-file-earmark-fill"></i>
+                                             <span class="message-reply__file__name">{{m.file_paths }}</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endif %}
+                        <div class="message-bubble me">
+                            <div class="message-bubble-inner">
+                                <div class="message-avatar"><img src="{{m.sender.profile.image.url}}" alt=""></div>
+                                <div class="message-text">
+                                    <p>{{m.message}}</p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% else %}
+                        {% if m.image_paths %}
+                        <div class="message-bubble">
+                            <div class="message-bubble-inner">
+                                <div class="message-text">
+                                    <a href="/media/uploads/images/{{ m.image_paths }}" target="_blank">
+                                        <img src="/media/uploads/images/{{ m.image_paths }}" class="message-image" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endif %}
+                        {% if m.file_paths %}
+                        <div class="message-bubble">
+                            <div class="message-bubble-inner">
+                                <div class="message-text">
+                                    <a href ="/media/uploads/files/{{m.file_paths }}" target="_blank">
+                                        <div class="d-flex justify-content-between align-items-center p-1 text-black ">
+                                             <i class="bi bi-file-earmark-fill"></i>
+                                             <span class="message-reply__file__name">{{m.file_paths }}</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endif %}
+                        <div class="message-bubble">
+                            <div class="message-bubble-inner">
+                                <div class="message-avatar"><img src="{{m.sender.profile.image.url}}" alt=""></div>
+                                <div class="message-text">
+                                    <p>{{m.message}}</p>
+                                    <p class="text-muted"><small><span
+                                                style="color: rgba(128, 128, 128, 0.596);">{{m.date|custom_timesince}}</span></small></p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endif %}
+
+                        {% endfor %}
+                        <div id="chat-messages"></div>
+
+                    </div>
+                    <!-- Message Content Inner / End -->
+
+                    <!-- Reply Area -->
+                    <div class="message-reply" style="position: absolute; bottom: 0; left: 0; right: 0;">
+                        <div class="message-reply__inner">
+                            <input type="file" id="imageInput" style="display: none;" accept="image/*" hidden>
+                            <input type="file" id="fileInput" style="display: none;"
+                                accept=".txt, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv, .xml, .json, .html, .css, .js, .zip, .rar, .tar, .gz"
+                                hidden>
+                            <div aria-label="Gửi ảnh" data-action="anh" class="message-reply__action">
+                                <svg viewBox="0 0 12 13" width="20" height="20" fill="currentColor" class=""
+                                    style="color:black;">
+                                    <g fill-rule="evenodd" transform="translate(-450 -1073)">
+                                        <g>
+                                            <path
+                                                d="M99.825 918.322a2.55 2.55 0 0 1 .18-.712l-.489.043a1.601 1.601 0 0 0-.892.345 1.535 1.535 0 0 0-.557 1.321l.636 7.275c.01.12.186.123.199.003l.923-8.275zm4.67 1.591a1 1 0 1 1-1.991.175 1 1 0 0 1 1.991-.175m3.099 1.9a.422.422 0 0 0-.597-.05l-1.975 1.69a.288.288 0 0 0-.032.404l.442.526a.397.397 0 0 1-.606.51l-1.323-1.576a.421.421 0 0 0-.58-.063l-1.856 1.41-.265 2.246c-.031.357.173 1.16.53 1.19l6.345.397c.171.014.395-.02.529-.132.132-.111.38-.49.396-.661l.405-4.239-1.413-1.652z"
+                                                transform="translate(352 156.5)">
+                                            </path>
+                                            <path fill-rule="nonzero"
+                                                d="m107.589 928.97-6.092-.532a1.56 1.56 0 0 1-1.415-1.687l.728-8.328a1.56 1.56 0 0 1 1.687-1.416l6.091.533a1.56 1.56 0 0 1 1.416 1.687l-.728 8.328a1.56 1.56 0 0 1-1.687 1.415zm.087-.996.06.002a.561.561 0 0 0 .544-.508l.728-8.328a.56.56 0 0 0-.507-.604l-6.09-.533a.56.56 0 0 0-.605.507l-.728 8.328a.56.56 0 0 0 .506.604l6.092.532z"
+                                                transform="translate(352 156.5)">
+                                            </path>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div aria-label="Gửi Icon" data-action="icon" class="message-reply__action">
+                                <svg viewBox="0 0 12 13" width="20" height="20" fill="currentColor" class=""
+                                    style="color: black;">
+                                    <g fill-rule="evenodd" transform="translate(-450 -1073)">
+                                        <path
+                                            d="M458.508 1078.5a1 1 0 1 1-.015-2.002 1 1 0 0 1 .015 2.002m-.037 1.668c-.324.91-1.273 1.832-2.46 1.832h-.002c-1.2 0-2.157-.922-2.48-1.832a.5.5 0 1 1 .942-.335c.204.573.835 1.167 1.538 1.167h.001c.692 0 1.315-.593 1.519-1.168a.5.5 0 0 1 .942.335m-5.971-2.667a1 1 0 1 1 2 0 1 1 0 0 1-2 0m3.5-3.5a5.506 5.506 0 0 0-5.5 5.5c0 3.033 2.467 5.5 5.5 5.5s5.5-2.467 5.5-5.5-2.467-5.5-5.5-5.5">
+                                        </path>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div aria-label="Gửi File" data-action="file" class="message-reply__action">
+                                <svg version="1.1" id="Capa_1" width="20px" height="20px" viewBox="0 0 950 950"
+                                    xml:space="preserve" style="color: green;">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <g>
+                                            <path
+                                                d="M857.7,141.3c-30.1-30.1-65.1-53.5-104.3-69.4c-37.8-15.3-77.7-23.2-118.7-23.2c-40.9,0-80.9,7.7-118.7,22.9 c-39.1,15.8-74.2,38.9-104.3,68.8L73.1,478.3C49.3,501.9,30.9,529.4,18.3,560.2C6.2,589.9,0,621.3,0,653.6 C0,685.7,6.1,717,18.1,746.7c12.4,30.7,30.7,58.2,54.3,81.899c23.6,23.7,51.2,42,81.9,54.5c29.7,12.101,61.1,18.2,93.3,18.2 c32.2,0,63.6-6.1,93.3-18.1c30.8-12.5,58.399-30.8,82.1-54.4l269.101-268c17.3-17.2,30.6-37.3,39.699-59.7 c8.801-21.6,13.2-44.5,13.2-67.899c0-48.2-18.8-93.2-52.899-127c-34-34.2-79.2-53.1-127.301-53.3c-48.199-0.1-93.5,18.6-127.6,52.7 L269.6,473.3c-8.5,8.5-13.1,19.7-13.1,31.601c0,11.899,4.6,23.199,13.1,31.6l0.7,0.7c17.4,17.5,45.8,17.5,63.3,0.1l168-167.5 c35.1-34.8,92.1-35,127.199-0.399c16.9,16.8,26.101,39.3,26.101,63.399c0,24.3-9.4,47.101-26.5,64.101l-269,268 c-0.5,0.5-0.9,0.899-1.2,1.5c-29.7,28.899-68.9,44.699-110.5,44.5c-41.9-0.2-81.2-16.5-110.6-46c-14.7-15-26.1-32.5-34-52 C95.5,694,91.7,674,91.7,653.6c0-41.8,16.1-80.899,45.4-110.3c0.4-0.3,0.7-0.6,1.1-0.899l337.9-337.8c0.3-0.3,0.6-0.7,0.899-1.1 c21.4-21,46.3-37.4,74-48.5c27-10.8,55.4-16.2,84.601-16.2c29.199,0,57.699,5.6,84.6,16.4c27.9,11.3,52.9,27.8,74.3,49.1 c21.4,21.4,37.9,46.4,49.2,74.3c10.9,26.9,16.4,55.4,16.4,84.6c0,29.3-5.5,57.9-16.5,85c-11.301,28-28,53.2-49.5,74.8l-233.5,232.8 c-8.5,8.5-13.2,19.7-13.2,31.7s4.7,23.2,13.1,31.6l0.5,0.5c17.4,17.4,45.8,17.4,63.2,0L857.5,586.9 C887.601,556.8,911,521.7,926.9,482.6C942.3,444.8,950,404.9,950,363.9c0-40.9-7.8-80.8-23.1-118.5 C911.101,206.3,887.8,171.3,857.7,141.3z">
+                                            </path>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="message-reply__inner p-1" id="fileInputContainer">
+                        </div>
+                        <div class="message-reply__inner">
+                            <textarea id="chat-input" cols="1" rows="1" placeholder="Gửi tin nhắn đến @"></textarea>
+                            <button id="send-btn" class="button ripple-effect">Gửi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Message Chat Info -->
+            <!-- <div class="message-info">
+                <div class="message-info__header d-flex justify-content-center align-items-center ps-1 pe-1">
+                    <span style="color: black; font-size: 1.2rem; font-weight: bold;">Thông tin</span>
+                </div>
+                <div class="message-info__receiver">
+                    <img class="message-info__receiver-avatar" src="{{ receiver_details.profile.image.url }}"
+                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" alt="">
+                    <h6 class="message-info__receiver-name"> {{ receiver_details.profile.full_name|title }} </h6>
+                </div>
+                <div class="message-info__action d-flex justify-content-center align-items-center">
+                    <div class="message-info__action-item">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Hồ sơ</span>
+                    </div>
+                    <div class="message-info__action-item">
+                        <i class="bi bi-camera-video"></i>
+                        <span>Video</span>
+                    </div>
+
+                </div>
+                <hr>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h6 class="accordion-header ps-1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Hình ảnh,File,Liên kết
+                            </button>
+                        </h6>
+                        <div id="collapseOne" class="accordion-collapse collapse show"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                Chưa có hình ảnh nào
+                            </div>
+                        </div>
+                        {% comment %} {% if receiver_details in request.user.profile.friends.all %}
+                        <a href="#" id="block-user-btn" data-block-user="{{receiver_details.id}}"
+                            class="message-action text-red-500 mr-2 "><i class="fas fa-ban"></i> <span
+                            class="md:inline hidden block-text{{receiver_details.id}}"> Chặn </span> </a>
+                        {% endif %} {% endcomment %}
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <div id="incoming_call" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="profile-widget">
+                        <div class="profile-img-incoming">
+                            <a href="#" class="avatar"><img style="width: 90px; border-radius: 50%;" src="" alt=""></a>
+                        </div>
+                        <h4 class="user-name-incoming m-t-10 mb-0 text-ellipsis"></h4>
+                        <div class="small text-muted">Đang gọi ...</div>
+                        <div class="incoming-btns">
+                            <button id="declineCall" class="btn btn-danger m-r-10">Từ chối</button>
+                            <button id="answerCall" class="btn btn-success">Trả lời</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<script>
+    $(function () {
+        var receiver = null;
+        var receiver_id = "{{ reciever.username }}";
+        var logged_in = "{{ request.user.username }}";
+        const pathname = window.location.pathname;
+
+        const parts = pathname.split('/');
+        const username = parts[parts.length - 2];
+
+        if (receiver_id === logged_in) {
+            receiver = receiver_id;
+        } else {
+            receiver = receiver_id;
+        }
+
+        var socket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + receiver + '/');
+
+        socket.onopen = function () {
+            console.log('WebSocket connection established.');
+        }
+
+        socket.onerror = function (e) {
+            console.log('WebSocket ERROR');
+        }
+
+        // Hiển thị tin nhắn 
+        socket.onmessage = function (event) {
+            var data = JSON.parse(event.data);
+            var message = data.message;
+            var sender = data.sender;
+            var profileImage = data.profile_image;
+            var reciever = data.reciever;
+            var image_path = data.image_paths;
+            var file_path = data.file_paths;
+            var uid = data.uid;
+
+            if (sender === "{{sender}}") {
+                var chatMessage = ''
+                // load hình ảnh nếu có
+                if (image_path.length != 0) {
+                    chatMessage += '<div class="message-bubble me">'
+                    chatMessage += '<div class="message-bubble-inner">';
+                    chatMessage += '<div class="message-text">';
+                    chatMessage += '<a href = "/media/uploads/images/' + image_path + '" src="/media/uploads/images/' + image_path + '" target="_blank">'    
+                    chatMessage += '<img src="/media/uploads/images/' + image_path + '" class="message-image" alt="">';
+                    chatMessage += '</a>'
+                    chatMessage += '</div>';
+                    chatMessage += '</div>';
+                    chatMessage += '<div class="clearfix"></div>';
+                    chatMessage += '</div>';
+                }
+                // load file nếu có 
+                if (file_path.length !=0) {
+                    chatMessage += '<div class="message-bubble me">'
+                    chatMessage += '<div class="message-bubble-inner">';
+                    chatMessage += '<div class="message-text">';
+                    chatMessage += '<a href ="/media/uploads/files/' + file_path + '" target="_blank">'  
+                    chatMessage += '<div class="d-flex justify-content-between align-items-center p-1 text-black ">'
+                    chatMessage += '<i class="bi bi-file-earmark-fill"></i>'
+                    chatMessage += '<span class="message-reply__file__name">'+ file_path + '</span>'
+                    chatMessage += '</div>'
+                    chatMessage += '</a>'
+                    chatMessage += '</div>';
+                    chatMessage += '</div>';
+                    chatMessage += '<div class="clearfix"></div>';
+                    chatMessage += '</div>';
+                }
+                chatMessage += '<div class="message-bubble me">';
+                chatMessage += '<div class="message-bubble-inner">';
+                chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
+                chatMessage += '<div class="message-text">';
+                chatMessage += '<p>' + message + '</p>';
+                chatMessage += '</div>';
+                chatMessage += '</div>';
+                chatMessage += '<div class="clearfix"></div>';
+                chatMessage += '</div>';
+                $('#chat-messages').append(chatMessage);
+                var chatContainer = document.querySelector('.chat_container');
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            } else {
+                var chatMessage = ''
+                console.log("uid = " + uid)
+                if (image_path.length != 0) {
+                    chatMessage += '<div class="message-bubble">'
+                    chatMessage += '<div class="message-bubble-inner">';
+                    chatMessage += '<div class="message-text">';
+                    chatMessage += '<a href = <img src="/media/uploads/images/' + image_path + '" target="_blank" >'    
+                    chatMessage += '<img src="/media/uploads/images/' + image_path + '" class="message-image" alt="">';
+                    chatMessage += '</a>'
+                    chatMessage += '</div>';
+                    chatMessage += '</div>';
+                    chatMessage += '<div class="clearfix"></div>';
+                    chatMessage += '</div>';
+                }
+                // load file nếu có 
+                if (file_path.length !=0)
+                {
+                    chatMessage += '<div class="message-bubble me">'
+                    chatMessage += '<div class="message-bubble-inner">';
+                    chatMessage += '<div class="message-text">';
+                    chatMessage += '<a href = <img src="/media/uploads/files/' + file_path + '" target="_blank">'  
+                    chatMessage += '<div class="d-flex justify-content-between align-items-center p-1 text-white ">'
+                    chatMessage += '<i class="bi bi-file-earmark-fill"></i>'
+                    chatMessage += '<span class="message-reply__file__name">'+ file_path + '</span>'
+                    chatMessage += '</div>'
+                    chatMessage += '</a>'
+                    chatMessage += '</div>';
+                    chatMessage += '</div>';
+                    chatMessage += '<div class="clearfix"></div>';
+                    chatMessage += '</div>';
+                }
+
+                if(message.includes("Đang gọi đến ")) {
+                    message = "Cuộc gọi từ {{receiver_details.profile.full_name}}"
+                }
+
+                chatMessage += '<div class="message-bubble">';
+                chatMessage += '<div class="message-bubble-inner">';
+                chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
+                chatMessage += '<div class="message-text">';
+                chatMessage += '<p>' + message + '</p>';
+                chatMessage += '</div>';
+                chatMessage += '</div>';
+                chatMessage += '<div class="clearfix"></div>';
+                chatMessage += '</div>';
+
+                $('#chat-messages').append(chatMessage);
+                
+                if(chatMessage.includes("Cuộc gọi từ ")) {
+
+                    $('#incoming_call').modal('show');
+                    $('.profile-img-incoming img').attr('src', '{{receiver_details.profile.image.url}}')
+                    $('.user-name-incoming').text('{{receiver_details.profile.full_name}}')
+                }
+
+                var chatContainer = document.querySelector('.chat_container');
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+        }
+
+        socket.onclose = function () {
+            console.log('WebSocket connection closed.');
+        }
+        // Xử lí khi nhấn nút gửi
+        $('#send-btn').on('click', function () {
+            var input = $('#chat-input');
+            var message = input.val();
+            var sender = "{{request.user.username}}";
+            var image = '';
+            var fileDoc_data='';
+            var fileDoc_name='';
+            $('.message-reply__file').each((index, element) => {
+                let type = element.getAttribute('data-type')
+                switch (type) {
+                    case 'anh':
+                        image = element.getElementsByClassName('message-reply__file__image')[0].getAttribute('src')
+                        console.log(image)
+                        break;
+                    case 'file':
+                        fileDoc_data = element.getAttribute('data-value') ?  element.getAttribute('data-value') : ''
+                        fileDoc_name = element.getElementsByClassName('message-reply__file__name')[0].textContent 
+                            ? element.getElementsByClassName('message-reply__file__name')[0].textContent : ''
+                        break;    
+                }
+            })
+            console.log(fileDoc_data)
+            var data = {
+                'type': "chat_message",
+                'message': message,
+                'sender': sender,
+                'reciever': username,
+                'image': `${image}`,
+                'file_doc':`${fileDoc_data}`,
+                'file_name': `${fileDoc_name}`
+            };
+            socket.send(JSON.stringify(data));
+            input.val('');
+            $('#fileInputContainer').empty();
+            var sendButton = $('#send-btn');
+            sendButton.prop('disabled', true);
+            $(".chat_container").scrollTop(100000000000);
+        });
+
+        $('.video-call__btn').click(async function () {
+            let fullname = $(this).attr("data-fullname")
+            let user_name = $(this).attr("data-username")
+    
+            let response = await fetch(`/get_token/?channel=${user_name}`)
+            let data = await response.json()
+    
+            let UID = data.uid
+            let token = data.token
+    
+            sessionStorage.setItem('UID', UID)
+            sessionStorage.setItem('token', token)
+            sessionStorage.setItem('user_id', user_name)
+            sessionStorage.setItem('fullname', fullname)
+
+            $('#chat-input').val(`Đang gọi đến {{receiver_details.profile.full_name}}`);
+
+            $('#send-btn').trigger('click');
+            
+            window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
+        })
+
+    });
+    $(document).ready(function () {
+        $(".chat_container").scrollTop(100000000000);
+        $('.message-reply__action').each((index, element) => {
+            $(element).click(e => {
+                let action = e.currentTarget.getAttribute('data-action')
+                switch (action) {
+                    case 'anh':
+                        uploadImage()
+                        break;
+                    case 'file':
+                        uploadFile()
+                        break;
+                    case 'icon':
+                        break;
+                }
+            })
+        })
+    });
+
+    async function callFriend() {
+        let fullname = "{{request.user.full_name}}";
+        let user_name = "{{receiver_details.username}}"
+
+        let response = await fetch(`/get_token/?channel=${user_name}`)
+        let data = await response.json()
+
+        let UID = data.uid
+        let token = data.token
+
+        sessionStorage.setItem('UID', UID)
+        sessionStorage.setItem('token', token)
+        sessionStorage.setItem('user_id', user_name)
+        sessionStorage.setItem('fullname', fullname)
+
+
+        window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
+    }
+
+    $('#declineCall').on('click', function() {
+        $('#incoming_call').modal('hide');
+    });
+
+    $('#answerCall').on('click', function() {
+        $('#incoming_call').modal('hide');
+        callFriend();
+    });
+
+</script>
+
+<!-- Xử lí khi gửi hình ảnh -->
+<script>
+    function uploadImage() {
+        $('#imageInput').click()
+        $('#imageInput').change(function () {
+            var selectedFile = this.files[0];
+            if (selectedFile) {
+                var imgSelectorID = addImageElementToContainer()
+                addImageInputToContainer(imgSelectorID + ' img', selectedFile)
+                setEventToDeleteFileIcon(imgSelectorID + ' .message-reply__file-delete')
+                $('#imageInput').val('')
+            }
+        })
+    }
+    function addImageInputToContainer(selector, selectedFile) {
+
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            $(selector).attr('src', event.target.result).show();
+        };
+        reader.readAsDataURL(selectedFile);
+    }
+    function addImageElementToContainer() {
+        let dateN = new Date()
+        let id = `${dateN.getSeconds()}${dateN.getMinutes()}${dateN.getHours()}`
+
+        let elementN = `
+            <div class="message-reply__file" id="${id}" data-type="anh">
+                    <img src="" class="message-reply__file__image" alt="">
+                    <div class="message-reply__file-delete" data-target-ele="${id}">
+                        <i class="bi bi-x-circle "></i>
+                    </div>
+            </div>
+             `
+        $('#fileInputContainer').append(elementN)
+        return '#' + id;
+    }
+    function setEventToDeleteFileIcon(selector) {
+        $(selector).click(function (e) {
+            $('#' + this.getAttribute('data-target-ele')).remove()
+        })
+    }
+</script>
+<!-- Xử lí khi gửi file doc,pdf,txt... -->
+<script>
+    function uploadFile() {
+        $('#fileInput').click()
+        $('#fileInput').change(function () {
+            var selectedFile = this.files[0];
+            addFileElementToContainer(selectedFile)
+            $('#fileInput').val('')
+        })
+    }
+    function addFileElementToContainer(selectedFile) {
+        let dateN = new Date()
+        let id = `${dateN.getSeconds()}${dateN.getMinutes()}${dateN.getHours()}`
+        if (selectedFile) {
+            let elementN = `
+            <div class="message-reply__file message-reply__file--doc" id="${id}" data-type="file">
+                <div class="d-flex justify-content-between align-items-center p-1 text-white ">
+                    <i class="bi bi-file-earmark-fill"></i>
+                    <span class="message-reply__file__name">${selectedFile.name}</span>
+                </div>
+                <div class="message-reply__file-delete" data-target-ele="${id}">
+                    <i class="bi bi-x-circle "></i>
+                </div>
+            </div>
+             `
+            $('#fileInputContainer').append(elementN)
+            $('#' + id + ' .message-reply__file-delete').click(function (e) {
+                $('#' + this.getAttribute('data-target-ele')).remove()
+            })
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                $('#'+id).attr('data-value', event.target.result);
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    }
+</script>
+
+<!-- Xử lí khi chưa nhập tin nhắn thì không cho nhắn nút gửi -->
+<script>
+    $(document).ready(function () {
+        var chatInputValue = $('#chat-input');
+        var sendButton = $('#send-btn');
+        // Disable the button initially
+        sendButton.prop('disabled', true);
+        // Check input field on keyup event
+        chatInputValue.on('keyup', function () {
+            var inputText = $(this).val();
+            // Enable/disable button based on input field value
+            if (inputText.trim() !== '') {
+                sendButton.prop('disabled', false);
+            } else {
+                sendButton.prop('disabled', true);
+            }
+        });
+    })
+</script>
+
+<!-- Bật tắt phần message Info -->
+<script>
+    $(document).ready(function () {
+        $('.message-info__btn').click(function () {
+            $('.message-info').toggle()
+        })
+    })
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+
+{% endblock content %}

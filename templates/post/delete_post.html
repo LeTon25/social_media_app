@@ -1,0 +1,23 @@
+{% load static %}
+<!-- Delete post modal -->
+<div id="delete-post-modal" class="delete-post is-story uk-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical rounded-lg p-0 relative shadow-2xl uk-animation-slide-bottom-small" style="height: 32%; top: 200px    ;">
+        <div class="text-center py-3 border-b">
+            <h3 class="text-lg font-semibold"> Xóa bài viết </h3>
+            <button class="uk-modal-close-default bg-gray-100 rounded-full p-2.5 right-2" type="button" uk-close uk-tooltip="title: Close ; pos: bottom ;offset:7"></button>
+        </div>
+
+        <div class="flex flex-1 items-start space-x-4 p-5">
+            <div class="flex-1 pt-2">
+                Bạn có chắc chắn muốn xóa bài viết này không?
+            </div>
+        </div>
+
+        <div class="flex items-center w-full justify-end border-t p-3">
+            <div class="flex space-x-2">
+                <button class="uk-modal-close bg-red-600 flex h-9 items-center justify-center rounded-md text-white px-5 font-medium">Hủy</button>
+                <button id="delete-confirm" class="bg-blue-600 flex h-9 items-center justify-center rounded-md text-white px-5 font-medium"> Xóa </button>
+            </div>
+        </div>
+    </div>
+</div>

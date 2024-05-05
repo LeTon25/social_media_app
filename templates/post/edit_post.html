@@ -1,0 +1,59 @@
+<!-- Edit post modal -->
+<div id="edit-post-modal" class="edit-post is-story uk-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical rounded-lg p-0 lg:w-5/12 relative shadow-2xl uk-animation-slide-bottom-small">
+        <form  id="update-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="text-center py-3 border-b">
+                <h3 class="text-lg font-semibold"> Chỉnh sửa bài đăng </h3>
+                <button class="uk-modal-close-default bg-gray-100 rounded-full p-2.5 right-2" type="button" uk-close uk-tooltip="title: Close ; pos: bottom ;offset:7"></button>
+            </div>
+            <div class="flex flex-1 items-start space-x-4 p-5">
+                <img src="{{request.user.profile.image.url}}" class="bg-gray-200 border border-white rounded-full w-11 h-11">
+                <div class="flex-1 pt-2">
+                    <textarea id="post-caption-edit" name="post-caption-edit" class="uk-textare text-black shadow-none focus:shadow-none text-xl font-medium resize-none" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="flex flex-1 p-5 w-100">
+                <div class="flex-1 pt-2"  >
+                    <img src="" id="preview_post_thumbnail_edit" style="width: 100%; height: 200px;object-fit: cover; border-radius: 10px;" alt="" for="post-thumbnail-edit">
+                </div>
+            </div>
+            <script>
+
+                var loadFile2 = function (event) {
+                    var output3 = document.getElementById("preview_post_thumbnail_edit");
+                    output3.src = URL.createObjectURL(event.target.files[0]);
+                    console.log(output3.src)
+                    output3.onload = function () {
+                        URL.revokeObjectURL(output3.src);
+                    };
+                };
+            </script>
+
+            <div class="bsolute bottom-0 p-4 space-x-4 w-full">
+                <div class="flex bg-gray-50 border border-purple-100 rounded-2xl p-2 shadow-sm items-center">
+                    <div class="flex flex-1 items-center lg:justify-end justify-center space-x-2">
+
+                        <select style="width: 60%;" class="selectpicker" name="visibility-edit" id="visibility-edit">
+                            <option value="Everyone">Công khai</option>
+                            <option value="Only Me">Chỉ mình tôi</option>
+                        </select>
+
+                        <label for="post-thumbnail-edit" style="margin: 0 20px 0 0;">
+                            <svg class="bg-blue-100 h-9 p-1.5 rounded-full text-blue-600 w-9 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </label>
+
+                        <input onchange="loadFile2(event)" name="post-thumbnail-edit" class="d-none " type="file" id="post-thumbnail-edit">
+                        
+                    </div>
+    
+                    <div class="flex space-x-2">
+                        <button type="submit" id="save-post" class="bg-blue-600 flex h-9 items-center justify-center rounded-md text-white px-5 font-medium"> Lưu </button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>

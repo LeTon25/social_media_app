@@ -81,7 +81,7 @@ python manage.py runserver
 
 ### List of User Functions
 
-- User: watch movie, comment, update premium edit profile, register, login, forgot password, search.
+- User: create post, like post, comment post, update post, delete post, update premium edit profile, register, login, forgot password, search.
 - Admin: 
     - Management: film, director, actor, hashtags, genres, licenses.
     - Statistic: revenue month, revenue year, user subscribe month, user subscribe year, number of subscribers.

@@ -91,6 +91,28 @@ python manage.py runserver
 <img src="so\source\ERD.png" style="zoom:60%;" alt ="ERD"/>
 <img src="SOCIAL_MEDIA_APP\asset"/>
 
+### 5. Bài đăng và hoạt động mạng xã hội 
+<img src="./static/images/giaodienpost.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Post Page</h3>
+
+#### 5.1 Like and comment bài đăng
+<img src="./static/images/likeandcomment.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Like and comment bài đăng</h3>
+
+#### 5.2 Tạo bài đăng
+<img src="./static/images/createpost.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Tạo bài đăng</h3>
+
+#### 5.3 Sửa bài đăng
+<img src="./static/images/post.png" style="zoom:60%" alt="game"/>
+<img src="./static/images/updatepost.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Sửa bài đăng</h3>
+
+#### 5.3 Xóa bài đăng
+<img src="./static/images/post.png" style="zoom:60%" alt="game"/>
+<img src="./static/images/delpost.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Xóa bài đăng</h3>
+
 ### 6. Game
 <img src="game.jpg" style="zoom:60%" alt="game"/>
 <h3 align="center">Game Page</h3>

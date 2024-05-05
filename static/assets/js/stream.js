@@ -3,7 +3,7 @@ const TOKEN = sessionStorage.getItem('token')
 const USER_ID = sessionStorage.getItem('user_id')
 let UID = sessionStorage.getItem('UID')
 
-let NAME = sessionStorage.getItem('user_name')
+let NAME = sessionStorage.getItem('fullname')
 
 const client = AgoraRTC.createClient({mode:'rtc', codec:'vp8'})
 

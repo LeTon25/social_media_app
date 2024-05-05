@@ -80,18 +80,13 @@
                     </div>
                     <div class="d-flex align-items-center">
 
-                        {% if receiver_details in request.user.profile.friends.all %}
                         <span class="video-call__btn mr-3" 
                             style="cursor: pointer; font-size: 20px;"
-                            data-call-user="{{receiver_details.id}}"
-                            data-name-user="{{receiver_details.username}}">
+                            data-id="{{request.user.id}}"
+                            data-username="{{request.user.username}}"
+                            data-fullname="{{request.user.full_name}}">
 
                             <i class="bi bi-camera-video-fill"></i>
-                        </span>
-                        {% endif %}
-
-                        <span class="call__btn mr-3" style="cursor: pointer; font-size: 18px;">
-                            <i class="bi bi-telephone-fill"></i>
                         </span>
 
                         <span class="message-info__btn ms-3" style="cursor: pointer; font-size: 20px;">
@@ -180,7 +175,7 @@
                                 <div class="message-text">
                                     <p>{{m.message}}</p>
                                     <p class="text-muted"><small><span
-                                                style="color: rgba(128, 128, 128, 0.596);">2:30</span></small></p>
+                                                style="color: rgba(128, 128, 128, 0.596);">{{m.date|custom_timesince}}</span></small></p>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -323,6 +318,11 @@
         socket.onopen = function () {
             console.log('WebSocket connection established.');
         }
+
+        socket.onerror = function (e) {
+            console.log('WebSocket ERROR');
+        }
+
         // Hiển thị tin nhắn 
         socket.onmessage = function (event) {
             var data = JSON.parse(event.data);
@@ -332,15 +332,8 @@
             var reciever = data.reciever;
             var image_path = data.image_paths;
             var file_path = data.file_paths;
-            
-            /*if (data.type === 'incoming_video_call') {
-                // Hiển thị thông báo cuộc gọi đến trên bên nhận
-                alert(`Cuộc gọi đến từ ${data.from}`);
-            } else if (data.type === 'outgoing_video_call') {
-                // Kiểm tra nếu là bên gọi mới mở cửa sổ video call
-                window.open(`/core/inbox/${data.to}/video/`, "_blank", "width=800,height=600,left=400,top=100");
-                
-            }*/
+            var uid = data.uid;
+
             if (sender === "{{sender}}") {
                 var chatMessage = ''
                 // load hình ảnh nếu có
@@ -386,6 +379,8 @@
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             } else {
                 var chatMessage = ''
+                var incomingCall = ''
+                console.log("uid = " + uid)
                 if (image_path.length != 0) {
                     chatMessage += '<div class="message-bubble">'
                     chatMessage += '<div class="message-bubble-inner">';
@@ -429,6 +424,7 @@
                 var chatContainer = document.querySelector('.chat_container');
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
+
         }
 
         socket.onclose = function () {
@@ -475,41 +471,27 @@
         });
 
         $('.video-call__btn').click(async function () {
-            let user_id = $(this).attr("data-call-user")
-            let user_name = $(this).attr("data-name-user")
-
-            var sender = "{{request.user.username}}";
-
-            console.log(sender)
-            console.log(user_name)
+            let fullname = $(this).attr("data-fullname")
+            let user_name = $(this).attr("data-username")
     
-            let response = await fetch(`/get_token/?channel=${user_id}`)
+            let response = await fetch(`/get_token/?channel=${user_name}`)
             let data = await response.json()
     
             let UID = data.uid
             let token = data.token
-
-            /*var callData = {
-                'type': 'video-call',
-                'sender': sender,
-                'receiver_id': user_id,
-                'receiver_name': user_name,
-                'UID': UID,
-                'token': token
-            };
-
-            socket.send(JSON.stringify(callData));*/
     
             sessionStorage.setItem('UID', UID)
             sessionStorage.setItem('token', token)
-            sessionStorage.setItem('user_id', user_id)
-            sessionStorage.setItem('user_name', user_name)
-            sessionStorage.setItem('sender', sender)
+            sessionStorage.setItem('user_id', user_name)
+            sessionStorage.setItem('fullname', fullname)
 
-    
-            //window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
+            $('#chat-input').val(`Gọi cho {{receiver_details.profile.full_name}}`);
+
+            $('#send-btn').trigger('click');
+            
+            window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
         })
-        
+
     });
     $(document).ready(function () {
         $(".chat_container").scrollTop(100000000000);
@@ -528,6 +510,28 @@
                 }
             })
         })
+    });
+
+    $('.message-text p').click(async function() {
+        console.log(`Gọi cho {{request.user.full_name}}`)
+        if ($(this).text() == `Gọi cho {{request.user.full_name}}`) {
+            let fullname = "{{request.user.full_name}}";
+            let user_name = "{{receiver_details.username}}"
+    
+            let response = await fetch(`/get_token/?channel=${user_name}`)
+            let data = await response.json()
+    
+            let UID = data.uid
+            let token = data.token
+    
+            sessionStorage.setItem('UID', UID)
+            sessionStorage.setItem('token', token)
+            sessionStorage.setItem('user_id', user_name)
+            sessionStorage.setItem('fullname', fullname)
+
+    
+            window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
+        }
     });
 
 </script>
@@ -642,14 +646,6 @@
     })
 </script>
 
-<!-- Thực hiện cuộc gọi -->
-<script>
-    $('.call__btn').click(function () {
-        console.log("call__btn OKKKK")
-    })
-    
-    
-</script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

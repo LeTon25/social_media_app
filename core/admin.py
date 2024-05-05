@@ -56,7 +56,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class ChatMessageAdmin(admin.ModelAdmin):
-    list_display = ['user', 'sender', 'reciever' ,'message','date', 'is_read']
+    list_display = ['sender', 'reciever' ,'message','date', 'is_read']
     
 
 class GroupChatAdmin(admin.ModelAdmin):

@@ -339,7 +339,6 @@ class PagePost(models.Model):
     
 
 class ChatMessage(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="chat_user")
     sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="sender")
     reciever = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="reciever")
     message = models.CharField(max_length=10000000000)
@@ -349,7 +348,7 @@ class ChatMessage(models.Model):
     image_paths = models.CharField(max_length=10000000000,default='')
     file_paths = models.CharField(max_length=10000000000,default='')
     def __str__(self):
-        return self.user.username
+        return self.sender.username
     
     class Meta:
         ordering = ["-date"]

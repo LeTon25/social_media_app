@@ -7,33 +7,33 @@ Dự án web Django của chúng tôi là một nền tảng truyền thông xã
 
 # Linux
 
-1.Cài đặt python : 
+1. Cài đặt python : 
  ```bash
    sudo apt-get install python 
    ```
 
-2.Cài đặt django : 
+2. Cài đặt django : 
  ```bash
    pip install django 
    ```
 
-3.Di chuyển vào thư mục dự án : 
+3. Di chuyển vào thư mục dự án : 
 
  ```bash
    cd  social_media_app
    ```
 
-4.Cài đặt các thư viện cần thiết từ file requirements.txt : 
+4. Cài đặt các thư viện cần thiết từ file requirements.txt : 
 
 ```bash
    pip install -r requirements.txt
    ```
-5.Chạỵ Cơ Sở Dữ Liệu: 
+5. Chạỵ Cơ Sở Dữ Liệu: 
 ```bash
    python manage.py migrate
    ```
 
-5.Chạy dự án web : 
+6.Chạy dự án web : 
 ```bash
    python manage.py runserver
    ```
@@ -41,12 +41,7 @@ Dự án web Django của chúng tôi là một nền tảng truyền thông xã
 
 
 # Windows
-1.Cài đặt python
-```bash
-sudo apt-get install python 
-```
-
-1.Truy cập vào trang web của [python](https://www.python.org/downloads/) để lựa chọn phiên bản phù hợp
+1. Truy cập vào trang web của [python](https://www.python.org/downloads/) để lựa chọn phiên bản phù hợp
     
    2.Chạy file .exe để cài đặt
    
@@ -56,23 +51,23 @@ sudo apt-get install python
    ```
    
    
-2.Cài đặt django : 
+2. Cài đặt django : 
 ```bash
 pip install django
 ```
 
 
-3.Di chuyển vào thư mục dự án :
+3. Di chuyển vào thư mục dự án :
 ```bash
 cd  social_media_app
 ```
 
-4.Cài đặt các thư viện cần thiết từ file requirements.txt : 
+4. Cài đặt các thư viện cần thiết từ file requirements.txt : 
 ```bash
 cd  pip install -r requirements.txt
 ```
 
-5.Chạy dự án web :
+5. Chạy dự án web :
 ```bash
 python manage.py runserver
 ```
@@ -165,9 +160,6 @@ Author:
 - [dominhquan15623@gmail.com](mailto:dominhquan15623@gmail.com)
 - [tangquoctuan2003@gmail.com](mailto:tangquoctuan2003@gmail.com)
 
-
-#### Note:
-The website won second prize at the University of Natural Sciences in the Hackathon Contest
 
 
 

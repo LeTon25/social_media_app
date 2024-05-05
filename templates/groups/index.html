@@ -35,74 +35,76 @@
 
                     {% for g in groups %}
                         {% if g.user != request.user and g.visibility == "Everyone" %}
-                            <li>
-                                <div class="card">
-                                    <div class="card-media h-28">
-                                        <div class="card-media-overly"></div>
-                                        <img src="/static/assets/images/group/group-cover-1.jpg" alt="" class="">
-                                    </div>
-                                    <div class="card-body">
-                                        <a href="timeline-group.html" class="font-semibold text-lg truncate"> {{ g.name }} </a>
-                                        <div
-                                            class="flex items-center flex-wrap space-x-1 mt-1 text-sm text-gray-500 capitalize">
-                                            <div> <span> {{ g.members.count }} Thành viên /</span> </div>
-                                            <div> <span> {{ g.views }} Lượt xem </span> </div>
+                            {% if request.user not in g.members.all %}
+                                <li>
+                                    <div class="card">
+                                        <div class="card-media h-28">
+                                            <div class="card-media-overly"></div>
+                                            <img src="/static/assets/images/group/group-cover-1.jpg" alt="" class="">
                                         </div>
-                                        <div class="flex mt-3.5 space-x-2">
-                                            <div class="flex items-center -space-x-2 -mt-1">
-                                                {% for member in g.members.all %}
-                                                    {% if forloop.counter <= 2 %}
-                                                        <img alt="Image placeholder" src="{{ member.profile.image.url }}" class="border-2 border-white rounded-full w-7">
-                                                    {% endif %}
-                                                {% endfor %}
+                                        <div class="card-body">
+                                            <a href="timeline-group.html" class="font-semibold text-lg truncate"> {{ g.name }} </a>
+                                            <div
+                                                class="flex items-center flex-wrap space-x-1 mt-1 text-sm text-gray-500 capitalize">
+                                                <div> <span> {{ g.member_user_count }} Thành viên /</span> </div>
+                                                <div> <span> {{ g.views }} Lượt xem </span> </div>
                                             </div>
-                                            <div class="flex-1 leading-5 text-sm">
-                                                <div> 
-                                                    {% if g.member_count > 0 %}
-                                                        {% if g.member_count > 1 %}
-                                                            <div>
-                                                                {{ g.first_member.full_name }} và {{ g.member_count|sub:"1" }} người bạn khác
-                                                            </div>
-                                                        {% else %}
-                                                            <div>Chỉ có {{ g.first_member.full_name }}</div>
+                                            <div class="flex mt-3.5 space-x-2">
+                                                <div class="flex items-center -space-x-2 -mt-1">
+                                                    {% for member in g.members.all %}
+                                                        {% if forloop.counter <= 2 %}
+                                                            <img alt="Image placeholder" src="{{ member.profile.image.url }}" class="border-2 border-white rounded-full w-7">
                                                         {% endif %}
-                                                    {% else %}
-                                                        <div>Không có bạn chung</div>
-                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="flex-1 leading-5 text-sm">
+                                                    <div> 
+                                                        {% if g.member_count > 0 %}
+                                                            {% if g.member_count > 1 %}
+                                                                <div>
+                                                                    {{ g.first_member.full_name }} và {{ g.member_count|sub:"1" }} người bạn khác
+                                                                </div>
+                                                            {% else %}
+                                                                <div>Chỉ có {{ g.first_member.full_name }}</div>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <div>Không có bạn chung</div>
+                                                        {% endif %}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="flex mt-3.5 space-x-2">
-                                            <div class="flex-1 leading-5 text-sm">
-                                                <div> Nhóm 
-                                                    <strong>
-                                                        {% if g.visibility == "Everyone" %}
-                                                            Công khai
-                                                        {% else %}
-                                                            Riêng tư
-                                                        {% endif %}
-                                                    </strong> 
+                                            <div class="flex mt-3.5 space-x-2">
+                                                <div class="flex-1 leading-5 text-sm">
+                                                    <div> Nhóm 
+                                                        <strong>
+                                                            {% if g.visibility == "Everyone" %}
+                                                                Công khai
+                                                            {% else %}
+                                                                Riêng tư
+                                                            {% endif %}
+                                                        </strong> 
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="flex mt-3.5 space-x-2 text-sm font-medium">
-                                            <a href="#"
-                                                id="join-group"
-                                                class="bg-blue-600 flex flex-1 h-8 items-center justify-center rounded-md text-white capitalize"
-                                                data-group-id="{{g.id}}">
-                                                Tham gia
-                                            </a>
-                                            <a href="{% url 'core:group_detail' g.slug %}"
-                                                class="bg-gray-200 flex flex-1 h-8 items-center justify-center rounded-md capitalize">
-                                                Xem nhóm
-                                            </a>
-                                        </div>
+                                            <div class="flex mt-3.5 space-x-2 text-sm font-medium">
+                                                <a href="#"
+                                                    id="join-group"
+                                                    class="bg-blue-600 flex flex-1 h-8 items-center justify-center rounded-md text-white capitalize"
+                                                    data-group-id="{{g.id}}">
+                                                    Tham gia
+                                                </a>
+                                                <a href="{% url 'core:group_detail' g.slug %}"
+                                                    class="bg-gray-200 flex flex-1 h-8 items-center justify-center rounded-md capitalize">
+                                                    Xem nhóm
+                                                </a>
+                                            </div>
 
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
 
@@ -140,7 +142,7 @@
                                         <a href="timeline-group.html" class="font-semibold text-lg truncate"> {{ g.name }} </a>
                                         <div
                                             class="flex items-center flex-wrap space-x-1 mt-1 text-sm text-gray-500 capitalize">
-                                            <div> <span> {{ g.members.count }} Thành viên /</span> </div>
+                                            <div> <span> {{ g.member_user_count }} Thành viên /</span> </div>
                                             <div> <span> {{ g.views }} Lượt xem </span> </div>
                                         </div>
                                         <div class="flex mt-3.5 space-x-2">
@@ -219,7 +221,7 @@
             <div class="uk-slider-container px-1 py-3">
                 <ul class="uk-slider-items uk-child-width-1-4@m uk-child-width-1-3@s uk-grid-small uk-grid">
                     {% for g in groups %}
-                        {% if g.user == request.user %}
+                        {% if g.user == request.user or request.user in g.members.all %}
                             <li>
                                 <div class="card">
                                     <div class="card-media h-28">
@@ -230,7 +232,7 @@
                                         <a href="timeline-group.html" class="font-semibold text-lg truncate"> {{ g.name }} </a>
                                         <div
                                             class="flex items-center flex-wrap space-x-1 mt-1 text-sm text-gray-500 capitalize">
-                                            <div> <span> {{ g.members.count }} Thành viên /</span> </div>
+                                            <div> <span> {{ g.member_user_count }} Thành viên /</span> </div>
                                             <div> <span> {{ g.views }} Lượt xem </span> </div>
                                         </div>
                                         <div class="flex mt-3.5 space-x-2">

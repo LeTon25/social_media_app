@@ -1,6 +1,7 @@
 $(document).ready(function() {
     joinGroup()
     createPostGroup()
+    addGroup()
 })
 
 function renderListYourGroup() {
@@ -42,19 +43,11 @@ function addGroup() {
             processData: false,
             contentType: false,
             success: function(res) {
-                if (res && res.group) {
-                    console.log("============ GROUP da luu vao db ============");
-                    console.log("res.group = " + res.group)
-                    console.log("name = " + res.group.name)
-                    console.log("description = " + res.group.description)
-                    console.log("date = " + res.group.date)
-                    console.log("views = " + res.group.views)
-                    console.log("visibility = " + res.group.visibility)
-    
-                    localStorage.setItem('groupData', JSON.stringify(res.group));
-                    window.location.href = 'group-detail-manage';
+                if (res && res.group.id) {
+                    window.location.href = res.group.group_detail_url;
+                    // console.log(res.group_detail_url)
                 } else {
-                    console.error("res.group is undefined");
+                    console.error("Lỗi thêm group");
                 }
     
                 

@@ -11,19 +11,19 @@
             <div class="profile is_group">
 
                 <div class="profiles_banner">
-                    <img src="assets/images/avatars/profile-cover.jpg" alt="">
+                    <img src="/static/assets/images/group/group-cover-1.jpg" alt="">
                 </div>
                 <div class="profiles_content">
 
                     <div class="profile_info">
                         <h1> {{ group.name }} </h1>
                         <p> Nhóm 
-                            {% if g.visibility == "Everyone" %}
+                            {% if group.visibility == "Everyone" %}
                                 công khai
                             {% else %}
                                 riêng tư
                             {% endif %} ·  
-                            {{ group.member_count }} thành viên</p>
+                            {{ group.member_user_count }} thành viên</p>
                     </div>
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center -space-x-4">
@@ -34,15 +34,16 @@
                             {% endfor %}
                             {% comment %} <div class="w-10 h-10 rounded-full flex justify-center items-center bg-red-100 text-red-500 font-semibold"> 12+ </div> {% endcomment %}
                         </div>
-                    
-                        <a href="#" class="flex items-center justify-center h-9 px-5 rounded-md bg-blue-600 text-white  space-x-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <span id="join-group" data-group-id="{{group.id}}" > Tham gia </span>
-                        </a>
+                        {% if request.user != group.user and request.user not in group.members.all %}
+                            <a href="#" class="flex items-center justify-center h-9 px-5 rounded-md bg-blue-600 text-white  space-x-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                <span id="join-group" data-group-id="{{group.id}}" > Tham gia </span>
+                            </a>
+                        {% endif %}
                     </div>
 
                 </div>
@@ -366,20 +367,19 @@
                                 <div class="flex items-center space-x-3">
                                     <ion-icon name="people" class="bg-gray-100 p-2 rounded-full text-2xl" role="img" aria-label="people"></ion-icon>
                                     <div class="flex-1">
-                                        <div class="font-semibold"> {{ group.member_count }} Thành viên </div>
+                                        <div class="font-semibold"> {{ group.member_user_count }} Thành viên </div>
                                     </div>
                                 </div>
                                 <div class="flex items-start space-x-3">
                                     <ion-icon name="globe-outline" class="bg-gray-100 p-2 rounded-full text-2xl" role="img" aria-label="people"></ion-icon>
                                     <div class="flex-1">
                                         <div class="font-bold"> 
-                                            {% if g.visibility == "Everyone" %}
+                                            {% if group.visibility == "Everyone" %}
                                                 công khai
                                             {% else %}
                                                 riêng tư
                                             {% endif %}    
                                         </div>
-                                        <div> Anyone can see who's in the group and what they post. </div>
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-3">

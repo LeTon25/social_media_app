@@ -292,6 +292,26 @@
             </div>
         </div>
     </div>
+
+    <div id="incoming_call" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="profile-widget">
+                        <div class="profile-img-incoming">
+                            <a href="#" class="avatar"><img style="width: 90px; border-radius: 50%;" src="" alt=""></a>
+                        </div>
+                        <h4 class="user-name-incoming m-t-10 mb-0 text-ellipsis"></h4>
+                        <div class="small text-muted">Đang gọi ...</div>
+                        <div class="incoming-btns">
+                            <button id="declineCall" class="btn btn-danger m-r-10">Từ chối</button>
+                            <button id="answerCall" class="btn btn-success">Trả lời</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -379,7 +399,6 @@
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             } else {
                 var chatMessage = ''
-                var incomingCall = ''
                 console.log("uid = " + uid)
                 if (image_path.length != 0) {
                     chatMessage += '<div class="message-bubble">'
@@ -410,6 +429,11 @@
                     chatMessage += '<div class="clearfix"></div>';
                     chatMessage += '</div>';
                 }
+
+                if(message.includes("Đang gọi đến ")) {
+                    message = "Cuộc gọi từ {{receiver_details.profile.full_name}}"
+                }
+
                 chatMessage += '<div class="message-bubble">';
                 chatMessage += '<div class="message-bubble-inner">';
                 chatMessage += '<div class="message-avatar"><img src="' + profileImage + '" alt=""></div>';
@@ -419,7 +443,15 @@
                 chatMessage += '</div>';
                 chatMessage += '<div class="clearfix"></div>';
                 chatMessage += '</div>';
+
                 $('#chat-messages').append(chatMessage);
+                
+                if(chatMessage.includes("Cuộc gọi từ ")) {
+
+                    $('#incoming_call').modal('show');
+                    $('.profile-img-incoming img').attr('src', '{{receiver_details.profile.image.url}}')
+                    $('.user-name-incoming').text('{{receiver_details.profile.full_name}}')
+                }
 
                 var chatContainer = document.querySelector('.chat_container');
                 chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -485,7 +517,7 @@
             sessionStorage.setItem('user_id', user_name)
             sessionStorage.setItem('fullname', fullname)
 
-            $('#chat-input').val(`Gọi cho {{receiver_details.profile.full_name}}`);
+            $('#chat-input').val(`Đang gọi đến {{receiver_details.profile.full_name}}`);
 
             $('#send-btn').trigger('click');
             
@@ -512,26 +544,32 @@
         })
     });
 
-    $('.message-text p').click(async function() {
-        console.log(`Gọi cho {{request.user.full_name}}`)
-        if ($(this).text() == `Gọi cho {{request.user.full_name}}`) {
-            let fullname = "{{request.user.full_name}}";
-            let user_name = "{{receiver_details.username}}"
-    
-            let response = await fetch(`/get_token/?channel=${user_name}`)
-            let data = await response.json()
-    
-            let UID = data.uid
-            let token = data.token
-    
-            sessionStorage.setItem('UID', UID)
-            sessionStorage.setItem('token', token)
-            sessionStorage.setItem('user_id', user_name)
-            sessionStorage.setItem('fullname', fullname)
+    async function callFriend() {
+        let fullname = "{{request.user.full_name}}";
+        let user_name = "{{receiver_details.username}}"
 
-    
-            window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
-        }
+        let response = await fetch(`/get_token/?channel=${user_name}`)
+        let data = await response.json()
+
+        let UID = data.uid
+        let token = data.token
+
+        sessionStorage.setItem('UID', UID)
+        sessionStorage.setItem('token', token)
+        sessionStorage.setItem('user_id', user_name)
+        sessionStorage.setItem('fullname', fullname)
+
+
+        window.open(`/core/inbox/${user_name}/video/`, "_blank", "width=800,height=600,left=400,top=100")
+    }
+
+    $('#declineCall').on('click', function() {
+        $('#incoming_call').modal('hide');
+    });
+
+    $('#answerCall').on('click', function() {
+        $('#incoming_call').modal('hide');
+        callFriend();
     });
 
 </script>

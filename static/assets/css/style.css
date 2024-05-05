@@ -10413,6 +10413,10 @@ body.story-active header .header_widgets .is_link {
     position: absolute;
 }
 
+.flex.space-x-4.lg\:font-bold {
+    justify-content: space-around;
+}
+
 .btn-night-mode .uk-switch-button {
     background-color: rgba(0, 0, 0, 0.09);
     position: absolute;

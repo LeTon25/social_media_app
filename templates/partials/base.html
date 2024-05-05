@@ -147,7 +147,7 @@
                             <div uk-drop="mode: click" class="header_dropdown">
                                 <div class="dropdown_scrollbar" data-simplebar>
                                     <div class="drop_headline">
-                                        <h4>Friend Requests </h4>
+                                        <h4> Yêu cầu kết bạn </h4>
                                         <div class="btn_action">
                                             <a href="#" data-tippy-placement="left" title="Friend Requests">
                                                 <ion-icon name="settings-outline"></ion-icon>
@@ -165,7 +165,7 @@
                                                         <i class="icon-feather-thumbs-up"></i>
                                                     </span>
                                                     <div class="drop_text">
-                                                        <p> <strong>{{f.sender.profile.full_name}}</strong> send you a friend request. </p>
+                                                        <p> <strong>{{f.sender.profile.full_name}}</strong> gửi cho bạn lời mời kết bạn. </p>
                                                         <time> {{f.date|custom_timesince}} </time>
                                                     </div>
                                                     <div class="d-flex" id="friend-request-button-div">
@@ -179,7 +179,7 @@
                                                 </a>
                                             </li>
                                         {% empty %}
-                                            <li>No Friend Request </li>
+                                            <li> Chưa có lời mời kết bạn </li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -228,19 +228,19 @@
                                                         <p>
                                                             <strong>{{n.sender.profile.full_name|title}}</strong> 
                                                             
-                                                            {% if n.notification_type == "New Like" %} Liked your post {% endif %}
+                                                            {% if n.notification_type == "New Like" %} đã thích bài đăng của bạn {% endif %}
 
-                                                            {% if n.notification_type == "New Comment" %} Commented on your post {% endif %}
+                                                            {% if n.notification_type == "New Comment" %} đã bình luận vào bài đăng của bạn {% endif %}
 
-                                                            {% if n.notification_type == "Comment Liked" %} Liked your comment on {% endif %}
+                                                            {% if n.notification_type == "Comment Liked" %} đã thích bình luận của bạn {% endif %}
 
-                                                            {% if n.notification_type == "Comment Replied" %} Replied your comment on {% endif %}
+                                                            {% if n.notification_type == "Comment Replied" %} đã trả lời bình luận của bạn {% endif %}
 
-                                                            {% if n.notification_type == "New Follower" %} Just Followed You {% endif %}
+                                                            {% if n.notification_type == "New Follower" %} vừa theo dõi bạn {% endif %}
 
-                                                            {% if n.notification_type == "Friend Request Accepted" %} Accepted Your Friend Request {% endif %}
+                                                            {% if n.notification_type == "Friend Request Accepted" %} Đã chấp nhận lời mời kết bạn {% endif %}
 
-                                                            {% if n.notification_type == "Friend Request" %} Sent you a friend Request  {% endif %}
+                                                            {% if n.notification_type == "Friend Request" %} vừa gửi yêu cầu kết bạn {% endif %}
                                                             
                                                             
                                                             {% if n.post %}
@@ -248,7 +248,7 @@
                                                             {% endif %}
                                                                 
                                                         </p>
-                                                        <time> <small>{{n.date|timesince}} ago</small> </time>
+                                                        <time> <small>{{n.date|custom_timesince}}</small> </time>
                                                     </div>
                                                 </a>
                                             </li>
@@ -313,7 +313,7 @@
                                                         <div class="drop_avatar"> <img style="object-fit: cover; width: 40px; height: 40px;" src="{{m.sender.profile.image.url}}" alt="">
                                                         </div>
                                                         <div class="drop_text">
-                                                            <strong> {{m.sender.profile.full_name}} </strong> <time><small>{{m.date|timesince}} <ago></ago></small></time>
+                                                            <strong> {{m.sender.profile.full_name}} </strong> <time><small>{{m.date|custom_timesince}}</small></time>
                                                             <p> {{m.message|truncatechars:30}}</p>
                                                         </div>
                                                     </a>    
@@ -325,9 +325,7 @@
                                     </ul>
                                 </div>
                                 <a href="{% url 'core:inbox' %}" class="see-all">Xem tất cả trong Messenger</a>
-                                {% comment %} <a href="{% url 'core:group_inbox' %}" class="see-all">All Group Messages</a> {% endcomment %}
                             </div>
-
 
                             <a href="#">
                                 <img src="{{request.user.profile.image.url}}" class="is_avatar" alt="">
@@ -345,28 +343,19 @@
                                     </div>
                                 </a>
                                 <hr>
-                                <a href="pages-upgrade.html" class="is-link">
-                                    <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg>
-                                    Upgrade To Premium  </span>
-                                </a>
-                                <hr>
                                 <a href="{% url 'userauths:my-profile' %}">
                                     <i class="fas fa-user"></i>
-                                    My Account 
+                                    Tài khoản của tôi
                                 </a>
                                 <a href="{% url 'userauths:profile-update' %}">
                                     <i class="fas fa-cog"></i>
-                                    Profile Settings
+                                    Chỉnh sửa hồ sơ
                                 </a>
-                                <a href="groups.html">
+                                <a href="{% url 'core:groups' %}">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z"  clip-rule="evenodd" />
                                     </svg>
-                                    Manage Pages 
-                                </a>
-                                <a href="pages-setting.html">
-                                    <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"></path></svg>
-                                    My Billing 
+                                    Quản lý nhóm
                                 </a>
                                 <a href="#" id="night-mode" class="btn-night-mode">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -406,12 +395,12 @@
                         </svg>
                         <span> Bảng feed </span> </a>
                     </li>
-                    <li><a href="{% url 'core:pages' %}"> 
+                    {% comment %} <li><a href="{% url 'core:pages' %}"> 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-yellow-500">
                           <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path>
                         </svg> 
                         <span> Trang </span> </a>
-                    </li>
+                    </li> {% endcomment %}
                     <li><a href="{% url 'core:groups' %}"> 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
                             <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
@@ -422,13 +411,9 @@
                             <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
                         </svg>  <span>  Chơi game </span></a>
                     </li>
-                    <li id="more-veiw" hidden><a href="{% url 'core:birthdays' %}"> 
-                        <svg fill="currentColor" class="text-yellow-500" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd"></path><path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z"></path></svg>
-                        <span> Sinh nhật </span> <span class="new">N</span></a>
-                    </li>
                 </ul>
 
-                <a href="#" class="see-mover h-10 flex my-1 pl-2 rounded-xl text-gray-600" uk-toggle="target: #more-veiw; animation: uk-animation-fade"> 
+                {% comment %} <a href="#" class="see-mover h-10 flex my-1 pl-2 rounded-xl text-gray-600" uk-toggle="target: #more-veiw; animation: uk-animation-fade"> 
                     <span class="w-full flex items-center" id="more-veiw">
                         <svg class="  bg-gray-100 mr-2 p-0.5 rounded-full text-lg w-7" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                         Xem thêm
@@ -437,7 +422,7 @@
                         <svg  class="bg-gray-100 mr-2 p-0.5 rounded-full text-lg w-7"  fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg> 
                         Ẩn bớt
                     </span>
-                </a>
+                </a> {% endcomment %}
 
                 <h3 class="side-title"> Liên lạc </h3>
 
@@ -446,7 +431,7 @@
                     {% for f in request.user.profile.friends.all %}
                                     
                                     
-                    <a href="#">
+                    <a href="{% url 'userauths:profile' f.username %}">
                         <div class="contact-avatar">
                             <img src="{{f.profile.image.url}}" alt="">
                             <span class="user_status status_online"></span>
@@ -460,12 +445,12 @@
                                 <span class="user_status status_online"></span>
                             </div>
                             <div class="contact-username">  {{f.profile.full_name}}</div>
-                            <p>
+                            {% comment %} <p>
                                 <ion-icon name="people" class="text-lg mr-1"></ion-icon> Become friends with
                                 <strong> Stella Johnson </strong> and <strong> 14 Others</strong>
-                            </p>
+                            </p> {% endcomment %}
                             <div class="contact-list-box-btns">
-                                <a href="{% url 'core:inbox_detail' f.username %}" class="button primary flex-1 block mr-2"> <i class="uil-envelope mr-1"></i> Send message</a>
+                                <a href="{% url 'core:inbox_detail' f.username %}" class="button primary flex-1 block mr-2"> <i class="uil-envelope mr-1"></i> Nhắn tin</a>
                                 <button type="button" href="#" class="button secondary button-icon mr-2"><i class="uil-list-ul"> </i> </button>
                                 <button type="button" a href="#" class="button secondary button-icon"> <i class="uil-ellipsis-h"> </i> </button>
                             </div>
@@ -475,24 +460,14 @@
 
                 </div>
 
-                <ul class="side_links" data-sub-title="Pages">
-                    <li><a href="{% url 'userauths:profile-update' %}"><ion-icon name="settings-outline" class="side-icon"></ion-icon> <span> Setting  </span> </a></li>
+                <ul class="side_links" data-sub-title="Cài đặt">
                     <li>
-                        <a href="#">
-                            <ion-icon name="albums-outline" class="side-icon"></ion-icon> <span> Info Pages  </span> </a>
-                        <ul>
-                            <li><a href="#"> About </a></li>
-                            <li><a href="#"> Contact us </a></li>
-                            <li><a href="#"> Privacy </a></li>
-                        </ul>
+                        <a href="{% url 'userauths:profile-update' %}"><ion-icon name="settings-outline" class="side-icon"></ion-icon> <span> Hồ sơ  </span> </a>
                     </li>
                     <li>
-                        <a href="#">
-                            <ion-icon name="document-outline" class="side-icon"></ion-icon> <span> Create Content </span> </a>
-                        <ul>
-                            <li><a href="{% url 'core:create-group-page' %}"> Create Group </a></li>
-                            <li><a href="{% url 'core:create-page-page' %}" onclick="openNewWindow(event)"> Create Page </a></li>
-                        </ul>
+                        <a href="{% url 'core:create-group-page' %}">
+                            <ion-icon name="document-outline" class="side-icon"></ion-icon> <span> Tạo nhóm </span> 
+                        </a>
                     </li>
                     <script>
                         function openNewWindow(event) {

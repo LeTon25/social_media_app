@@ -9,7 +9,7 @@ from django.db.models import Q, Count, Sum, F, FloatField
 from django.core.paginator import Paginator
 from django.urls import reverse
 
-from core.models import Post, Friend, FriendRequest, Notification, Comment, ReplyComment, ChatMessage, GroupChatMessage, GroupChat, Group
+from core.models import Post, Friend, FriendRequest, Notification, Comment, ReplyComment, ChatMessage, GroupChatMessage, GroupChat, Group, GroupPost
 from userauths.models import User, Profile, user_directory_path
 
 import random
@@ -65,7 +65,7 @@ def create_post(request):
     if request.method == 'POST':
         title = request.POST.get('post-caption')
         visibility = request.POST.get('visibility')
-        image = request.FILES.get('post-thumbnail')
+        image = request.FILES.get('post-thumbnail', None)
 
         print("Title ============", title)
         print("thumbnail ============", image)
@@ -74,14 +74,16 @@ def create_post(request):
         uuid_key = shortuuid.uuid()
         uniqueid = uuid_key[:4]
 
-        if title and image:
-            post = Post(title=title, image=image, visibility=visibility, user=request.user, slug=slugify(title) + "-" + str(uniqueid.lower()))
+        if title or image:
+            post = Post(title=title, visibility=visibility, user=request.user, slug=slugify(title) + "-" + str(uniqueid.lower()))
+            if image:
+                post.image = image
             post.save()
 
             
             return JsonResponse({'post': {
                 'title': post.title,
-                'image_url': post.image.url,
+                'image_url': post.image.url if post.image else None,
                 "full_name":post.user.profile.full_name,
                 "profile_image":post.user.profile.image.url,
                 "date":timesince(post.date),
@@ -92,6 +94,43 @@ def create_post(request):
 
     return JsonResponse({"data":"Sent"})
 
+
+@csrf_exempt
+def create_group_post(request):
+    if request.method == 'POST':
+        title = request.POST.get('post-caption')
+        visibility = request.POST.get('visibility')
+        group_id = request.POST.get('group-id')
+        image = request.FILES.get('post-thumbnail', None)
+
+        uuid_key = shortuuid.uuid()
+        uniqueid = uuid_key[:4]
+
+        group = Group.objects.get(id=group_id)
+
+        if title or image:
+            slug = slugify(title) + "-" + str(uniqueid.lower())
+            groupPost = GroupPost(title=title, visibility=visibility, group=group, user=request.user, slug=slug)
+            if image:
+                groupPost.image = image
+
+            groupPost.save()
+            
+            response_data = {
+                'title': groupPost.title,
+                "full_name": groupPost.user.profile.full_name,
+                "date": timesince(groupPost.date),
+                'profile_image': groupPost.user.profile.image.url,
+                "id": groupPost.id,
+            }
+            if image:
+                response_data['image_url'] = groupPost.image.url
+
+            return JsonResponse({'groupPost': response_data})
+        else:
+            return JsonResponse({'error': 'Invalid post data'})
+
+    return JsonResponse({"data":"Sent"})
 
 @csrf_exempt
 def delete_post(request):
@@ -145,6 +184,69 @@ def edit_post(request):
                 "title": post.title,
                 "image": post.image.url,
                 "visibility": post.visibility
+            }
+            return JsonResponse(updated_post)
+        else:
+            return HttpResponse("Invalid request method")
+    except ObjectDoesNotExist:
+        return JsonResponse({"error": "Post not found"}, status=404)
+
+
+@csrf_exempt
+def delete_group_post(request):
+    id = request.GET['id']
+    gp = GroupPost.objects.get(id=id)
+    gp.delete()
+
+    data = {
+        "bool":True,
+    }
+    return JsonResponse({"data":data})
+        
+def get_group_post(request):
+    try:
+        id = request.GET['id']
+        gp = GroupPost.objects.get(id=id)
+
+        group_posts = {
+            "title": gp.title,
+            "visibility": gp.visibility
+        }
+
+        if gp.image:
+            group_posts["image"] = gp.image.url
+
+        return JsonResponse(group_posts)
+    except ObjectDoesNotExist:
+        return JsonResponse({"error": "GroupPost not found"}, status=404)
+
+
+@csrf_exempt
+def edit_group_post(request):
+    try:
+        if request.method == 'POST':
+            gp_id = request.POST.get('gp-id')
+            title = request.POST.get('post-caption')
+            visibility = request.POST.get('visibility')
+            gp = GroupPost.objects.get(id=gp_id)
+
+            image = request.FILES.get('post-thumbnail') if 'post-thumbnail' in request.FILES else request.POST.get('url-image')
+            print("image = ", image)
+            if image:
+                if 'post-thumbnail' in request.POST and '/media/' in image:
+                    image = image.replace('/media/', '') 
+                gp.image = image
+                print(gp.image)
+
+
+            gp.title = title
+            gp.visibility = visibility
+            gp.save()
+
+            updated_post = {
+                "title": gp.title,
+                "image": gp.image.url,
+                "visibility": gp.visibility
             }
             return JsonResponse(updated_post)
         else:
@@ -615,7 +717,8 @@ def load_groups(request):
 
 def group_detail(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    return render(request, 'groups/group-detail.html', {'group': group})
+    group_posts = GroupPost.objects.filter(group=group)
+    return render(request, 'groups/group-detail.html', {'group': group, 'group_posts': group_posts})
 
 def load_create_group(request):
     return render(request,'groups/create-group.html')

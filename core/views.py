@@ -632,7 +632,8 @@ def stack_brick(request):
 
 def game_2048(request):
     return render(request, 'games/2048.html')
-
+def game_WaterAndFire(request):
+    return render(request, 'games/game.html')
 def game_caro(request):
     return render(request, 'games/caro.html')
 

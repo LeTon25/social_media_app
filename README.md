@@ -41,33 +41,32 @@ Dự án web Django của chúng tôi là một nền tảng truyền thông xã
 
 
 # Windows
+
 1. Truy cập vào trang web của [python](https://www.python.org/downloads/) để lựa chọn phiên bản phù hợp
-    
-   2.Chạy file .exe để cài đặt
-   
-   3.Kiểm tra phiên bản : 
-   ```bash
-   python --version 
-   ```
-   
-   
-2. Cài đặt django : 
+
+2.Chạy file .exe để cài đặt
+
+3.Kiểm tra phiên bản : 
+```bash
+python --version 
+```
+
+4. Cài đặt django : 
 ```bash
 pip install django
 ```
 
-
-3. Di chuyển vào thư mục dự án :
+5. Di chuyển vào thư mục dự án :
 ```bash
 cd  social_media_app
 ```
 
-4. Cài đặt các thư viện cần thiết từ file requirements.txt : 
+6. Cài đặt các thư viện cần thiết từ file requirements.txt : 
 ```bash
 cd  pip install -r requirements.txt
 ```
 
-5. Chạy dự án web :
+7. Chạy dự án web :
 ```bash
 python manage.py runserver
 ```
@@ -97,6 +96,18 @@ python manage.py runserver
 <img src="./static/images/search.png" style="zoom:60%" alt="game"/>
 <h3 align="center">Tìm kiếm người dùng</h3>
 
+### 4. Nhắn tin
+<img src="./static/images/giaodientn.png" style="zoom:60%" alt="message"/>
+<h3 align="center">Đoạn chat</h3>
+
+#### 4.1. Chi tiết tin nhắn
+<img src="./static/images/chitiettn.png" style="zoom:60%" alt="message"/>
+<h3 align="center">Chi tiết đoạn chat</h3>
+
+#### 4.2. Video call
+<img src="./static/images/videocall.png" style="zoom:60%" alt="message"/>
+<h3 align="center">Gọi video call</h3>
+
 ### 5. Bài đăng và hoạt động mạng xã hội 
 <img src="./static/images/giaodienpost.png" style="zoom:60%" alt="game"/>
 <h3 align="center">Post Page</h3>
@@ -120,28 +131,27 @@ python manage.py runserver
 <h3 align="center">Xóa bài đăng</h3>
 
 ### 6. Game
-<img src="game.jpg" style="zoom:60%" alt="game"/>
+<img src="./static/images/game.jpg" style="zoom:60%" alt="game"/>
 <h3 align="center">Game Page</h3>
 
 #### 6.1 Stack Brick
 
-
-<img src="game_star.jpg" style="zoom:60%" alt="game"/>
+<img src="./static/images/game_star.jpg" style="zoom:60%" alt="game"/>
 <h3 align="center">Stack Brick Page</h3>
 
 #### 6.2 2048 Game
 
-<img src="2048.jpg" style="zoom:60%" alt="usecase" />
+<img src="./static/images/2048.jpg" style="zoom:60%" alt="usecase" />
 <h3 align="center">2048 Game Page</h3>
 
 #### 6.3 Tic Tac Toe
 
-<img src="TicTacToe.jpg" style="zoom:60%" alt="usecase" />
+<img src="./static/images/TicTacToe.jpg" style="zoom:60%" alt="usecase" />
 <h3 align="center">Tic Tac Toe Page</h3>
 
 #### 6.4 Fire && Water
 
-<img src="game_fire.jpg" style="zoom:60%" alt="usecase" />
+<img src="./static/images/game_fire.jpg" style="zoom:60%" alt="usecase" />
 <h3 align="center">Fire && Water Page</h3>
 
 #### Any question you can contact with us

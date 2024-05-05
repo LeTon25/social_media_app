@@ -77,19 +77,30 @@ cd  pip install -r requirements.txt
 python manage.py runserver
 ```
 
+### 3. Chức năng người dùng
 
+#### 3.1 Đăng ký và đăng nhập
 
-### List of User Functions
+<img src="./static/images/sign-up.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Đăng ký</h3>
 
-- User: create post, like post, comment post, update post, delete post, update premium edit profile, register, login, forgot password, search.
-- Admin: 
-    - Management: film, director, actor, hashtags, genres, licenses.
-    - Statistic: revenue month, revenue year, user subscribe month, user subscribe year, number of subscribers.
+<img src="./static/images/login.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Đăng nhập</h3>
 
-### Database
+#### 3.2 Quản lý hồ sơ cá nhân
 
-<img src="so\source\ERD.png" style="zoom:60%;" alt ="ERD"/>
-<img src="SOCIAL_MEDIA_APP\asset"/>
+<img src="./static/images/profile_setting.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Hồ sơ cá nhân</h3>
+
+#### 3.3 Gửi và nhận yêu cầu kết bạn
+
+<img src="./static/images/add_friend.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Gửi và nhận yêu cầu kết bạn</h3>
+
+#### 3.4 Tìm kiếm người dùng
+
+<img src="./static/images/search.png" style="zoom:60%" alt="game"/>
+<h3 align="center">Tìm kiếm người dùng</h3>
 
 ### 5. Bài đăng và hoạt động mạng xã hội 
 <img src="./static/images/giaodienpost.png" style="zoom:60%" alt="game"/>
